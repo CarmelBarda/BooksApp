@@ -22,7 +22,7 @@ public class EditStudentActivity : AppCompatActivity() {
         val addressInput = findViewById<EditText>(R.id.addressInput)
         val saveButton = findViewById<Button>(R.id.saveButton)
         val deleteButton = findViewById<Button>(R.id.deleteButton)
-
+        val cancelButton = findViewById<Button>(R.id.cancelButton)
 
         nameInput.setText(student.name)
         idInput.setText(student.id)
@@ -45,6 +45,13 @@ public class EditStudentActivity : AppCompatActivity() {
         deleteButton.setOnClickListener {
             MainActivity.students.remove(student)
 
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish() // Return to MainActivity
+        }
+
+        cancelButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
