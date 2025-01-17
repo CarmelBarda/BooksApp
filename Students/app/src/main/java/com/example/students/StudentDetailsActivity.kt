@@ -23,7 +23,6 @@ class StudentDetailsActivity : AppCompatActivity() {
         val studentPhone = findViewById<TextView>(R.id.studentPhone)
         val studentAddress = findViewById<TextView>(R.id.studentAddress)
         val editButton = findViewById<Button>(R.id.editButton)
-        val deleteButton = findViewById<Button>(R.id.deleteButton)
 
         studentImage.setImageResource(student.image)
         studentName.text = student.name
@@ -37,9 +36,6 @@ class StudentDetailsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        deleteButton.setOnClickListener {
-            MainActivity.students.remove(student)
-            finish() // Return to MainActivity
-        }
+
     }
 }

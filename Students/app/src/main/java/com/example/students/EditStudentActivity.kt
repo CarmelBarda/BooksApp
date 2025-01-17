@@ -1,5 +1,6 @@
 package com.example.students
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -20,6 +21,8 @@ public class EditStudentActivity : AppCompatActivity() {
         val phoneInput = findViewById<EditText>(R.id.phoneInput)
         val addressInput = findViewById<EditText>(R.id.addressInput)
         val saveButton = findViewById<Button>(R.id.saveButton)
+        val deleteButton = findViewById<Button>(R.id.deleteButton)
+
 
         nameInput.setText(student.name)
         idInput.setText(student.id)
@@ -32,6 +35,19 @@ public class EditStudentActivity : AppCompatActivity() {
             student.id = idInput.text.toString()
             student.phoneNumber = phoneInput.text.toString()
             student.address = addressInput.text.toString()
+
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish() // Return to MainActivity
+        }
+
+        deleteButton.setOnClickListener {
+            MainActivity.students.remove(student)
+
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
             finish() // Return to MainActivity
         }
     }

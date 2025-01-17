@@ -4,9 +4,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import com.example.students.R
-import com.example.students.MainActivity
-import com.example.students.Student
+import android.content.Intent
+
 
 
 class AddStudentActivity : AppCompatActivity() {
@@ -30,6 +29,9 @@ class AddStudentActivity : AppCompatActivity() {
                 MainActivity.students.add(
                     Student(id, name, false, R.drawable.ic_student_placeholder, phone, address)
                 )
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
                 finish() // Return to MainActivity
             }
         }
