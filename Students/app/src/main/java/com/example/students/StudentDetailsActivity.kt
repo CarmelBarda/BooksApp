@@ -14,6 +14,11 @@ class StudentDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_student_details)
 
+        supportActionBar?.apply {
+            title = "Student Details"
+            setDisplayHomeAsUpEnabled(true) // Show the back button
+        }
+
         val studentId = intent.getStringExtra("studentId")
         val student = MainActivity.students.find { it.id == studentId } ?: return
 
@@ -35,7 +40,11 @@ class StudentDetailsActivity : AppCompatActivity() {
             intent.putExtra("studentId", student.id)
             startActivity(intent)
         }
+    }
 
-
+    // Handle back button click
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed() // Go back to the previous activity
+        return true
     }
 }

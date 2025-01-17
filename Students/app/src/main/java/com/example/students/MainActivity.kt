@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.content.Intent
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     companion object {
         val students = mutableListOf(
             Student("1", "Alice", false, R.drawable.ic_student_placeholder, "123-456-7890", "123 Main St"),
@@ -28,6 +29,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        supportActionBar?.apply {
+            title = "Students App"
+        }
 
         recyclerView = findViewById(R.id.recyclerViewStudents)
         val fabAddStudent = findViewById<FloatingActionButton>(R.id.fabAddStudent)
