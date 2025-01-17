@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <!-- RecyclerView for the students list -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewStudents"
         android:layout_width="match_parent"
@@ -15,14 +12,14 @@
         android:padding="16dp"
         tools:listitem="@layout/student_item" />
 
-    <!-- FloatingActionButton for adding new students -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddStudent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:contentDescription="@string/add_student"
-        android:src="@drawable/ic_add"
+        android:layout_gravity="bottom|end"
+        android:src="@android:drawable/ic_input_add"
         app:layout_anchorGravity="bottom|end"
-        app:backgroundTint="@color/purple_500" />
+        app:backgroundTint="@color/purple_500"
+        android:contentDescription="@string/add_student" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

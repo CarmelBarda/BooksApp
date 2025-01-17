@@ -1,8 +1,11 @@
 package com.example.students
 
 data class Student(
-    var id: String,          // Student's unique ID
-    var name: String,        // Student's name
-    var isChecked: Boolean = false, // Checkbox status
-    var image: Int           // Reference to a drawable resource
+    var id: String,
+    var name: String,
+    var isChecked: Boolean = false,
+    var image: Int,
+    var phoneNumber: String = "",
+    var address: String = ""
 )
+

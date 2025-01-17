@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:padding="8dp">
 
-    <!-- Student Picture -->
+    <!-- Student Image -->
     <ImageView
         android:id="@+id/studentImage"
         android:layout_width="64dp"
@@ -14,7 +14,7 @@
         android:layout_marginEnd="8dp"
         android:src="@drawable/ic_student_placeholder" />
 
-    <!-- Student Details (Name and ID) -->
+    <!-- Student Details -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <!-- Checkbox for selection -->
+    <!-- Checkbox -->
     <CheckBox
         android:id="@+id/studentCheckbox"
         android:layout_width="wrap_content"
