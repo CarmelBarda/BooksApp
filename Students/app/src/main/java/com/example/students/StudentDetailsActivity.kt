@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.students.R
@@ -27,6 +28,9 @@ class StudentDetailsActivity : AppCompatActivity() {
         val studentIdView = findViewById<TextView>(R.id.studentId)
         val studentPhone = findViewById<TextView>(R.id.studentPhone)
         val studentAddress = findViewById<TextView>(R.id.studentAddress)
+        val checkedStatusLayout = findViewById<LinearLayout>(R.id.checkedStatusLayout)
+        val checkIcon = findViewById<ImageView>(R.id.checkIcon)
+        val checkedStatusText = findViewById<TextView>(R.id.checkedStatusText)
         val editButton = findViewById<Button>(R.id.editButton)
 
         studentImage.setImageResource(student.image)
@@ -34,6 +38,12 @@ class StudentDetailsActivity : AppCompatActivity() {
         studentIdView.text = student.id
         studentPhone.text = student.phoneNumber
         studentAddress.text = student.address
+
+        // Show "Checked" status if the student is checked
+        if (student.isChecked) {
+            checkIcon.visibility = ImageView.VISIBLE
+            checkedStatusText.visibility = TextView.VISIBLE
+        }
 
         editButton.setOnClickListener {
             val intent = Intent(this, EditStudentActivity::class.java)
@@ -46,5 +56,26 @@ class StudentDetailsActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed() // Go back to the previous activity
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val studentId = intent.getStringExtra("studentId")
+        val student = MainActivity.students.find { it.id == studentId } ?: return
+
+        findViewById<TextView>(R.id.studentName).text = "Name: ${student.name}"
+        findViewById<TextView>(R.id.studentId).text = "ID: ${student.id}"
+        findViewById<TextView>(R.id.studentPhone).text = "Phone: ${student.phoneNumber}"
+        findViewById<TextView>(R.id.studentAddress).text = "Address: ${student.address}"
+
+        val checkIcon = findViewById<ImageView>(R.id.checkIcon)
+        val checkedStatusText = findViewById<TextView>(R.id.checkedStatusText)
+        if (student.isChecked) {
+            checkIcon.visibility = ImageView.VISIBLE
+            checkedStatusText.visibility = TextView.VISIBLE
+        } else {
+            checkIcon.visibility = ImageView.GONE
+            checkedStatusText.visibility = TextView.GONE
+        }
     }
 }
