@@ -2,13 +2,17 @@ package com.example.students
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 
 class StudentDetailsFragment : Fragment() {
@@ -43,7 +47,6 @@ class StudentDetailsFragment : Fragment() {
         val checkedStatusLayout = view.findViewById<LinearLayout>(R.id.checkedStatusLayout)
         val checkIcon = view.findViewById<ImageView>(R.id.checkIcon)
         val checkedStatusText = view.findViewById<TextView>(R.id.checkedStatusText)
-        val editButton = view.findViewById<Button>(R.id.editButton)
 
         // Populate student details
         studentImage.setImageResource(student.image)
@@ -61,12 +64,25 @@ class StudentDetailsFragment : Fragment() {
             checkedStatusText.visibility = View.GONE
         }
 
-        editButton.setOnClickListener {
-            val bundle = Bundle().apply {
-                putString("studentId", student.id)
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_student_details, menu)
             }
-            findNavController().navigate(R.id.action_studentDetailsFragment_to_editStudentFragment, bundle)
-        }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                val bundle = Bundle().apply {
+                    putString("studentId", student.id)
+                }
+
+                return when (menuItem.itemId) {
+                    R.id.action_edit_student -> {
+                        findNavController().navigate(R.id.action_studentDetailsFragment_to_editStudentFragment, bundle)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     override fun onResume() {

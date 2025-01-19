@@ -3,12 +3,16 @@ package com.example.students
 import StudentAdapter
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class StudentListFragment : Fragment(R.layout.fragment_student_list) {
@@ -23,7 +27,6 @@ class StudentListFragment : Fragment(R.layout.fragment_student_list) {
         recyclerView = view.findViewById(R.id.recyclerViewStudents)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-
         adapter = StudentAdapter(MainActivity.students) { student ->
             // Navigate to EditStudentFragment with the selected studentId
             val bundle = Bundle().apply {
@@ -32,15 +35,23 @@ class StudentListFragment : Fragment(R.layout.fragment_student_list) {
 
             findNavController().navigate(R.id.studentDetailsFragment, bundle)
         }
-
         recyclerView.adapter = adapter
 
-        // Set up the FloatingActionButton
-        val fabAddStudent = view.findViewById<FloatingActionButton>(R.id.fabAddStudent)
-        fabAddStudent.setOnClickListener {
-            // Navigate to AddStudentFragment
-            findNavController().navigate(R.id.action_studentListFragment_to_addStudentFragment)
-        }
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_student_list, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_add_student -> {
+                        findNavController().navigate(R.id.action_studentListFragment_to_addStudentFragment)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     @SuppressLint("NotifyDataSetChanged")
