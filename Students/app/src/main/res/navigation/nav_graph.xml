@@ -12,7 +12,7 @@
         android:id="@+id/studentListFragment"
         android:name="com.example.students.StudentListFragment"
         tools:layout="@layout/fragment_student_list"
-        android:label="StudentList"
+        android:label="Student List"
         app:destination="@id/studentListFragment">
 
         <action
@@ -36,7 +36,7 @@
     <fragment
         android:id="@+id/studentDetailsFragment"
         android:name="com.example.students.StudentDetailsFragment"
-        android:label="StudentDetails"
+        android:label="Student Details"
         app:destination="@id/studentDetailsFragment">
         <action
             android:id="@+id/action_studentDetailsFragment_to_editStudentFragment"
@@ -50,7 +50,7 @@
     <fragment
         android:id="@+id/addStudentFragment"
         android:name="com.example.students.AddStudentFragment"
-        android:label="AddStudent"
+        android:label="Add Student"
         app:destination="@id/addStudentFragment" />
 
 
@@ -59,7 +59,7 @@
     <fragment
         android:id="@+id/editStudentFragment"
         android:name="com.example.students.EditStudentFragment"
-        android:label="EditStudent"
+        android:label="Edit Student"
         app:destination="@id/editStudentFragment" />
 
 </navigation>
