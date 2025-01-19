@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/studentListFragment">
+
+    <!-- Student List Fragment -->
+
+    <fragment
+        android:id="@+id/studentListFragment"
+        android:name="com.example.students.StudentListFragment"
+        tools:layout="@layout/fragment_student_list"
+        android:label="StudentList"
+        app:destination="@id/studentListFragment">
+
+        <action
+            android:id="@+id/action_studentListFragment_to_studentDetailsFragment"
+            app:destination="@id/studentDetailsFragment" />
+        <action
+            android:id="@+id/action_studentListFragment_to_addStudentFragment"
+            app:destination="@id/addStudentFragment" />
+        <action
+            android:id="@+id/action_studentListFragment_to_editStudentFragment"
+            app:destination="@id/editStudentFragment">
+            <argument
+                android:name="studentId"
+                app:argType="string" />
+        </action>
+
+    </fragment>
+
+    <!-- Student Details Fragment -->
+
+    <fragment
+        android:id="@+id/studentDetailsFragment"
+        android:name="com.example.students.StudentDetailsFragment"
+        android:label="StudentDetails"
+        app:destination="@id/studentDetailsFragment">
+        <action
+            android:id="@+id/action_studentDetailsFragment_to_editStudentFragment"
+            app:destination="@id/editStudentFragment" />
+
+    </fragment>
+
+
+    <!-- Add Student Fragment -->
+
+    <fragment
+        android:id="@+id/addStudentFragment"
+        android:name="com.example.students.AddStudentFragment"
+        android:label="AddStudent"
+        app:destination="@id/addStudentFragment" />
+
+
+    <!-- Edit Student Fragment -->
+
+    <fragment
+        android:id="@+id/editStudentFragment"
+        android:name="com.example.students.EditStudentFragment"
+        android:label="EditStudent"
+        app:destination="@id/editStudentFragment" />
+
+</navigation>
+
