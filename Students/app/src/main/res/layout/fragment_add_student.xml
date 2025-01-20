@@ -33,6 +33,25 @@
         android:layout_height="wrap_content"
         android:hint="Enter address" />
 
+    <!-- Birth Date -->
+    <EditText
+        android:id="@+id/birthDateInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Birth Date"
+        android:focusable="false"
+        android:inputType="none" />
+
+    <!-- Birth Time -->
+    <EditText
+        android:id="@+id/birthTimeInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Birth Time"
+        android:focusable="false"
+        android:inputType="none" />
+
+
     <!-- Save Button -->
     <Button
         android:id="@+id/saveButton"
