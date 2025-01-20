@@ -11,7 +11,9 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 class EditStudentFragment : Fragment() {
 
@@ -49,16 +51,25 @@ class EditStudentFragment : Fragment() {
         idInput.setText(student.id)
         phoneInput.setText(student.phoneNumber)
         addressInput.setText(student.address)
-        birthDateInput.setText(student.birthDate)
-        birthTimeInput.setText(student.birthTime)
+
+        val calendar = Calendar.getInstance()
+
+        if (student.birthDate.isNotBlank()) {
+            birthDateInput.setText(student.birthDate)
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val date = dateFormat.parse(student.birthDate)
+            if (date != null) {
+                calendar.time = date
+            }
+        }
 
         birthDateInput.setOnClickListener {
-            val calendar = Calendar.getInstance()
             DatePickerDialog(
                 requireContext(),
                 { _, year, month, dayOfMonth ->
-                    val date = "$dayOfMonth/${month + 1}/$year"
-                    birthDateInput.setText(date)
+                    val selectedDate = "$dayOfMonth/${month + 1}/$year"
+                    birthDateInput.setText(selectedDate)
+                    calendar.set(year, month, dayOfMonth)
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -66,13 +77,23 @@ class EditStudentFragment : Fragment() {
             ).show()
         }
 
+        if (student.birthTime.isNotBlank()) {
+            birthTimeInput.setText(student.birthTime) // Display value in EditText
+            val timeParts = student.birthTime.split(":")
+            if (timeParts.size == 2) {
+                calendar.set(Calendar.HOUR_OF_DAY, timeParts[0].toInt())
+                calendar.set(Calendar.MINUTE, timeParts[1].toInt())
+            }
+        }
+
         birthTimeInput.setOnClickListener {
-            val calendar = Calendar.getInstance()
             TimePickerDialog(
                 requireContext(),
                 { _, hourOfDay, minute ->
-                    val time = "%02d:%02d".format(hourOfDay, minute)
-                    birthTimeInput.setText(time)
+                    val selectedTime = "%02d:%02d".format(hourOfDay, minute)
+                    birthTimeInput.setText(selectedTime)
+                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                    calendar.set(Calendar.MINUTE, minute)
                 },
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
