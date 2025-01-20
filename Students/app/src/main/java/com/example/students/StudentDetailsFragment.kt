@@ -21,7 +21,6 @@ class StudentDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Retrieve the student ID from the arguments
         studentId = arguments?.getString("studentId")
     }
 
@@ -30,7 +29,6 @@ class StudentDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_student_details, container, false)
     }
 
@@ -48,14 +46,12 @@ class StudentDetailsFragment : Fragment() {
         val checkIcon = view.findViewById<ImageView>(R.id.checkIcon)
         val checkedStatusText = view.findViewById<TextView>(R.id.checkedStatusText)
 
-        // Populate student details
         studentImage.setImageResource(student.image)
         studentName.text = "Name: ${student.name}"
         studentIdView.text = "ID: ${student.id}"
         studentPhone.text = "Phone: ${student.phoneNumber}"
         studentAddress.text = "Address: ${student.address}"
 
-        // Show "Checked" status if the student is checked
         if (student.isChecked) {
             checkIcon.visibility = View.VISIBLE
             checkedStatusText.visibility = View.VISIBLE
