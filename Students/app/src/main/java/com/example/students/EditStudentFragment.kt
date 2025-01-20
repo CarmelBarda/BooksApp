@@ -1,5 +1,6 @@
 package com.example.students
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,6 @@ class EditStudentFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Retrieve the student ID from the arguments
         studentId = arguments?.getString("studentId")
     }
 
@@ -24,7 +24,6 @@ class EditStudentFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_edit_student, container, false)
     }
 
@@ -41,7 +40,6 @@ class EditStudentFragment : Fragment() {
         val deleteButton = view.findViewById<Button>(R.id.deleteButton)
         val cancelButton = view.findViewById<Button>(R.id.cancelButton)
 
-        // Populate fields with the existing student data
         nameInput.setText(student.name)
         idInput.setText(student.id)
         phoneInput.setText(student.phoneNumber)
@@ -53,17 +51,29 @@ class EditStudentFragment : Fragment() {
             student.phoneNumber = phoneInput.text.toString()
             student.address = addressInput.text.toString()
 
-            findNavController().navigateUp() // Navigate back to the previous fragment
+            showSaveSuccessDialog()
         }
 
         deleteButton.setOnClickListener {
             MainActivity.students.remove(student)
 
-            findNavController().navigateUp() // Navigate back to the previous fragment
+            findNavController().navigateUp()
         }
 
         cancelButton.setOnClickListener {
-            findNavController().navigateUp() // Navigate back without making changes
+            findNavController().navigateUp()
         }
+    }
+
+    private fun showSaveSuccessDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Success")
+            .setMessage("Student details have been saved successfully.")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                findNavController().navigateUp()
+            }
+            .setCancelable(false)
+            .show()
     }
 }

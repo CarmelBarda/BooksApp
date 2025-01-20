@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        // Set up the ActionBar with the Navigation UI
         setupActionBarWithNavController(navController)
     }
 
