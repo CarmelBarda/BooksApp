@@ -6,6 +6,8 @@ data class Student(
     var isChecked: Boolean = false,
     var image: Int,
     var phoneNumber: String = "",
-    var address: String = ""
+    var address: String = "",
+    var birthDate: String = "",
+    var birthTime: String = ""
 )
 
