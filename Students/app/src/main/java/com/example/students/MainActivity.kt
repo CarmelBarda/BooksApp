@@ -1,20 +1,15 @@
 package com.example.students
 
-import StudentAdapter
-import androidx.activity.ComponentActivity
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.students.ui.theme.StudentsTheme
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import android.content.Intent
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
+
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var navController: NavController
+
     companion object {
         val students = mutableListOf(
             Student("1", "Alice", false, R.drawable.ic_student_placeholder, "123-456-7890", "123 Main St"),
@@ -22,9 +17,6 @@ class MainActivity : AppCompatActivity() {
             Student("3", "Charlie", false, R.drawable.ic_student_placeholder, "555-555-5555", "789 Oak St")
         )
     }
-
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: StudentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,41 +26,13 @@ class MainActivity : AppCompatActivity() {
             title = "Students App"
         }
 
-        recyclerView = findViewById(R.id.recyclerViewStudents)
-        val fabAddStudent = findViewById<FloatingActionButton>(R.id.fabAddStudent)
-
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = StudentAdapter(students) { student ->
-            val intent = Intent(this, StudentDetailsActivity::class.java)
-            intent.putExtra("studentId", student.id)
-            startActivity(intent)
-        }
-        recyclerView.adapter = adapter
-
-        fabAddStudent.setOnClickListener {
-            val intent = Intent(this, AddStudentActivity::class.java)
-            startActivity(intent)
-        }
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+        // Set up the ActionBar with the Navigation UI
+        setupActionBarWithNavController(navController)
     }
 
-    override fun onResume() {
-        super.onResume()
-        adapter.notifyDataSetChanged() // Refresh the list after returning
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    StudentsTheme {
-        Greeting("Android")
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }
