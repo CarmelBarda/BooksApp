@@ -23,12 +23,10 @@ class StudentListFragment : Fragment(R.layout.fragment_student_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize RecyclerView and Adapter
         recyclerView = view.findViewById(R.id.recyclerViewStudents)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         adapter = StudentAdapter(MainActivity.students) { student ->
-            // Navigate to EditStudentFragment with the selected studentId
             val bundle = Bundle().apply {
                 putString("studentId", student.id)
             }

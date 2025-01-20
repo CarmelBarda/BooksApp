@@ -1,5 +1,6 @@
 package com.example.students
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,14 +17,12 @@ class AddStudentFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_student, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set up UI components
         val nameInput = view.findViewById<EditText>(R.id.nameInput)
         val idInput = view.findViewById<EditText>(R.id.idInput)
         val phoneInput = view.findViewById<EditText>(R.id.phoneInput)
@@ -41,9 +40,20 @@ class AddStudentFragment : Fragment() {
                     Student(id, name, false, R.drawable.ic_student_placeholder, phone, address)
                 )
 
-                // Navigate back to the student list
-                findNavController().navigateUp()
+                showSaveSuccessDialog()
             }
         }
+    }
+
+    private fun showSaveSuccessDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Success")
+            .setMessage("Student details have been saved successfully.")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                findNavController().navigateUp()
+            }
+            .setCancelable(false)
+            .show()
     }
 }
