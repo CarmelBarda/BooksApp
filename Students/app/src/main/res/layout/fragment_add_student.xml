@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter student name"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        style="@style/InputFieldStyle" />
 
     <!-- Input for Student ID -->
     <EditText
@@ -19,40 +20,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter student ID"
-        android:inputType="text" />
+        android:inputType="text"
+        style="@style/InputFieldStyle" />
 
     <EditText
         android:id="@+id/phoneInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter phone number" />
+        android:hint="Enter phone number"
+        style="@style/InputFieldStyle" />
 
     <EditText
         android:id="@+id/addressInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter address" />
+        android:hint="Enter address"
+        style="@style/InputFieldStyle" />
 
-    <!-- Birth Date -->
     <EditText
         android:id="@+id/birthDateInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Select Birth Date"
         android:focusable="false"
-        android:inputType="none" />
+        android:inputType="none"
+        style="@style/InputFieldStyle" />
 
-    <!-- Birth Time -->
     <EditText
         android:id="@+id/birthTimeInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Select Birth Time"
         android:focusable="false"
-        android:inputType="none" />
+        android:inputType="none"
+        style="@style/InputFieldStyle" />
 
-
-    <!-- Save Button -->
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"

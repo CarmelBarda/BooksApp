@@ -34,7 +34,6 @@ class AddStudentFragment : Fragment() {
         val birthTimeInput = view.findViewById<EditText>(R.id.birthTimeInput)
         val saveButton = view.findViewById<Button>(R.id.saveButton)
 
-        // Set up Date Picker
         birthDateInput.setOnClickListener {
             val calendar = Calendar.getInstance()
             DatePickerDialog(
@@ -49,7 +48,6 @@ class AddStudentFragment : Fragment() {
             ).show()
         }
 
-        // Set up Time Picker
         birthTimeInput.setOnClickListener {
             val calendar = Calendar.getInstance()
             TimePickerDialog(

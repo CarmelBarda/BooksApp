@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Edit student name"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        style="@style/InputFieldStyle" />
 
     <!-- Input for Student ID -->
     <EditText
@@ -20,23 +21,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Edit student ID"
-        android:inputType="text" />
+        android:inputType="text"
+        style="@style/InputFieldStyle" />
 
     <EditText
         android:id="@+id/phoneInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Edit phone number" />
+        android:hint="Edit phone number"
+        style="@style/InputFieldStyle" />
 
     <EditText
         android:id="@+id/addressInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Edit address" />
+        android:hint="Edit address"
+        style="@style/InputFieldStyle" />
 
-    <!-- Save Button -->
+    <EditText
+        android:id="@+id/birthDateInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Edit birth ate"
+        style="@style/InputFieldStyle" />
 
-    <!-- Delete Button -->
+    <EditText
+        android:id="@+id/birthTimeInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Edit birth time"
+        style="@style/InputFieldStyle" />
 
     <Button
         android:id="@+id/saveButton"
