@@ -45,12 +45,16 @@ class StudentDetailsFragment : Fragment() {
         val checkedStatusLayout = view.findViewById<LinearLayout>(R.id.checkedStatusLayout)
         val checkIcon = view.findViewById<ImageView>(R.id.checkIcon)
         val checkedStatusText = view.findViewById<TextView>(R.id.checkedStatusText)
+        val studentBirthDate = view.findViewById<TextView>(R.id.studentBirthDate)
+        val studentBirthTime = view.findViewById<TextView>(R.id.studentBirthTime)
 
         studentImage.setImageResource(student.image)
         studentName.text = "Name: ${student.name}"
         studentIdView.text = "ID: ${student.id}"
         studentPhone.text = "Phone: ${student.phoneNumber}"
         studentAddress.text = "Address: ${student.address}"
+        studentBirthDate.text = "Birth Date: ${student.birthDate}"
+        studentBirthTime.text = "Birth Time: ${student.birthTime}"
 
         if (student.isChecked) {
             checkIcon.visibility = View.VISIBLE
