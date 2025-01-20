@@ -91,6 +91,8 @@ class StudentDetailsFragment : Fragment() {
             findViewById<TextView>(R.id.studentId).text = "ID: ${student.id}"
             findViewById<TextView>(R.id.studentPhone).text = "Phone: ${student.phoneNumber}"
             findViewById<TextView>(R.id.studentAddress).text = "Address: ${student.address}"
+            findViewById<TextView>(R.id.studentBirthDate).text = "Birth date: ${student.birthDate}"
+            findViewById<TextView>(R.id.studentBirthTime).text = "Birth time: ${student.birthTime}"
 
             val checkIcon = findViewById<ImageView>(R.id.checkIcon)
             val checkedStatusText = findViewById<TextView>(R.id.checkedStatusText)
