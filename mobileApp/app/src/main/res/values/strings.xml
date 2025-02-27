@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">OnePicture</string>
+    <string name="profile_image_desc">user profile</string>
+    <string name="post_image_desc">post desc</string>
+    <string name="like_button_desc">like button</string>
+    <string name="email">your email adress</string>
+    <string name="password">your password\n</string>
+    <string name="remember_me">remember me</string>
+    <string name="sign_in">sing in</string>
+    <string name="sign_up">sign up</string>
+    <string name="FullName">your full name</string>
+    <string name="requesting_permissions">Requesting permissions...</string>
+    <string name="camera_icon">Camera Icon</string>
+    <string name="person_icon">Person Icon</string>
+    <string name="hamburger_icon">Hamburger Icon</string>
+</resources>
