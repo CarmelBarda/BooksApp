@@ -1,48 +1,15 @@
-# Android Studio
-.idea/
 *.iml
-*.ipr
-*.iws
-
-# Gradle
-.gradle/
-build/
-build 2/
-
-# Local configuration file (sdk path, etc)
-local.properties
-
-# Log files
-*.log
-
-# Android specific
-*.apk
-*.ap_ 
-*.dex
-*.class
-*.keystore
-
-# Generated files
-*.class
-*.jar
-*.war
-*.ear
-
-# Kotlin
-*.kotlin_metadata
-
-# NDK
-obj/
-*.so
-
-# Miscellaneous
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
 .DS_Store
-*.swp
-*.swo
-*.sublime-workspace
-*.sublime-project
-*.vscode/
-
-# Hilt
-hilt/
-hilt-plugins/
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
