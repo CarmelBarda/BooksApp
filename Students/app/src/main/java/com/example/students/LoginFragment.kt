@@ -26,6 +26,18 @@ class LoginFragment : Fragment() {
         val usernameInput = view.findViewById<EditText>(R.id.usernameInput)
         val passwordInput = view.findViewById<EditText>(R.id.passwordInput)
         val loginButton = view.findViewById<Button>(R.id.loginButton)
+        val signUpButton = view.findViewById<Button>(R.id.btnSignUp)
+
+        signUpButton.setOnClickListener {
+            val username = usernameInput.text.toString()
+            val password = passwordInput.text.toString()
+
+            if (username == "admin" && password == "1234") { // Dummy credentials
+                findNavController().navigate(R.id.action_loginFragment_to_studentListFragment)
+            } else {
+                Toast.makeText(requireContext(), "Invalid login credentials", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         loginButton.setOnClickListener {
             val username = usernameInput.text.toString()
