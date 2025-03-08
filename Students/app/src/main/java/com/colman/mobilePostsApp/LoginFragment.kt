@@ -49,7 +49,7 @@ class LoginFragment : Fragment() {
                             Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
                             findNavController().navigate(R.id.action_loginFragment_to_studentListFragment)
                         } else {
-                            Toast.makeText(requireContext(), "Login Failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(), "Login Failed.", Toast.LENGTH_LONG).show()
                         }
                     }
             } else {
