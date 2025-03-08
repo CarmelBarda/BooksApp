@@ -8,19 +8,32 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.students.LoginFragment"
+        android:name="com.colman.mobilePostsApp.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_studentListFragment"
             app:destination="@id/studentListFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.colman.mobilePostsApp.RegisterFragment"
+        android:label="Register">
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
 
     <!-- Student List Fragment -->
 
     <fragment
         android:id="@+id/studentListFragment"
-        android:name="com.example.students.StudentListFragment"
+        android:name="com.colman.mobilePostsApp.StudentListFragment"
         tools:layout="@layout/fragment_student_list"
         android:label="Student List"
         app:destination="@id/studentListFragment">
@@ -45,7 +58,7 @@
 
     <fragment
         android:id="@+id/studentDetailsFragment"
-        android:name="com.example.students.StudentDetailsFragment"
+        android:name="com.colman.mobilePostsApp.StudentDetailsFragment"
         android:label="Student Details"
         app:destination="@id/studentDetailsFragment">
         <action
@@ -59,7 +72,7 @@
 
     <fragment
         android:id="@+id/addStudentFragment"
-        android:name="com.example.students.AddStudentFragment"
+        android:name="com.colman.mobilePostsApp.AddStudentFragment"
         android:label="Add Student"
         app:destination="@id/addStudentFragment" />
 
@@ -68,7 +81,7 @@
 
     <fragment
         android:id="@+id/editStudentFragment"
-        android:name="com.example.students.EditStudentFragment"
+        android:name="com.colman.mobilePostsApp.EditStudentFragment"
         android:label="Edit Student"
         app:destination="@id/editStudentFragment" />
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "265658251413",
+    "project_id": "mobilepostsapp",
+    "storage_bucket": "mobilepostsapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:265658251413:android:506c5c2f151efe51ab839c",
+        "android_client_info": {
+          "package_name": "com.colman.mobilePostsApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1XZT8i1QYns_bQmBOitYP-OUOSq1ygUg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
