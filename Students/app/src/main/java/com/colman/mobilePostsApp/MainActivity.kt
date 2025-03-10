@@ -1,6 +1,5 @@
 package com.colman.mobilePostsApp
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -10,12 +9,29 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.FirebaseApp
 
-
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
 
-
     companion object {
+        val bookPosts = mutableListOf(
+            BookPost(
+                userName = "Alice Johnson",
+                userProfile = R.drawable.ic_student_placeholder,
+                bookName = "The Great Gatsby",
+                recommendation = "A beautifully written novel with deep themes of ambition and love.",
+                bookImage = R.drawable.ic_book_placeholder,
+                rating = 9
+            ),
+            BookPost(
+                userName = "John Doe",
+                userProfile = R.drawable.ic_student_placeholder,
+                bookName = "To Kill a Mockingbird",
+                recommendation = "An important novel that explores justice, empathy, and human nature.",
+                bookImage = R.drawable.ic_book_placeholder,
+                rating = 10
+            )
+        )
+
         val students = mutableListOf(
             Student("1", "Alice", false, R.drawable.ic_student_placeholder, "123-456-7890", "123 Main St", "20/01/2002", "19:51"),
             Student("2", "Bob", true, R.drawable.ic_student_placeholder, "987-654-3210", "456 Elm St", "08/05/2000", "08:14"),
@@ -35,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         supportActionBar?.apply {
-            title = "Students App"
+            title = "Book Recommendations"
         }
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
