@@ -12,8 +12,8 @@
         android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_loginFragment_to_studentListFragment"
-            app:destination="@id/studentListFragment" />
+            android:id="@+id/action_loginFragment_to_postsContainerFragment"
+            app:destination="@id/postsContainerFragment" />
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
@@ -84,6 +84,17 @@
         android:name="com.colman.mobilePostsApp.EditStudentFragment"
         android:label="Edit Student"
         app:destination="@id/editStudentFragment" />
+
+    <!-- Posts Container Fragment -->
+
+    <fragment
+        android:id="@+id/postsContainerFragment"
+        android:name="com.colman.mobilePostsApp.PostsContainerFragment"
+        tools:layout="@layout/fragment_posts_container"
+        android:label="Posts Container"
+        app:destination="@id/postsContainerFragment">
+
+    </fragment>
 
 </navigation>
 
