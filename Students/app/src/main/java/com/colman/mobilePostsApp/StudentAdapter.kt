@@ -5,8 +5,8 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.students.Student
-import com.example.students.R
+import com.colman.mobilePostsApp.Student
+import com.colman.mobilePostsApp.R
 
 
 class StudentAdapter(

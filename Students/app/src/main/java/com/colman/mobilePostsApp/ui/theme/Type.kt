@@ -1,4 +1,4 @@
-package com.example.students.ui.theme
+package com.colman.mobilePostsApp.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

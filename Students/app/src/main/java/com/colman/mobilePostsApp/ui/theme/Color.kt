@@ -1,4 +1,4 @@
-package com.example.students.ui.theme
+package com.colman.mobilePostsApp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

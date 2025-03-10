@@ -1,14 +1,19 @@
-package com.example.students
+package com.colman.mobilePostsApp
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.FirebaseApp
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
+
 
     companion object {
         val students = mutableListOf(
@@ -21,6 +26,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        try {
+            FirebaseApp.initializeApp(this)
+            Log.d("FirebaseInit", "Firebase initialized successfully!")
+        } catch (e: Exception) {
+            Log.e("FirebaseInit", "Firebase initialization failed", e)
+        }
 
         supportActionBar?.apply {
             title = "Students App"

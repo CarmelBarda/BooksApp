@@ -1,4 +1,4 @@
-package com.example.students.ui.theme
+package com.colman.mobilePostsApp.ui.theme
 
 import android.app.Activity
 import android.os.Build

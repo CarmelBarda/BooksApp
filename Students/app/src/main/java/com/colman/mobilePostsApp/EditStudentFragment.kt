@@ -1,4 +1,4 @@
-package com.example.students
+package com.colman.mobilePostsApp
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog

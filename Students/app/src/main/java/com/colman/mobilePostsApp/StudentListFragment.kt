@@ -1,4 +1,4 @@
-package com.example.students
+package com.colman.mobilePostsApp
 
 import StudentAdapter
 import android.annotation.SuppressLint

@@ -2,14 +2,18 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id 'com.google.gms.google-services'
+
 }
 
+apply plugin: 'com.android.application'
+
 android {
-    namespace 'com.example.students'
+    namespace 'com.colman.mobilePostsApp'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.students"
+        applicationId "com.colman.mobilePostsApp"
         minSdk 21
         targetSdk 34
         versionCode 1
@@ -67,4 +71,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.recyclerview:recyclerview:1.3.1'
+    implementation platform('com.google.firebase:firebase-bom:32.2.3')
+    implementation 'com.google.firebase:firebase-auth-ktx'
 }
+
+apply plugin: 'com.google.gms.google-services'

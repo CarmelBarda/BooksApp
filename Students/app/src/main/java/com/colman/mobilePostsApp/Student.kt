@@ -1,4 +1,4 @@
-package com.example.students
+package com.colman.mobilePostsApp
 
 data class Student(
     var id: String,

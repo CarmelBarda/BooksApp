@@ -1,4 +1,4 @@
-package com.example.students
+package com.colman.mobilePostsApp
 
 import org.junit.Test
 
