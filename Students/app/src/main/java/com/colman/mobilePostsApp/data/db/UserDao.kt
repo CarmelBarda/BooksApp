@@ -15,12 +15,12 @@ interface UserDao {
     @Update
     suspend fun updateUser(user: User)
 
-    @Query("SELECT * FROM users_table WHERE id = :userId")
+    @Query("SELECT * FROM users WHERE id = :userId")
     fun getUserById(userId: Int): LiveData<User>
 
-    @Query("SELECT * FROM users_table WHERE email = :email")
+    @Query("SELECT * FROM users WHERE email = :email")
     fun getUserEmail(email: String): LiveData<User>
 
-    @Query("SELECT * FROM users_table")
+    @Query("SELECT * FROM users")
     fun getAllUsers(): LiveData<List<User>>
 }

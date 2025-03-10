@@ -2,11 +2,16 @@ package com.colman.mobilePostsApp.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.UUID
 
-@Entity(tableName = "users_table")
+@Entity(tableName = "users")
 data class User(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val name: String,
-    val email: String,
-    val profileImageUrl: String
-)
+    @PrimaryKey val id: String = UUID.randomUUID().toString(),
+    val name: String = "",
+    val email: String = "",
+    val profilePicture: ByteArray? = null,
+    val lastUpdated: Long = System.currentTimeMillis()
+) {
+    // ✅ No-argument constructor required for Firestore
+    constructor() : this("", "", "", null, 0L)
+}
