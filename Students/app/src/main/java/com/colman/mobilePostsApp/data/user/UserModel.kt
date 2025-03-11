@@ -19,12 +19,6 @@ class UserModel private constructor() {
         val instance: UserModel = UserModel()
     }
 
-
-    fun getAllUsers(): LiveData<MutableList<User>> {
-        refreshAllUsers()
-        return users ?: database.userDao().getAll()
-    }
-
     fun getCurrentUser(): LiveData<User> {
         return database.userDao().getUserById(Firebase.auth.currentUser?.uid!!)
     }

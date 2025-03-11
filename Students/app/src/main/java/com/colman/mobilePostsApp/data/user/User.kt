@@ -11,8 +11,7 @@ import com.google.firebase.firestore.FieldValue
 class User(
     @PrimaryKey
     val id: String,
-    val firstName: String,
-    val lastName: String,
+    val name: String,
     var profileImage: String? = null,
     var lastUpdated: Long? = null,
 ) {
@@ -31,16 +30,14 @@ class User(
             }
 
         const val ID_KEY = "id"
-        const val FIRST_NAME_KEY = "firstName"
-        const val LAST_NAME_KEY = "lastName"
+        const val NAME_KEY = "name"
         const val LAST_UPDATED_KEY = "lastUpdated"
         const val USER_LAST_UPDATED = "user_last_updated"
 
         fun fromJSON(json: Map<String, Any>): User {
             val id = json[ID_KEY] as? String ?: ""
-            val firstName = json[FIRST_NAME_KEY] as? String ?: ""
-            val lastName = json[LAST_NAME_KEY] as? String ?: ""
-            val user = User(id, firstName, lastName)
+            val name = json[NAME_KEY] as? String ?: ""
+            val user = User(id, name)
 
             val lastUpdated: Timestamp? = json[LAST_UPDATED_KEY] as? Timestamp
             lastUpdated?.let {
@@ -54,8 +51,7 @@ class User(
         get() {
             return hashMapOf(
                 ID_KEY to id,
-                FIRST_NAME_KEY to firstName,
-                LAST_NAME_KEY to lastName,
+                NAME_KEY to name,
                 LAST_UPDATED_KEY to FieldValue.serverTimestamp(),
             )
         }
@@ -63,8 +59,7 @@ class User(
     val updateJson: Map<String, Any>
         get() {
             return hashMapOf(
-                FIRST_NAME_KEY to firstName,
-                LAST_NAME_KEY to lastName,
+                NAME_KEY to name,
                 LAST_UPDATED_KEY to FieldValue.serverTimestamp(),
             )
         }
