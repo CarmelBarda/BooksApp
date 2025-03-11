@@ -1,4 +1,4 @@
-package com.colman.mobilePostsApp
+package com.colman.mobilePostsApp.modules
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -11,6 +11,8 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.colman.mobilePostsApp.MainActivity
+import com.colman.mobilePostsApp.R
 import java.util.Calendar
 
 class AddStudentFragment : Fragment() {
@@ -71,7 +73,7 @@ class AddStudentFragment : Fragment() {
             val birthTime = birthTimeInput.text.toString()
 
             if (name.isNotBlank() && id.isNotBlank()) {
-                MainActivity.students.add(
+                MainActivity.Companion.students.add(
                     Student(
                         id, name, false, R.drawable.ic_student_placeholder,
                         phone, address, birthDate, birthTime

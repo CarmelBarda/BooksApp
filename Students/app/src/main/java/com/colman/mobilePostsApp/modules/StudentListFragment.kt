@@ -1,4 +1,4 @@
-package com.colman.mobilePostsApp
+package com.colman.mobilePostsApp.modules
 
 import StudentAdapter
 import android.annotation.SuppressLint
@@ -13,6 +13,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.colman.mobilePostsApp.MainActivity
+import com.colman.mobilePostsApp.R
 
 
 class StudentListFragment : Fragment(R.layout.fragment_student_list) {
@@ -26,7 +28,7 @@ class StudentListFragment : Fragment(R.layout.fragment_student_list) {
         recyclerView = view.findViewById(R.id.recyclerViewStudents)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        adapter = StudentAdapter(MainActivity.students) { student ->
+        adapter = StudentAdapter(MainActivity.Companion.students) { student ->
             val bundle = Bundle().apply {
                 putString("studentId", student.id)
             }

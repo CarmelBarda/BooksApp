@@ -1,4 +1,4 @@
-package com.colman.mobilePostsApp
+package com.colman.mobilePostsApp.modules
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -11,6 +11,8 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.colman.mobilePostsApp.MainActivity
+import com.colman.mobilePostsApp.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -35,7 +37,7 @@ class EditStudentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val student = MainActivity.students.find { it.id == studentId } ?: return
+        val student = MainActivity.Companion.students.find { it.id == studentId } ?: return
 
         val nameInput = view.findViewById<EditText>(R.id.nameInput)
         val idInput = view.findViewById<EditText>(R.id.idInput)
@@ -113,7 +115,7 @@ class EditStudentFragment : Fragment() {
         }
 
         deleteButton.setOnClickListener {
-            MainActivity.students.remove(student)
+            MainActivity.Companion.students.remove(student)
 
             findNavController().navigateUp()
         }

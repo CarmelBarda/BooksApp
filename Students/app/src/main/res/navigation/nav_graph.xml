@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.colman.mobilePostsApp.LoginFragment"
+        android:name="com.colman.mobilePostsApp.modules.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.colman.mobilePostsApp.RegisterFragment"
+        android:name="com.colman.mobilePostsApp.modules.RegisterFragment"
         android:label="Register">
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
@@ -33,7 +33,7 @@
 
     <fragment
         android:id="@+id/studentListFragment"
-        android:name="com.colman.mobilePostsApp.StudentListFragment"
+        android:name="com.colman.mobilePostsApp.modules.StudentListFragment"
         tools:layout="@layout/fragment_student_list"
         android:label="Student List"
         app:destination="@id/studentListFragment">
@@ -58,7 +58,7 @@
 
     <fragment
         android:id="@+id/studentDetailsFragment"
-        android:name="com.colman.mobilePostsApp.StudentDetailsFragment"
+        android:name="com.colman.mobilePostsApp.modules.StudentDetailsFragment"
         android:label="Student Details"
         app:destination="@id/studentDetailsFragment">
         <action
@@ -72,7 +72,7 @@
 
     <fragment
         android:id="@+id/addStudentFragment"
-        android:name="com.colman.mobilePostsApp.AddStudentFragment"
+        android:name="com.colman.mobilePostsApp.modules.AddStudentFragment"
         android:label="Add Student"
         app:destination="@id/addStudentFragment" />
 
@@ -81,7 +81,7 @@
 
     <fragment
         android:id="@+id/editStudentFragment"
-        android:name="com.colman.mobilePostsApp.EditStudentFragment"
+        android:name="com.colman.mobilePostsApp.modules.EditStudentFragment"
         android:label="Edit Student"
         app:destination="@id/editStudentFragment" />
 

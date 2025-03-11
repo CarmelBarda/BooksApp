@@ -1,4 +1,4 @@
-package com.colman.mobilePostsApp
+package com.colman.mobilePostsApp.modules
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +14,8 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
+import com.colman.mobilePostsApp.MainActivity
+import com.colman.mobilePostsApp.R
 
 class StudentDetailsFragment : Fragment() {
 
@@ -35,7 +37,7 @@ class StudentDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val student = MainActivity.students.find { it.id == studentId } ?: return
+        val student = MainActivity.Companion.students.find { it.id == studentId } ?: return
 
         val studentImage = view.findViewById<ImageView>(R.id.studentImage)
         val studentName = view.findViewById<TextView>(R.id.studentName)
@@ -84,7 +86,7 @@ class StudentDetailsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        val student = MainActivity.students.find { it.id == studentId } ?: return
+        val student = MainActivity.Companion.students.find { it.id == studentId } ?: return
 
         view?.apply {
             findViewById<TextView>(R.id.studentName).text = "Name: ${student.name}"
