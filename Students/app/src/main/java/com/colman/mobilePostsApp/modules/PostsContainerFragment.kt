@@ -22,7 +22,7 @@ class PostsContainerFragment : Fragment(R.layout.fragment_posts_container) {
         recyclerView = view.findViewById(R.id.recyclerViewPosts)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        adapter = BookPostAdapter(MainActivity.Companion.bookPosts)
+        adapter = BookPostAdapter(MainActivity.bookPosts)
         recyclerView.adapter = adapter
     }
 

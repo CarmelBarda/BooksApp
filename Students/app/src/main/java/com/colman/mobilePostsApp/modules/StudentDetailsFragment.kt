@@ -37,7 +37,7 @@ class StudentDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val student = MainActivity.Companion.students.find { it.id == studentId } ?: return
+        val student = MainActivity.students.find { it.id == studentId } ?: return
 
         val studentImage = view.findViewById<ImageView>(R.id.studentImage)
         val studentName = view.findViewById<TextView>(R.id.studentName)
@@ -86,7 +86,7 @@ class StudentDetailsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        val student = MainActivity.Companion.students.find { it.id == studentId } ?: return
+        val student = MainActivity.students.find { it.id == studentId } ?: return
 
         view?.apply {
             findViewById<TextView>(R.id.studentName).text = "Name: ${student.name}"

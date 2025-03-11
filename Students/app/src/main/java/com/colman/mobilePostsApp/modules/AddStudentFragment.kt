@@ -73,7 +73,7 @@ class AddStudentFragment : Fragment() {
             val birthTime = birthTimeInput.text.toString()
 
             if (name.isNotBlank() && id.isNotBlank()) {
-                MainActivity.Companion.students.add(
+                MainActivity.students.add(
                     Student(
                         id, name, false, R.drawable.ic_student_placeholder,
                         phone, address, birthDate, birthTime
