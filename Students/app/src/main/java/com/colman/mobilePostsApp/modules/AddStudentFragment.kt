@@ -1,4 +1,4 @@
-package com.colman.mobilePostsApp
+package com.colman.mobilePostsApp.modules
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -11,6 +11,8 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.colman.mobilePostsApp.MainActivity
+import com.colman.mobilePostsApp.R
 import java.util.Calendar
 
 class AddStudentFragment : Fragment() {

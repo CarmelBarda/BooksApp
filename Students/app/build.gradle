@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id 'com.google.gms.google-services'
+    id 'kotlin-kapt'
 
 }
 
@@ -73,6 +74,21 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.3.1'
     implementation platform('com.google.firebase:firebase-bom:32.2.3')
     implementation 'com.google.firebase:firebase-auth-ktx'
+
+    implementation 'androidx.room:room-runtime:2.6.1'
+    kapt 'androidx.room:room-compiler:2.6.1'
+
+    implementation 'androidx.room:room-ktx:2.6.1'
+
+    implementation platform('com.google.firebase:firebase-bom:32.2.3')  // Use latest BOM version
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-storage")
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -1,4 +1,4 @@
-package com.colman.mobilePostsApp
+package com.colman.mobilePostsApp.modules
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +14,8 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
+import com.colman.mobilePostsApp.MainActivity
+import com.colman.mobilePostsApp.R
 
 class StudentDetailsFragment : Fragment() {
 

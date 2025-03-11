@@ -6,8 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.google.firebase.auth.FirebaseAuth
+import com.colman.mobilePostsApp.modules.BookPost
 import com.google.firebase.FirebaseApp
+import com.colman.mobilePostsApp.modules.Student
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
@@ -33,9 +34,36 @@ class MainActivity : AppCompatActivity() {
         )
 
         val students = mutableListOf(
-            Student("1", "Alice", false, R.drawable.ic_student_placeholder, "123-456-7890", "123 Main St", "20/01/2002", "19:51"),
-            Student("2", "Bob", true, R.drawable.ic_student_placeholder, "987-654-3210", "456 Elm St", "08/05/2000", "08:14"),
-            Student("3", "Charlie", false, R.drawable.ic_student_placeholder, "555-555-5555", "789 Oak St", "13/11/2001", "14:48")
+            Student(
+                "1",
+                "Alice",
+                false,
+                R.drawable.ic_student_placeholder,
+                "123-456-7890",
+                "123 Main St",
+                "20/01/2002",
+                "19:51"
+            ),
+            Student(
+                "2",
+                "Bob",
+                true,
+                R.drawable.ic_student_placeholder,
+                "987-654-3210",
+                "456 Elm St",
+                "08/05/2000",
+                "08:14"
+            ),
+            Student(
+                "3",
+                "Charlie",
+                false,
+                R.drawable.ic_student_placeholder,
+                "555-555-5555",
+                "789 Oak St",
+                "13/11/2001",
+                "14:48"
+            )
         )
     }
 
