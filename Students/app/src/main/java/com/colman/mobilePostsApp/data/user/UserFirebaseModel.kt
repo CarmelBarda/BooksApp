@@ -55,13 +55,6 @@ class UserFirebaseModel {
     }
 
 
-//    fun addUserImage(userId: String, selectedImageUri: Uri, callback: () -> Unit) {
-//        val imageRef = storage.reference.child("images/$USERS_COLLECTION_PATH/${userId}")
-//        imageRef.putFile(selectedImageUri).addOnSuccessListener {
-//            callback()
-//        }
-//    }
-
     fun addUserImage(userId: String, selectedImageUri: Uri, callback: () -> Unit) {
         val user = FirebaseAuth.getInstance().currentUser
         if (user == null) {
@@ -70,7 +63,7 @@ class UserFirebaseModel {
         }
 
         val profileUpdates = UserProfileChangeRequest.Builder()
-            .setPhotoUri(selectedImageUri) // Use local URI instead of Firebase Storage
+            .setPhotoUri(selectedImageUri)
             .build()
 
         user.updateProfile(profileUpdates)

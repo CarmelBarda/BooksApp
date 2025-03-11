@@ -16,5 +16,5 @@ interface UserDAO {
     fun insert(user: User)
 
     @Delete
-    fun delete(review: User)
+    fun delete(user: User)
 }
