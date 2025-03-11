@@ -4,6 +4,8 @@ import android.net.Uri
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.memoryCacheSettings
@@ -53,11 +55,32 @@ class UserFirebaseModel {
     }
 
 
+//    fun addUserImage(userId: String, selectedImageUri: Uri, callback: () -> Unit) {
+//        val imageRef = storage.reference.child("images/$USERS_COLLECTION_PATH/${userId}")
+//        imageRef.putFile(selectedImageUri).addOnSuccessListener {
+//            callback()
+//        }
+//    }
+
     fun addUserImage(userId: String, selectedImageUri: Uri, callback: () -> Unit) {
-        val imageRef = storage.reference.child("images/$USERS_COLLECTION_PATH/${userId}")
-        imageRef.putFile(selectedImageUri).addOnSuccessListener {
-            callback()
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) {
+            Log.e("Firebase", "User not logged in.")
+            return
         }
+
+        val profileUpdates = UserProfileChangeRequest.Builder()
+            .setPhotoUri(selectedImageUri) // Use local URI instead of Firebase Storage
+            .build()
+
+        user.updateProfile(profileUpdates)
+            .addOnSuccessListener {
+                Log.d("Firebase", "Profile image updated successfully")
+                callback()
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firebase", "Failed to update profile image: ${e.message}")
+            }
     }
 
     fun updateUser(user: User?, callback: () -> Unit) {
