@@ -28,7 +28,7 @@
         android:id="@+id/emailInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username"
+        android:hint="Email"
         android:padding="12dp"
         android:background="@drawable/rounded_edit_text"/>
 
