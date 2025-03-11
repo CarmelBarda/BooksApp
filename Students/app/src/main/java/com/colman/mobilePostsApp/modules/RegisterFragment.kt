@@ -70,8 +70,6 @@ class RegisterFragment : Fragment() {
             val password = passwordInput.text.toString().trim()
 
             if (email.isNotEmpty() && name.isNotEmpty() && password.length >= 6 && selectedImageURI != null) {
-//                Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
-//                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                 auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
                     val authenticatedUser = it.user!!
 
