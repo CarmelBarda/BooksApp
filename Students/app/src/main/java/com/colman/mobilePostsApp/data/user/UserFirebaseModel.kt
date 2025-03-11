@@ -33,12 +33,12 @@ class UserFirebaseModel {
             .get().addOnCompleteListener {
                 when (it.isSuccessful) {
                     true -> {
-                        val reviews: MutableList<User> = mutableListOf()
+                        val users: MutableList<User> = mutableListOf()
                         for (json in it.result) {
                             val user = User.fromJSON(json.data)
-                            reviews.add(user)
+                            users.add(user)
                         }
-                        callback(reviews)
+                        callback(users)
                     }
 
                     false -> callback(listOf())
