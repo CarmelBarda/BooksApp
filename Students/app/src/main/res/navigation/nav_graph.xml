@@ -17,9 +17,6 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
-        <action
-            android:id="@+id/action_currentFragment_to_editFragment"
-            app:destination="@id/editProfileFragment" />
     </fragment>
 
     <fragment
