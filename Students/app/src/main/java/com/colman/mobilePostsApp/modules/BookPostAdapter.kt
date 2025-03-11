@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.colman.mobilePostsApp.modules.BookPost
+import com.colman.mobilePostsApp.data.BookPost
 import com.colman.mobilePostsApp.R
 
 class BookPostAdapter(
