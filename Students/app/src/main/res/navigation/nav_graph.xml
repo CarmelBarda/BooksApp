@@ -89,7 +89,7 @@
 
     <fragment
         android:id="@+id/postsContainerFragment"
-        android:name="com.colman.mobilePostsApp.PostsContainerFragment"
+        android:name="com.colman.mobilePostsApp.modules.PostsContainerFragment"
         tools:layout="@layout/fragment_posts_container"
         android:label="Posts Container"
         app:destination="@id/postsContainerFragment">

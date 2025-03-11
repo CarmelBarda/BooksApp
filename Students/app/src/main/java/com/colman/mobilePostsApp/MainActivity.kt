@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.colman.mobilePostsApp.modules.BookPost
 import com.google.firebase.FirebaseApp
 import com.colman.mobilePostsApp.modules.Student
 
