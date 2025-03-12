@@ -6,6 +6,8 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
 
+    <!-- Login Fragment -->
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.colman.mobilePostsApp.modules.LoginFragment"
@@ -19,6 +21,8 @@
             app:destination="@id/registerFragment" />
     </fragment>
 
+    <!-- Register Fragment -->
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.colman.mobilePostsApp.modules.RegisterFragment"
@@ -27,6 +31,31 @@
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+
+    <!-- Posts Container Fragment -->
+
+    <fragment
+        android:id="@+id/postsContainerFragment"
+        android:name="com.colman.mobilePostsApp.modules.PostsContainerFragment"
+        tools:layout="@layout/fragment_posts_container"
+        android:label="All book recommendations"
+        app:destination="@id/postsContainerFragment">
+
+        <action
+            android:id="@+id/action_postsContainerFragment_to_createPostFragment"
+            app:destination="@id/createPostFragment" />
+
+    </fragment>
+
+    <!-- Create Post Fragment -->
+
+    <fragment
+        android:id="@+id/createPostFragment"
+        android:name="com.colman.mobilePostsApp.modules.CreatePostFragment"
+        android:label="Create Post"
+        app:destination="@id/createPostFragment" />
+
+
 
 
     <!-- Student List Fragment -->
@@ -84,17 +113,6 @@
         android:name="com.colman.mobilePostsApp.modules.EditStudentFragment"
         android:label="Edit Student"
         app:destination="@id/editStudentFragment" />
-
-    <!-- Posts Container Fragment -->
-
-    <fragment
-        android:id="@+id/postsContainerFragment"
-        android:name="com.colman.mobilePostsApp.modules.PostsContainerFragment"
-        tools:layout="@layout/fragment_posts_container"
-        android:label="Posts Container"
-        app:destination="@id/postsContainerFragment">
-
-    </fragment>
 
 </navigation>
 
