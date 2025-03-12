@@ -63,7 +63,7 @@ class UserFirebaseModel {
         }
 
         val profileUpdates = UserProfileChangeRequest.Builder()
-            .setPhotoUri(selectedImageUri) // Use local URI instead of Firebase Storage
+            .setPhotoUri(selectedImageUri)
             .build()
 
         user.updateProfile(profileUpdates)

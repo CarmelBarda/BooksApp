@@ -57,6 +57,19 @@
 
 
 
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.colman.mobilePostsApp.modules.ProfileFragment"
+        android:label="Register">
+    </fragment>
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.colman.mobilePostsApp.modules.EditProfileFragment"
+        android:label="Edit Profile">
+    </fragment>
+
+
 
     <!-- Student List Fragment -->
 
