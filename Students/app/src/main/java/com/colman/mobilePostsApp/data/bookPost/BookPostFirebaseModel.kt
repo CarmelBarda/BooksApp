@@ -50,22 +50,23 @@ class BookPostFirebaseModel {
     fun addBookImage(
         imageBitmap: Bitmap,
         imageName: String,
-        listener: BookPostModel.SaveImageListener,
-        directory: String
+        listener: BookPostModel.SaveImageListener
     ) {
-        val storageRef: StorageReference = storage.reference
-        val imgRef: StorageReference = storageRef.child("$directory/$imageName")
+        val storageRef = storage.reference.child("books/$imageName")
         val baos = ByteArrayOutputStream()
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
-        val uploadTask: UploadTask = imgRef.putBytes(data)
-        uploadTask.addOnFailureListener { listener.onComplete(null.toString()) }
+
+        storageRef.putBytes(data)
             .addOnSuccessListener {
-                imgRef.downloadUrl
-                    .addOnSuccessListener { uri -> listener.onComplete(uri.toString()) }
+                storageRef.downloadUrl.addOnSuccessListener { uri ->
+                    listener.onComplete(uri.toString()) // Call listener with image URL
+                }
+            }
+            .addOnFailureListener {
+                listener.onComplete("") // Call listener with empty string on failure
             }
     }
-
 
     fun updateBookPost(bookPost: BookPost?, callback: () -> Unit) {
         db.collection(POSTS_COLLECTION_PATH)

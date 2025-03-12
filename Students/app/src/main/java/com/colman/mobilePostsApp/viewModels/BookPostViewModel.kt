@@ -15,7 +15,7 @@ class BookPostViewModel : ViewModel() {
         bookPostModel.refreshAllPosts() // Fetch fresh data
     }
 
-    fun addPost(bookPost: BookPost) {
-        bookPostModel.addPost(bookPost) { refreshPosts() }
-    }
+//    fun addPost(bookPost: BookPost) {
+//        bookPostModel.addPost(bookPost) { refreshPosts() }
+//    }
 }
