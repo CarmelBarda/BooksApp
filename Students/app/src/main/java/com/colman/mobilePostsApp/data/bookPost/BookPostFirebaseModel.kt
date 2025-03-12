@@ -28,9 +28,8 @@ class BookPostFirebaseModel {
         db.firestoreSettings = settings
     }
 
-    fun getAllBookPosts(since: Long, callback: (List<BookPost>) -> Unit) {
+    fun getAllBookPosts(callback: (List<BookPost>) -> Unit) {
         db.collection(POSTS_COLLECTION_PATH)
-            .whereGreaterThanOrEqualTo(BookPost.LAST_UPDATED_KEY, Timestamp(since, 0))
             .get().addOnCompleteListener {
                 when (it.isSuccessful) {
                     true -> {

@@ -32,7 +32,7 @@ class BookPostModel private constructor() {
     fun refreshAllPosts() {
         val lastUpdated: Long = BookPost.lastUpdated
 
-        firebaseModel.getAllBookPosts(lastUpdated) { list ->
+        firebaseModel.getAllBookPosts() { list ->
             if (list.isNotEmpty()) {
                 postsExecutor.execute {
                     database.bookPostDao().insertAll(list)
