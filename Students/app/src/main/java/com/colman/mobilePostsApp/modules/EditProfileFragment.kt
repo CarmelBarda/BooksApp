@@ -5,25 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.colman.mobilePostsApp.R
+import com.colman.mobilePostsApp.databinding.FragmentEditProfileBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 
 class EditProfileFragment : Fragment() {
 
-    private lateinit var profileImageView: ImageView
-    private lateinit var nameEditText: EditText
-    private lateinit var saveButton: Button
-    private lateinit var changePhotoButton: Button
+    private var _binding: FragmentEditProfileBinding? = null
+    private val binding get() = _binding!!
 
     private var selectedImageUri: Uri? = null
     private lateinit var auth: FirebaseAuth
@@ -31,26 +26,21 @@ class EditProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_edit_profile, container, false)
+        _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        profileImageView = view.findViewById(R.id.profileImageView)
-        nameEditText = view.findViewById(R.id.nameEditText)
-        saveButton = view.findViewById(R.id.saveButton)
-        changePhotoButton = view.findViewById(R.id.changePhotoButton)
-
         auth = FirebaseAuth.getInstance()
-
         loadUserData()
 
-        changePhotoButton.setOnClickListener {
+        binding.changePhotoButton.setOnClickListener {
             openGallery()
         }
 
-        saveButton.setOnClickListener {
+        binding.saveButton.setOnClickListener {
             saveProfile()
         }
     }
@@ -58,13 +48,13 @@ class EditProfileFragment : Fragment() {
     private fun loadUserData() {
         val user = auth.currentUser
         if (user != null) {
-            nameEditText.setText(user.displayName)
+            binding.nameEditText.setText(user.displayName)
 
             if (user.photoUrl != null) {
                 Glide.with(this)
                     .load(user.photoUrl)
                     .placeholder(R.drawable.profile_pic_placeholder)
-                    .into(profileImageView)
+                    .into(binding.profileImageView)
             }
         }
     }
@@ -73,7 +63,7 @@ class EditProfileFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 selectedImageUri = it
-                profileImageView.setImageURI(it)
+                binding.profileImageView.setImageURI(it)
             }
         }
 
@@ -82,7 +72,7 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun saveProfile() {
-        val newName = nameEditText.text.toString().trim()
+        val newName = binding.nameEditText.text.toString().trim()
         val user = auth.currentUser
 
         if (user != null) {
@@ -103,5 +93,10 @@ class EditProfileFragment : Fragment() {
                     Toast.makeText(requireContext(), "Failed to update profile", Toast.LENGTH_SHORT).show()
                 }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
