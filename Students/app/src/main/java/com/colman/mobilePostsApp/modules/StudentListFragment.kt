@@ -28,7 +28,7 @@ class StudentListFragment : Fragment(R.layout.fragment_student_list) {
         recyclerView = view.findViewById(R.id.recyclerViewStudents)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        adapter = StudentAdapter(MainActivity.Companion.students) { student ->
+        adapter = StudentAdapter(MainActivity.students) { student ->
             val bundle = Bundle().apply {
                 putString("studentId", student.id)
             }

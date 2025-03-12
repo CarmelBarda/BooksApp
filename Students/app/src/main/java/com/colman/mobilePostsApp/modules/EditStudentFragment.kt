@@ -37,7 +37,7 @@ class EditStudentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val student = MainActivity.Companion.students.find { it.id == studentId } ?: return
+        val student = MainActivity.students.find { it.id == studentId } ?: return
 
         val nameInput = view.findViewById<EditText>(R.id.nameInput)
         val idInput = view.findViewById<EditText>(R.id.idInput)
@@ -115,7 +115,7 @@ class EditStudentFragment : Fragment() {
         }
 
         deleteButton.setOnClickListener {
-            MainActivity.Companion.students.remove(student)
+            MainActivity.students.remove(student)
 
             findNavController().navigateUp()
         }
