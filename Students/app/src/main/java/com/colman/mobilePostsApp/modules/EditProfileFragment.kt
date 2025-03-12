@@ -55,13 +55,11 @@ class EditProfileFragment : Fragment() {
         }
     }
 
-    // 🔹 Load User Data from Firebase Authentication
     private fun loadUserData() {
         val user = auth.currentUser
         if (user != null) {
             nameEditText.setText(user.displayName)
 
-            // ✅ Load image from Firebase Authentication profile URL
             if (user.photoUrl != null) {
                 Glide.with(this)
                     .load(user.photoUrl)
@@ -71,12 +69,11 @@ class EditProfileFragment : Fragment() {
         }
     }
 
-    // 🔹 Image Picker using ActivityResultContracts.GetContent()
     private val imagePickerLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 selectedImageUri = it
-                profileImageView.setImageURI(it)  // ✅ Display the selected image locally
+                profileImageView.setImageURI(it)
             }
         }
 
@@ -84,7 +81,6 @@ class EditProfileFragment : Fragment() {
         imagePickerLauncher.launch("image/*")
     }
 
-    // 🔹 Save Profile (No Firebase Storage, only Firebase Authentication)
     private fun saveProfile() {
         val newName = nameEditText.text.toString().trim()
         val user = auth.currentUser
@@ -93,7 +89,6 @@ class EditProfileFragment : Fragment() {
             val profileUpdatesBuilder = UserProfileChangeRequest.Builder().setDisplayName(newName)
 
             if (selectedImageUri != null) {
-                // ✅ No Firebase Storage: Just update Authentication's profile URL with the local URI
                 profileUpdatesBuilder.setPhotoUri(selectedImageUri)
             }
 
