@@ -1,4 +1,4 @@
-package com.colman.mobilePostsApp.modules
+package com.colman.mobilePostsApp.modules.profile
 
 import android.net.Uri
 import android.os.Bundle
@@ -12,11 +12,11 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.colman.mobilePostsApp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.squareup.picasso.Picasso
 
 class EditProfileFragment : Fragment() {
 
@@ -61,7 +61,7 @@ class EditProfileFragment : Fragment() {
             nameEditText.setText(user.displayName)
 
             if (user.photoUrl != null) {
-                Glide.with(this)
+                Picasso.get()
                     .load(user.photoUrl)
                     .placeholder(R.drawable.profile_pic_placeholder)
                     .into(profileImageView)

@@ -33,13 +33,13 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.colman.mobilePostsApp.modules.ProfileFragment"
+        android:name="com.colman.mobilePostsApp.modules.profile.ProfileFragment"
         android:label="Register">
     </fragment>
 
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.colman.mobilePostsApp.modules.EditProfileFragment"
+        android:name="com.colman.mobilePostsApp.modules.profile.EditProfileFragment"
         android:label="Edit Profile">
     </fragment>
 
