@@ -28,7 +28,7 @@
         android:id="@+id/emailInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="Enter Email"
         android:padding="12dp"
         android:background="@drawable/rounded_edit_text"/>
 
@@ -36,20 +36,21 @@
         android:id="@+id/passwordInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="Enter Password"
         android:inputType="textPassword"
         android:padding="12dp"
         android:background="@drawable/rounded_edit_text"
         android:layout_marginTop="8dp"/>
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/loginButton"
-        style="@style/CustomButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button"
         android:padding="10dp"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginBottom="16dp"/>
 
     <TextView
         android:id="@+id/registerLink"
