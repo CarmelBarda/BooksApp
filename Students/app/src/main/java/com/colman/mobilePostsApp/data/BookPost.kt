@@ -1,4 +1,4 @@
-package com.colman.mobilePostsApp.modules
+package com.colman.mobilePostsApp.data
 
 data class BookPost(
     val userName: String,
