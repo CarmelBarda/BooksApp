@@ -10,15 +10,21 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.colman.mobilePostsApp.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.squareup.picasso.Picasso
+import com.colman.mobilePostsApp.databinding.FragmentEditProfileBinding
+
 
 class EditProfileFragment : Fragment() {
+
+    private var _binding: FragmentEditProfileBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var profileImageView: ImageView
     private lateinit var nameEditText: EditText
@@ -27,24 +33,29 @@ class EditProfileFragment : Fragment() {
 
     private var selectedImageUri: Uri? = null
     private lateinit var auth: FirebaseAuth
+    private lateinit var viewModel: EditProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_edit_profile, container, false)
+        _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = ViewModelProvider(this)[EditProfileViewModel::class.java]
+
         profileImageView = view.findViewById(R.id.profileImageView)
         nameEditText = view.findViewById(R.id.nameEditText)
-        saveButton = view.findViewById(R.id.saveButton)
-        changePhotoButton = view.findViewById(R.id.changePhotoButton)
+        saveButton = binding.saveButton
+        changePhotoButton = binding.changePhotoButton
 
         auth = FirebaseAuth.getInstance()
 
         loadUserData()
+        initFields()
 
         changePhotoButton.setOnClickListener {
             openGallery()
@@ -52,6 +63,10 @@ class EditProfileFragment : Fragment() {
 
         saveButton.setOnClickListener {
             saveProfile()
+            viewModel.updateUser {
+//                findNavController().navigate(R.id.action_editMyProfile_to_profile)
+//                binding.updateButton.isClickable = true
+            }
         }
     }
 
@@ -66,6 +81,32 @@ class EditProfileFragment : Fragment() {
                     .placeholder(R.drawable.profile_pic_placeholder)
                     .into(profileImageView)
             }
+        } else {
+                Toast.makeText(requireContext(), "Error: No user logged in", Toast.LENGTH_SHORT).show()
+                return
+            }
+    }
+
+    private fun initFields() {
+        viewModel.loadUser()
+
+        binding.nameEditText.addTextChangedListener {
+            viewModel.name = it.toString().trim()
+        }
+
+        viewModel.selectedImageURI.observe(viewLifecycleOwner) { uri ->
+            Picasso.get().load(uri).into(binding.profileImageView)
+        }
+
+        viewModel.user.observe(viewLifecycleOwner) { user ->
+            binding.nameEditText.setText(user.name)
+        }
+
+
+
+        viewModel.nameError.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty())
+                binding.nameEditText.error = it
         }
     }
 
@@ -74,6 +115,9 @@ class EditProfileFragment : Fragment() {
             uri?.let {
                 selectedImageUri = it
                 profileImageView.setImageURI(it)
+
+                viewModel.selectedImageURI.postValue(uri)
+                viewModel.imageChanged = true
             }
         }
 

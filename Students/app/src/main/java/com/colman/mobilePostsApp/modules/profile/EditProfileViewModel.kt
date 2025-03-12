@@ -20,6 +20,8 @@ class EditProfileViewModel : ViewModel() {
     var nameError = MutableLiveData("")
 
     fun loadUser() {
+        user = UserModel.instance.getCurrentUser()
+
         UserModel.instance.getUserImage(userId) {
             selectedImageURI.postValue(it)
         }
@@ -55,7 +57,7 @@ class EditProfileViewModel : ViewModel() {
 
     private fun validateUserUpdate(
     ): Boolean {
-        if (name!!.isEmpty()) {
+        if (name.isNullOrEmpty()) {
             nameError.postValue("Name cannot be empty")
             return false
         }
