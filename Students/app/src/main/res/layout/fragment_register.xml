@@ -1,51 +1,115 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="#F4EDE4">
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <ImageView
         android:id="@+id/profileImageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="24dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/profile_pic_placeholder"/>
+        android:src="@drawable/profile_pic_placeholder"
+        android:layout_marginBottom="16dp"/>
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btnPickImage"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Change Photo"
-        android:textColor="#1E88E5"/>
+        android:text="Add Photo"
+        android:background="@drawable/rounded_button"
+        android:padding="10dp"
+        android:layout_marginBottom="16dp"/>
 
-    <EditText
-        android:id="@+id/emailInput"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
-        android:inputType="textEmailAddress"/>
+        android:orientation="vertical"
+        android:layout_marginBottom="12dp">
 
-    <EditText
-        android:id="@+id/nameInput"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/button_color"
+            android:layout_marginBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/nameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Name"
+            android:textSize="16sp"
+            android:gravity="start"
+            android:padding="10dp"
+            android:background="@drawable/rounded_edit_text"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"
-        android:inputType="textPersonName"/>
+        android:orientation="vertical"
+        android:layout_marginBottom="12dp">
 
-    <EditText
-        android:id="@+id/passwordInput"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/button_color"
+            android:layout_marginBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/emailInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Email"
+            android:textSize="16sp"
+            android:gravity="start"
+            android:padding="10dp"
+            android:background="@drawable/rounded_edit_text"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"/>
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Password:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/button_color"
+            android:layout_marginBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/passwordInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Password"
+            android:inputType="textPassword"
+            android:textSize="16sp"
+            android:gravity="start"
+            android:padding="10dp"
+            android:background="@drawable/rounded_edit_text"/>
+    </LinearLayout>
 
     <Button
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register"/>
-
+        android:text="Register"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"/>
 </LinearLayout>
