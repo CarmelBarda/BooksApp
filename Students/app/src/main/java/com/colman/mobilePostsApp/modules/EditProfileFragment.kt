@@ -123,14 +123,12 @@ class EditProfileFragment : Fragment() {
             .addOnSuccessListener {
                 updateUserInFirestore(user.uid, newName, imageUrl)
 
-                // ✅ Check if Fragment is still attached before navigating
                 if (isAdded) {
                     Toast.makeText(requireContext(), "Profile updated", Toast.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 }
             }
             .addOnFailureListener {
-                // ✅ Check if Fragment is still attached before showing Toast
                 if (isAdded) {
                     Toast.makeText(requireContext(), "Profile update failed", Toast.LENGTH_SHORT).show()
                 }
@@ -148,13 +146,11 @@ class EditProfileFragment : Fragment() {
             .document(userId)
             .update(userMap)
             .addOnSuccessListener {
-                // ✅ Check if Fragment is attached before using requireContext()
                 if (isAdded) {
                     Toast.makeText(requireContext(), "Firestore updated", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener {
-                // ✅ Check if Fragment is attached before using requireContext()
                 if (isAdded) {
                     Toast.makeText(requireContext(), "Failed to update Firestore", Toast.LENGTH_SHORT).show()
                 }
