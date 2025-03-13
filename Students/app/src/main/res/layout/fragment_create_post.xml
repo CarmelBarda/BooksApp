@@ -72,6 +72,23 @@
             android:backgroundTint="#8D6E63"
             android:layout_marginTop="8dp"/>
 
+        <TextView
+            android:id="@+id/ratingLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rate the book (0 - 10)"
+            android:textSize="16sp"
+            android:textColor="#5C4033"
+            android:layout_marginTop="8dp" />
+
+        <SeekBar
+            android:id="@+id/bookRatingSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="0"
+            android:layout_marginTop="4dp"/>
+
         <Button
             android:id="@+id/submitPostButton"
             android:layout_width="match_parent"
