@@ -3,29 +3,28 @@ package com.colman.mobilePostsApp.data.bookPost
 import android.graphics.Bitmap
 import android.util.Log
 import com.google.firebase.Firebase
-import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.firestore
-import com.google.firebase.firestore.firestoreSettings
-import com.google.firebase.firestore.memoryCacheSettings
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
-import com.google.firebase.storage.storage
 import java.io.ByteArrayOutputStream
 
 class BookPostFirebaseModel {
 
     private val db = Firebase.firestore
-    private val storage = Firebase.storage
+    private var storage: FirebaseStorage
 
     companion object {
         const val POSTS_COLLECTION_PATH = "posts"
     }
 
     init {
-        val settings = firestoreSettings {
-            setLocalCacheSettings(memoryCacheSettings { })
-        }
+        val settings: FirebaseFirestoreSettings = FirebaseFirestoreSettings.Builder()
+            .setPersistenceEnabled(true)
+            .build()
         db.firestoreSettings = settings
+        storage = FirebaseStorage.getInstance()
     }
 
     fun getAllBookPosts(callback: (List<BookPost>) -> Unit) {
@@ -49,21 +48,22 @@ class BookPostFirebaseModel {
     fun addBookImage(
         imageBitmap: Bitmap,
         imageName: String,
-        listener: BookPostModel.SaveImageListener
+        listener: BookPostModel.SaveImageListener,
     ) {
-        val storageRef = storage.reference.child("books/$imageName")
+        val storageRef: StorageReference = storage.reference
+        val imgRef: StorageReference = storageRef.child("books/$imageName")
         val baos = ByteArrayOutputStream()
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
-
-        storageRef.putBytes(data)
+        val uploadTask: UploadTask = imgRef.putBytes(data)
+        uploadTask.addOnFailureListener { exception ->
+            listener.onComplete(null.toString())
+            Log.e("FirebaseUpload", "Failed to get download URL", exception)
+        }
             .addOnSuccessListener {
-                storageRef.downloadUrl.addOnSuccessListener { uri ->
-                    listener.onComplete(uri.toString()) // Call listener with image URL
-                }
-            }
-            .addOnFailureListener {
-                listener.onComplete("") // Call listener with empty string on failure
+                imgRef.downloadUrl
+                    .addOnSuccessListener { uri ->
+                        listener.onComplete(uri.toString()) }
             }
     }
 

@@ -58,16 +58,10 @@ class BookPostModel private constructor() {
         firebaseModel.addBookImage(imageBitmap, imageName, listener)
     }
 
-    fun addPost(bookPost: BookPost, imageBitmap: Bitmap, callback: () -> Unit) {
-        saveBookImage(imageBitmap, UUID.randomUUID().toString() + ".jpg") { imageUrl ->
-            if (imageUrl.isNotEmpty()) {
-                bookPost.bookImage = imageUrl // Save URL in post object
-            }
-
-            firebaseModel.addPost(bookPost) {
-                refreshAllPosts()
-                callback()
-            }
+    fun addPost(bookPost: BookPost, callback: () -> Unit) {
+        firebaseModel.addPost(bookPost) {
+            refreshAllPosts()
+            callback()
         }
     }
 }
