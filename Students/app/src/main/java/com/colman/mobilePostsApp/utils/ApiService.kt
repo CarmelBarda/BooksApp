@@ -8,17 +8,16 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("search")
+    @GET("search.json")
     suspend fun getBooksByName(
-        @Query("q") query: String, // The partial book name
-        @Query("maxResults") maxResults: Int = 10,
-        @Query("printType") printType: String = "books"
+        @Query("title") query: String,  // Ensure "title" is the correct query parameter
+        @Query("limit") maxResults: Int = 10
     ): Response<BookResponse>
 
     companion object {
         fun create(): ApiService {
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://www.googleapis.com/books/v1/volumes/") // Example API: Google Books API
+                .baseUrl("https://openlibrary.org/")  // ✅ Open Library API
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             return retrofit.create(ApiService::class.java)
