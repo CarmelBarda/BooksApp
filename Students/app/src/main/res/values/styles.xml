@@ -5,4 +5,8 @@
         <item name="android:background">@android:drawable/editbox_background</item>
         <item name="android:layout_marginBottom">12dp</item>
     </style>
+
+    <style name="WhiteProgressBar" parent="android:Widget.ProgressBar.Small">
+        <item name="android:indeterminateTint">@android:color/white</item>
+    </style>
 </resources>
