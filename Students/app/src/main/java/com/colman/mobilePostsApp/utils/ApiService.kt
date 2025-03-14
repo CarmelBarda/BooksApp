@@ -10,14 +10,14 @@ import retrofit2.http.Query
 interface ApiService {
     @GET("search.json")
     suspend fun getBooksByName(
-        @Query("title") query: String,  // Ensure "title" is the correct query parameter
+        @Query("title") query: String,
         @Query("limit") maxResults: Int = 10
     ): Response<BookResponse>
 
     companion object {
         fun create(): ApiService {
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://openlibrary.org/")  // ✅ Open Library API
+                .baseUrl("https://openlibrary.org/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             return retrofit.create(ApiService::class.java)
