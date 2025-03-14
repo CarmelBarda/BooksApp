@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.colman.mobilePostsApp.data.AppLocalDatabase
+import java.util.UUID
 import java.util.concurrent.Executors
 
 class BookPostModel private constructor() {
@@ -38,7 +39,6 @@ class BookPostModel private constructor() {
                     database.bookPostDao().insertAll(list)
                     posts.postValue(list)
 
-                    // Update lastUpdated timestamp
                     val latestUpdateTime = list.maxOfOrNull { it.lastUpdated ?: 0 } ?: lastUpdated
                     BookPost.lastUpdated = latestUpdateTime
                 }
@@ -55,13 +55,13 @@ class BookPostModel private constructor() {
     }
 
     fun saveBookImage(imageBitmap: Bitmap, imageName: String, listener: SaveImageListener) {
-        firebaseModel.addBookImage(imageBitmap, imageName, listener, "books")
+        firebaseModel.addBookImage(imageBitmap, imageName, listener)
     }
 
     fun addPost(bookPost: BookPost, callback: () -> Unit) {
         firebaseModel.addPost(bookPost) {
-                refreshAllPosts()
-                callback()
+            refreshAllPosts()
+            callback()
         }
     }
 }

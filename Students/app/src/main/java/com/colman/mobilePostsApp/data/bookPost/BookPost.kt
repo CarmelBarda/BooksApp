@@ -12,11 +12,11 @@ class BookPost(
     @PrimaryKey
     val id: String,
     val userName: String,
-    var userProfile: String?,
-    val bookName: String,
-    val recommendation: String,
-    val bookImage: String?,
-    val rating: Int,
+    val userProfile: String?,
+    var bookName: String,
+    var recommendation: String,
+    var bookImage: String?,
+    var rating: Int,
     var lastUpdated: Long? = null
 ) {
     companion object {
