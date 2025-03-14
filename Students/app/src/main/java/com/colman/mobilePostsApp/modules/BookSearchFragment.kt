@@ -38,7 +38,6 @@ class BookSearchFragment : Fragment() {
             binding.selectedBookTextView.text = "Selected Book: $selectedBook"
         }
 
-        // Add TextWatcher correctly
         binding.bookSearchInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -52,7 +51,6 @@ class BookSearchFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        // ✅ Observe `bookTitles` correctly
         viewModel.bookTitles.observe(viewLifecycleOwner) { bookTitles ->
             adapter.clear()
             adapter.addAll(bookTitles)

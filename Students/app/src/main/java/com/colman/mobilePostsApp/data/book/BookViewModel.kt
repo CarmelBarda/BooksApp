@@ -19,7 +19,8 @@ class BookViewModel : ViewModel() {
             val response = apiService.getBooksByName(query)
             if (response.isSuccessful) {
                 val titles = response.body()?.docs?.map { it.title } ?: emptyList()
-                Log.d("BookViewModel", "Fetched books: $titles") // ✅ Debug Log _bookTitles.postValue(titles)
+                Log.d("BookViewModel", "Fetched books: $titles")
+                _bookTitles.postValue(titles)
             } else {
                 Log.e("BookViewModel", "API Error: ${response.errorBody()?.string()}")
                 _bookTitles.postValue(emptyList())
