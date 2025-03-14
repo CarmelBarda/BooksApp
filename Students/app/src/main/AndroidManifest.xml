@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
 
     <application
@@ -19,15 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Students"
         tools:targetApi="31">
-        <activity
-            android:name=".EditStudentActivity"
-            android:exported="false" />
-        <activity
-            android:name=".StudentDetailsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AddStudentActivity"
-            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

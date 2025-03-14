@@ -9,11 +9,11 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.databinding.FragmentEditProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.squareup.picasso.Picasso
 
 class EditProfileFragment : Fragment() {
 
@@ -51,11 +51,14 @@ class EditProfileFragment : Fragment() {
             binding.nameEditText.setText(user.displayName)
 
             if (user.photoUrl != null) {
-                Glide.with(this)
+                Picasso.get()
                     .load(user.photoUrl)
                     .placeholder(R.drawable.profile_pic_placeholder)
                     .into(binding.profileImageView)
             }
+        } else {
+            Toast.makeText(requireContext(), "Error: No user logged in", Toast.LENGTH_SHORT).show()
+            return
         }
     }
 

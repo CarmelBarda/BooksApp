@@ -97,5 +97,14 @@
             android:textColor="#FFFFFF"
             android:backgroundTint="#8D6E63"
             android:layout_marginTop="12dp"/>
+
+        <ProgressBar
+            android:id="@+id/postProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_marginTop="16dp"/>
     </LinearLayout>
 </ScrollView>

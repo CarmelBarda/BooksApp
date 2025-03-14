@@ -48,6 +48,7 @@ class CreatePostFragment : Fragment() {
         val pickImageButton: Button = view.findViewById(R.id.selectBookImageButton)
         val ratingSeekBar: SeekBar = view.findViewById(R.id.bookRatingSeekBar)
         val ratingLabel: TextView = view.findViewById(R.id.ratingLabel)
+        val progressBar: ProgressBar = view.findViewById(R.id.postProgressBar)
 
         auth = FirebaseAuth.getInstance()
         loadUserData()
@@ -76,7 +77,9 @@ class CreatePostFragment : Fragment() {
 
             if (bookName.isNotBlank() && recommendation.isNotBlank() && imageBitmap != null) {
                 submitButton.isEnabled = false
-                savePost(userName, profileImage, bookName, recommendation, selectedRating)
+                progressBar.visibility = View.VISIBLE
+
+                savePost(userName, profileImage, bookName, recommendation, selectedRating, progressBar)
             } else {
                 Toast.makeText(requireContext(), "Please fill all fields and pick an image!", Toast.LENGTH_SHORT).show()
             }
@@ -122,10 +125,12 @@ class CreatePostFragment : Fragment() {
         }
     }
 
-    private fun savePost(userName: String, profileImage: String, bookName: String, recommendation: String, rate: Int) {
+    private fun savePost(userName: String, profileImage: String, bookName: String,
+                         recommendation: String, rate: Int, progressBar: ProgressBar) {
         // Ensure there's an image to upload
         if (imageBitmap == null) {
             Toast.makeText(context, "Please select an image!", Toast.LENGTH_SHORT).show()
+            progressBar.visibility = View.GONE
             return
         }
 
@@ -146,10 +151,12 @@ class CreatePostFragment : Fragment() {
                 // 🔹 Now save the post with the correct image URL
                 BookPostModel.instance.addPost(newPost) {
                     Toast.makeText(context, "Saved recommendation successfully!", Toast.LENGTH_LONG).show()
+                    progressBar.visibility = View.GONE
                     findNavController().navigateUp()
                 }
             } else {
                 Toast.makeText(context, "Failed to upload image!", Toast.LENGTH_LONG).show()
+                progressBar.visibility = View.GONE
             }
         }
     }
