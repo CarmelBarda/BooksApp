@@ -21,6 +21,7 @@ class BookPostAdapter(
         val bookImage: ImageView = itemView.findViewById(R.id.bookImage)
         val ratingText: TextView = itemView.findViewById(R.id.ratingText)
         val bookLoadingSpinner: ProgressBar = itemView.findViewById(R.id.imageLoadingSpinner)
+        val editButton: ImageView = itemView.findViewById(R.id.editButton)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
@@ -61,14 +62,9 @@ class BookPostAdapter(
         holder.recommendationText.text = book.recommendation
         holder.ratingText.text = "${book.rating}/10"
 
-        holder.itemView.setOnClickListener { onItemClick(bookList[position]) }
+        holder.editButton.setOnClickListener { onItemClick(book) }
     }
 
 
     override fun getItemCount() = bookList.size
-
-    fun updatePosts(newPosts: List<BookPost>) {
-        bookList = newPosts
-        notifyDataSetChanged()
-    }
 }
