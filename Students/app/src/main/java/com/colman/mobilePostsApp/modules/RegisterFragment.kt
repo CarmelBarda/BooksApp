@@ -22,6 +22,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.result.ActivityResult
 import androidx.annotation.RequiresExtension
+import com.google.android.material.imageview.ShapeableImageView
 
 class RegisterFragment : Fragment() {
 
@@ -112,7 +113,9 @@ class RegisterFragment : Fragment() {
                         Toast.makeText(requireContext(), "Selected image is too large", Toast.LENGTH_SHORT).show()
                     } else {
                         selectedImageURI = imageUri
-                        binding.profileImageView.setImageURI(imageUri)
+
+                        val profileImageView = binding.root.findViewById<ShapeableImageView>(R.id.profileImageView)
+                        profileImageView.setImageURI(imageUri)
                     }
                 } else {
                     Toast.makeText(requireContext(), "No Image Selected", Toast.LENGTH_SHORT).show()
