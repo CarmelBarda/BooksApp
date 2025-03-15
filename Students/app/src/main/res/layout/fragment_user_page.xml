@@ -11,14 +11,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- ✅ Dynamically Load ProfileFragment -->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/profileFragmentContainer"
             android:name="com.colman.mobilePostsApp.modules.ProfileFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!-- ✅ Dynamically Load PostsContainerFragment -->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/postsFragmentContainer"
             android:name="com.colman.mobilePostsApp.modules.PostsContainerFragment"

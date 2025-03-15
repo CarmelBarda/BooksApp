@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.colman.mobilePostsApp.databinding.FragmentUserPageBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class UserPageFragment : Fragment() {
 
@@ -17,6 +18,25 @@ class UserPageFragment : Fragment() {
     ): View {
         _binding = FragmentUserPageBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val userName = currentUser?.displayName
+
+        if (userName != null) {
+            val postsFragment = PostsContainerFragment().apply {
+                arguments = Bundle().apply {
+                    putString("userName", userName)
+                }
+            }
+
+            childFragmentManager.beginTransaction()
+                .replace(binding.postsFragmentContainer.id, postsFragment)
+                .commit()
+        }
     }
 
     override fun onDestroyView() {
