@@ -60,9 +60,9 @@ class RegisterFragment : Fragment() {
 
     private fun createNewUser() {
         binding.registerButton.setOnClickListener {
-            val name = binding.nameInput.text.toString().trim()
-            val email = binding.emailInput.text.toString().trim()
-            val password = binding.passwordInput.text.toString().trim()
+            val name = binding.layoutName.editText?.text.toString().trim()
+            val email = binding.layoutEmail.editText?.text.toString().trim()
+            val password = binding.layoutPassword.editText?.text.toString().trim()
 
             if (email.isNotEmpty() && name.isNotEmpty() && password.length >= 6 && selectedImageURI != null) {
                 auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
