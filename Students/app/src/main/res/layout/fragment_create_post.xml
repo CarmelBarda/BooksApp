@@ -66,18 +66,6 @@
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
-<!--        <EditText-->
-<!--            android:id="@+id/recommendationInput"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="100dp"-->
-<!--            android:background="#E8B4B8"-->
-<!--            android:padding="8dp"-->
-<!--            android:hint="Write your recommendation..."-->
-<!--            android:textColor="#5C4033"-->
-<!--            android:textSize="14sp"-->
-<!--            android:gravity="top"-->
-<!--            android:layout_marginTop="8dp" />-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

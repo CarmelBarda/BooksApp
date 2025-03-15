@@ -114,7 +114,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="Enter Password"
             app:boxStrokeColor="#1E90FF"
             app:endIconMode="password_toggle"
             app:hintTextColor="#1E90FF"
