@@ -33,11 +33,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:hint="Email"
-        app:boxStrokeColor="#@color/button_color"
+        app:boxStrokeColor="@color/button_color"
         app:endIconMode="clear_text"
-        app:hintTextColor="#@color/button_color"
+        app:hintTextColor="@color/button_color"
         app:layout_constraintTop_toBottomOf="@id/appTitle"
-        app:startIconTint="#@color/button_color">
+        app:startIconTint="@color/button_color">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailInput"
             android:layout_width="match_parent"
@@ -52,11 +52,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Password"
-        app:boxStrokeColor="#@color/button_color"
+        app:boxStrokeColor="@color/button_color"
         app:endIconMode="password_toggle"
-        app:hintTextColor="#@color/button_color"
+        app:hintTextColor="@color/button_color"
         app:layout_constraintTop_toBottomOf="@id/layoutEmailAddress"
-        app:startIconTint="#@color/button_color">
+        app:startIconTint="@color/button_color">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordInput"

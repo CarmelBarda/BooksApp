@@ -54,10 +54,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Book Name"
-                app:boxStrokeColor="#@color/button_color"
-                app:hintTextColor="#@color/button_color"
+                app:boxStrokeColor="@color/button_color"
+                app:hintTextColor="@color/button_color"
                 app:layout_constraintTop_toBottomOf="@id/nameText"
-                app:startIconTint="#@color/button_color">
+                app:startIconTint="@color/button_color">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -87,10 +87,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Write your recommendation..."
-                app:boxStrokeColor="#@color/button_color"
-                app:hintTextColor="#@color/button_color"
+                app:boxStrokeColor="@color/button_color"
+                app:hintTextColor="@color/button_color"
                 app:layout_constraintTop_toBottomOf="@id/nameText"
-                app:startIconTint="#@color/button_color">
+                app:startIconTint="@color/button_color">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
