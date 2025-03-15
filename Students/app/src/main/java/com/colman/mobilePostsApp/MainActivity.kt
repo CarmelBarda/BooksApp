@@ -5,9 +5,12 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.firebase.FirebaseApp
 import com.colman.mobilePostsApp.modules.Student
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
@@ -62,9 +65,43 @@ class MainActivity : AppCompatActivity() {
             title = "Book Recommendations"
         }
 
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+
+        NavigationUI.setupWithNavController(bottomNav, navController)
+
         setupActionBarWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.loginFragment,
+                R.id.registerFragment -> {
+                    bottomNav.visibility = android.view.View.GONE
+                }
+                else -> {
+                    bottomNav.visibility = android.view.View.VISIBLE
+                }
+            }
+        }
+
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    navController.navigate(R.id.postsContainerFragment)
+                    true
+                }
+                R.id.nav_add -> {
+                    navController.navigate(R.id.createPostFragment)
+                    true
+                }
+                R.id.nav_profile -> {
+                    navController.navigate(R.id.userPageFragment)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
