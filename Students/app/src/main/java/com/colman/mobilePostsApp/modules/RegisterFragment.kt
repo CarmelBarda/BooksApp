@@ -22,6 +22,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.result.ActivityResult
 import androidx.annotation.RequiresExtension
+import com.google.android.material.imageview.ShapeableImageView
 
 class RegisterFragment : Fragment() {
 
@@ -60,9 +61,9 @@ class RegisterFragment : Fragment() {
 
     private fun createNewUser() {
         binding.registerButton.setOnClickListener {
-            val name = binding.nameInput.text.toString().trim()
-            val email = binding.emailInput.text.toString().trim()
-            val password = binding.passwordInput.text.toString().trim()
+            val name = binding.layoutName.editText?.text.toString().trim()
+            val email = binding.layoutEmail.editText?.text.toString().trim()
+            val password = binding.layoutPassword.editText?.text.toString().trim()
 
             if (email.isNotEmpty() && name.isNotEmpty() && password.length >= 6 && selectedImageURI != null) {
                 auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
@@ -112,7 +113,9 @@ class RegisterFragment : Fragment() {
                         Toast.makeText(requireContext(), "Selected image is too large", Toast.LENGTH_SHORT).show()
                     } else {
                         selectedImageURI = imageUri
-                        binding.profileImageView.setImageURI(imageUri)
+
+                        val profileImageView = binding.root.findViewById<ShapeableImageView>(R.id.profileImageView)
+                        profileImageView.setImageURI(imageUri)
                     }
                 } else {
                     Toast.makeText(requireContext(), "No Image Selected", Toast.LENGTH_SHORT).show()

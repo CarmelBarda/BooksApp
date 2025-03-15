@@ -35,8 +35,8 @@ class LoginFragment : Fragment() {
         }
 
         binding.loginButton.setOnClickListener {
-            val email = binding.emailInput.text.toString().trim()
-            val password = binding.passwordInput.text.toString().trim()
+            val email = binding.layoutEmailAddress.editText?.text.toString().trim()
+            val password = binding.layoutPassword.editText?.text.toString().trim()
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 auth.signInWithEmailAndPassword(email, password)
