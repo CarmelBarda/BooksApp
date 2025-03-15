@@ -9,7 +9,8 @@ import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.squareup.picasso.Picasso
 
 class BookPostAdapter(
-    private var bookList: List<BookPost>
+    private var bookList: List<BookPost>,
+    private val onItemClick: (BookPost) -> Unit
 ) : RecyclerView.Adapter<BookPostAdapter.BookViewHolder>() {
 
     inner class BookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -54,6 +55,8 @@ class BookPostAdapter(
         } else {
             holder.bookImage.setImageResource(R.drawable.ic_book_placeholder)
         }
+
+        holder.itemView.setOnClickListener { onItemClick(bookList[position]) }
     }
 
     override fun getItemCount() = bookList.size

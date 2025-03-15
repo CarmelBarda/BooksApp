@@ -1,6 +1,8 @@
 package com.colman.mobilePostsApp.data.bookPost
 
 import android.graphics.Bitmap
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import com.colman.mobilePostsApp.data.AppLocalDatabase
 import java.util.concurrent.Executors
@@ -43,10 +45,22 @@ class BookPostModel private constructor() {
         }
     }
 
+    fun getPostById(postId: String, callback: (BookPost?) -> Unit) {
+        val executor = Executors.newSingleThreadExecutor()
+        executor.execute {
+            val post = database.bookPostDao().getPostById(postId)
 
-    fun updatePost(bookPost: BookPost?, callback: () -> Unit) {
-        firebaseModel.updateBookPost(bookPost) {
-            refreshAllPosts()
+            Handler(Looper.getMainLooper()).post {
+                callback(post)
+            }
+        }
+    }
+
+    fun updatePost(postId: String, updatedFields: Map<String, Any>, callback: () -> Unit) {
+        firebaseModel.updateBookPost(postId, updatedFields) { success ->
+            if (success) {
+                refreshAllPosts()
+            }
             callback()
         }
     }

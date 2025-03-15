@@ -35,9 +35,14 @@ class PostsContainerFragment : Fragment(R.layout.fragment_posts_container) {
         progressBar.visibility = View.VISIBLE
         recyclerView.visibility = View.GONE
 
-        // Observe LiveData and update RecyclerView when data changes
         viewModel.bookPosts.observe(viewLifecycleOwner) { bookPosts ->
-            adapter = BookPostAdapter(bookPosts)
+            adapter = BookPostAdapter(bookPosts) { post ->
+                val bundle = Bundle().apply {
+                    putString("postId", post.id)
+                }
+
+                findNavController().navigate(R.id.action_postsContainerFragment_to_editPostFragment, bundle)
+            }
             recyclerView.adapter = adapter
 
             progressBar.visibility = View.GONE
