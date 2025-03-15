@@ -12,7 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import com.colman.mobilePostsApp.databinding.FragmentEditPostBinding
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
@@ -21,11 +21,8 @@ import androidx.navigation.fragment.findNavController
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
-import com.colman.mobilePostsApp.databinding.FragmentRegisterBinding
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.slider.Slider
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Picasso
 import java.util.UUID
@@ -40,7 +37,7 @@ class EditPostFragment : Fragment() {
     private var bookImageView: ImageView? = null
     private var bookNameInput: TextInputLayout? = null
     private var recommendationInput: TextInputLayout? = null
-    private var ratingSlider: Slider? = null
+    private lateinit var ratingSlider: Slider
     private var submitButton: MaterialButton? = null
     private var pickImageButton: MaterialButton? = null
 
@@ -60,11 +57,18 @@ class EditPostFragment : Fragment() {
         bookNameInput = view.findViewById(R.id.bookNameInput)
         recommendationInput = view.findViewById(R.id.recommendationInput)
         ratingSlider = view.findViewById(R.id.bookRatingSlider)
+        val ratingLabel: TextView = view.findViewById(R.id.ratingLabel)
         submitButton = view.findViewById(R.id.submitPostButton)
         pickImageButton = view.findViewById(R.id.selectBookImageButton)
 
         postId = requireArguments().getString("postId")
         loadPostData()
+
+        ratingLabel.text = "Rating: ${ratingSlider.value.toInt()}"
+
+        ratingSlider.addOnChangeListener { _, value, _ ->
+            ratingLabel.text = "Rating: ${value.toInt()}"
+        }
 
         binding.selectBookImageButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -82,7 +86,7 @@ class EditPostFragment : Fragment() {
                 bookNameInput!!.editText?.setText(post.bookName)
                 recommendationInput!!.editText?.setText(post.recommendation)
                 val validRating = post.rating.coerceIn(0, 10)
-                ratingSlider!!.value = validRating.toFloat()
+                ratingSlider.value = validRating.toFloat()
                 imageUrl = post.bookImage
                 Picasso.get().load(imageUrl).into(bookImageView)
             }
@@ -116,7 +120,7 @@ class EditPostFragment : Fragment() {
     private fun updatePost() {
         val bookName = bookNameInput!!.editText?.text.toString()
         val recommendation = recommendationInput!!.editText?.text.toString()
-        val rating = ratingSlider!!.value.toInt()
+        val rating = ratingSlider.value.toInt()
 
         if (bookName.isEmpty() || recommendation.isEmpty()) {
             Toast.makeText(requireContext(), "Please fill all fields!", Toast.LENGTH_SHORT).show()
