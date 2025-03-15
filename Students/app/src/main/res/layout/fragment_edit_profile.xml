@@ -44,10 +44,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter Name"
-            app:boxStrokeColor="#1E90FF"
-            app:hintTextColor="#1E90FF"
+            app:boxStrokeColor="@color/button_color"
+            app:hintTextColor="#@color/button_color"
             app:layout_constraintTop_toBottomOf="@id/nameText"
-            app:startIconTint="#1E90FF">
+            app:startIconTint="#@color/button_color">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/nameInput"
