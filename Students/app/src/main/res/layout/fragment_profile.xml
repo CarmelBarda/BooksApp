@@ -1,27 +1,54 @@
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:layout_margin="20dp"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:layout_margin="16dp"
     android:background="@drawable/rounded">
 
+    <!-- Profile Picture -->
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/profileImageView"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:id="@+id/profileImage"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/profile_pic_placeholder" />
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/white"
+        android:src="@drawable/profile_pic_placeholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-    <TextView
-        android:id="@+id/userNameTextView"
-        android:layout_width="wrap_content"
+    <!-- User Name -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/userProfileName"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="User Name"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:gravity="center"
         android:textColor="#ffffff"
-        android:layout_marginLeft="15dp"/>
-</LinearLayout>
+        app:layout_constraintStart_toEndOf="@id/profileImage"
+        app:layout_constraintEnd_toStartOf="@id/editProfileButton"
+        app:layout_constraintTop_toTopOf="@id/profileImage"
+        app:layout_constraintBottom_toBottomOf="@id/profileImage"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp" />
+
+    <!-- Edit Profile Button with White Outline -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/editProfileButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:icon="@drawable/ic_edit"
+        app:iconSize="24dp"
+        app:iconTint="@android:color/white"
+        app:iconGravity="textStart"
+        app:backgroundTint="@android:color/transparent"
+        android:padding="0dp"
+        android:contentDescription="Edit Profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
