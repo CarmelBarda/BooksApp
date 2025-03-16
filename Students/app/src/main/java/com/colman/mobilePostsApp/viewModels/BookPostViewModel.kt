@@ -13,8 +13,4 @@ class BookPostViewModel : ViewModel() {
     fun refreshPosts() {
         bookPostModel.refreshAllPosts()
     }
-
-//    fun addPost(bookPost: BookPost) {
-//        bookPostModel.addPost(bookPost) { refreshPosts() }
-//    }
 }

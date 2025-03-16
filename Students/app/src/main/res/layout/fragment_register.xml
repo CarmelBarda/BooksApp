@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -7,7 +8,7 @@
     android:gravity="center"
     android:background="#F4EDE4">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profileImageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -15,14 +16,14 @@
         android:src="@drawable/profile_pic_placeholder"
         android:layout_marginBottom="16dp"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnPickImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Photo"
-        android:background="@drawable/rounded_button"
         android:padding="10dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        app:cornerRadius="8dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,23 +32,32 @@
         android:layout_marginBottom="12dp">
 
         <TextView
+            android:id="@+id/nameText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name:"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/button_color"
-            android:layout_marginBottom="4dp"/>
+            android:textColor="@color/button_color"/>
 
-        <EditText
-            android:id="@+id/nameInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter Name"
-            android:textSize="16sp"
-            android:gravity="start"
-            android:padding="10dp"
-            android:background="@drawable/rounded_edit_text"/>
+            app:boxStrokeColor="@color/button_color"
+            app:hintTextColor="@color/button_color"
+            app:layout_constraintTop_toBottomOf="@id/nameText"
+            app:startIconTint="@color/button_color">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
+
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -57,23 +67,32 @@
         android:layout_marginBottom="12dp">
 
         <TextView
+            android:id="@+id/emailText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Email:"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/button_color"
-            android:layout_marginBottom="4dp"/>
+            android:textColor="@color/button_color"/>
 
-        <EditText
-            android:id="@+id/emailInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutEmail"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter Email"
-            android:textSize="16sp"
-            android:gravity="start"
-            android:padding="10dp"
-            android:background="@drawable/rounded_edit_text"/>
+            app:boxStrokeColor="@color/button_color"
+            app:hintTextColor="@color/button_color"
+            app:layout_constraintTop_toBottomOf="@id/emailText"
+            app:startIconTint="@color/button_color">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -88,28 +107,37 @@
             android:text="Password:"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/button_color"
-            android:layout_marginBottom="4dp"/>
+            android:textColor="@color/button_color"/>
 
-        <EditText
-            android:id="@+id/passwordInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutPassword"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter Password"
-            android:inputType="textPassword"
-            android:textSize="16sp"
-            android:gravity="start"
-            android:padding="10dp"
-            android:background="@drawable/rounded_edit_text"/>
+            app:boxStrokeColor="@color/button_color"
+            app:endIconMode="password_toggle"
+            app:hintTextColor="@color/button_color"
+            app:layout_constraintTop_toBottomOf="@id/layoutEmailAddress"
+            app:startIconTint="@color/button_color">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Register"
         android:textColor="#FFFFFF"
-        android:background="@drawable/rounded_button"
         android:padding="12dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="16dp"
+        app:cornerRadius="8dp"/>
 </LinearLayout>

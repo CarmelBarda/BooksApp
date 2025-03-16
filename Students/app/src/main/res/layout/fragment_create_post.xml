@@ -17,7 +17,7 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profileImage"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -33,31 +33,79 @@
                 android:textColor="#5C4033" />
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/bookNameInput"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Book Name"
-            android:textSize="16sp"
-            android:textColor="#8D6E63"
-            android:backgroundTint="#8D6E63"
-            android:padding="8dp"
-            android:layout_marginTop="8dp"/>
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp">
 
-        <EditText
-            android:id="@+id/recommendationInput"
+            <TextView
+                android:id="@+id/nameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Book Name:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/button_color"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/bookNameInput"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Book Name"
+                app:boxStrokeColor="@color/button_color"
+                app:hintTextColor="@color/button_color"
+                app:layout_constraintTop_toBottomOf="@id/nameText"
+                app:startIconTint="@color/button_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:padding="8dp"
-            android:hint="Write your recommendation..."
-            android:textColor="#5C4033"
-            android:textSize="14sp"
-            android:gravity="top"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/rounded_edit_text"
-            />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp">
 
-        <ImageView
+            <TextView
+                android:id="@+id/reccomendationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recommendation:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/button_color"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/recommendationInput"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Write your recommendation..."
+                app:boxStrokeColor="@color/button_color"
+                app:hintTextColor="@color/button_color"
+                app:layout_constraintTop_toBottomOf="@id/nameText"
+                app:startIconTint="@color/button_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minLines="4"
+                    android:maxLines="6"
+                    android:gravity="top|start"
+                    android:scrollbars="vertical"
+                    android:inputType="textMultiLine"
+                    android:imeOptions="actionDone"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/bookImagePreview"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -65,14 +113,15 @@
             android:scaleType="centerCrop"
             android:background="@drawable/image_placeholder"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/selectBookImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select Book Image"
             android:textColor="#FFFFFF"
-            android:background="@drawable/rounded_button"
-            android:layout_marginTop="8dp"/>
+            android:backgroundTint="#8D6E63"
+            android:layout_marginTop="8dp"
+            app:cornerRadius="8dp"/>
 
         <TextView
             android:id="@+id/ratingLabel"
@@ -102,16 +151,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/submitPostButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Create Post"
                 android:textColor="#FFFFFF"
-                android:background="@drawable/rounded_button"
+                android:backgroundTint="#8D6E63"
                 android:padding="12dp"
                 android:textSize="16sp"
-                android:gravity="center"/>
+                android:gravity="center"
+                app:cornerRadius="8dp"/>
 
             <ProgressBar
                 android:id="@+id/postProgressSpinner"

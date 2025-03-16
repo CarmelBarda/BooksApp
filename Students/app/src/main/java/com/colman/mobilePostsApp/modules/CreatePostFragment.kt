@@ -19,6 +19,7 @@ import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 import com.google.android.material.slider.Slider
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -43,8 +44,8 @@ class CreatePostFragment : Fragment() {
 
         profileImageView = view.findViewById(R.id.profileImage)
         userNameView = view.findViewById(R.id.userName)
-        val bookNameInput: EditText = view.findViewById(R.id.bookNameInput)
-        val recommendationInput: EditText = view.findViewById(R.id.recommendationInput)
+        val bookNameInput: TextInputLayout = view.findViewById(R.id.bookNameInput)
+        val recommendationInput: TextInputLayout = view.findViewById(R.id.recommendationInput)
         val submitButton: Button = view.findViewById(R.id.submitPostButton)
         bookImageView = view.findViewById(R.id.bookImagePreview)
         val pickImageButton: Button = view.findViewById(R.id.selectBookImageButton)
@@ -69,8 +70,8 @@ class CreatePostFragment : Fragment() {
         submitButton.setOnClickListener {
             val userName = userNameView.text.toString()
             val profileImage = profileImageView.toString()
-            val bookName = bookNameInput.text.toString()
-            val recommendation = recommendationInput.text.toString()
+            val bookName = bookNameInput.editText?.text.toString()
+            val recommendation = recommendationInput.editText?.text.toString()
 
             if (bookName.isNotBlank() && recommendation.isNotBlank() && imageBitmap != null) {
                 submitButton.isEnabled = false
