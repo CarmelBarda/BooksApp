@@ -11,15 +11,10 @@ class BookPostViewModel : ViewModel() {
     private val bookPostModel = BookPostModel.instance
 
     fun getPosts(userName: String?): LiveData<List<BookPost>> {
-        val allPosts = bookPostModel.getAllBookPosts()
-
         return if (userName == null) {
-            allPosts
+            bookPostModel.getAllBookPosts()
         } else {
-            liveData {
-                val allPosts = bookPostModel.getAllBookPosts()
-                emit(allPosts.value?.filter { it.userName == userName } ?: emptyList())
-            }
+            bookPostModel.getBookPostsByUserName(userName)
         }
     }
 

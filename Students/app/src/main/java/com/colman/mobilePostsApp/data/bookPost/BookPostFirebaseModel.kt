@@ -92,4 +92,21 @@ class BookPostFirebaseModel {
                 callback()
             }
     }
+
+    fun getBookPostsByUserName(userName: String, callback: (List<BookPost>) -> Unit) {
+        db.collection(POSTS_COLLECTION_PATH)
+            .whereEqualTo("userName", userName)
+            .get().addOnCompleteListener {
+                if (it.isSuccessful) {
+                    val bookPosts: MutableList<BookPost> = mutableListOf()
+                    for (json in it.result) {
+                        val bookPost = BookPost.fromJSON(json.data)
+                        bookPosts.add(bookPost)
+                    }
+                    callback(bookPosts)
+                } else {
+                    callback(listOf())
+                }
+            }
+    }
 }

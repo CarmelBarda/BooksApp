@@ -30,6 +30,10 @@ class BookPostModel private constructor() {
         return posts
     }
 
+    fun getBookPostsByUserName(userName: String): LiveData<List<BookPost>> {
+        return database.bookPostDao().getPostsByUserName(userName)
+    }
+
     fun refreshAllPosts() {
         val lastUpdated: Long = BookPost.lastUpdated
 
