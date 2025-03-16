@@ -31,7 +31,7 @@
             android:textStyle="bold"
             android:textColor="#5C4033" />
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/editButton"
             android:layout_width="24dp"
             android:layout_height="24dp"
