@@ -11,19 +11,15 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import com.colman.mobilePostsApp.databinding.FragmentEditPostBinding
-import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
-import com.google.android.material.button.MaterialButton
+import com.colman.mobilePostsApp.databinding.FragmentEditPostBinding
 import com.google.android.material.slider.Slider
-import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Picasso
 import java.util.UUID
 
@@ -34,18 +30,12 @@ class EditPostFragment : Fragment() {
     private var imageBitmap: Bitmap? = null
     private var postId: String? = null
     private var imageUrl: String? = null
-    private var bookImageView: ImageView? = null
-    private var bookNameInput: TextInputLayout? = null
-    private var recommendationInput: TextInputLayout? = null
-    private lateinit var ratingSlider: Slider
-    private var submitButton: MaterialButton? = null
-    private var pickImageButton: MaterialButton? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentEditPostBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -53,21 +43,13 @@ class EditPostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bookImageView = view.findViewById(R.id.bookImagePreview)
-        bookNameInput = view.findViewById(R.id.bookNameInput)
-        recommendationInput = view.findViewById(R.id.recommendationInput)
-        ratingSlider = view.findViewById(R.id.bookRatingSlider)
-        val ratingLabel: TextView = view.findViewById(R.id.ratingLabel)
-        submitButton = view.findViewById(R.id.submitPostButton)
-        pickImageButton = view.findViewById(R.id.selectBookImageButton)
-
         postId = requireArguments().getString("postId")
         loadPostData()
 
-        ratingLabel.text = "Rating: ${ratingSlider.value.toInt()}"
+        binding.ratingLabel.text = "Rating: ${binding.bookRatingSlider.value.toInt()}"
 
-        ratingSlider.addOnChangeListener { _, value, _ ->
-            ratingLabel.text = "Rating: ${value.toInt()}"
+        binding.bookRatingSlider.addOnChangeListener { _, value, _ ->
+            binding.ratingLabel.text = "Rating: ${value.toInt()}"
         }
 
         binding.selectBookImageButton.setOnClickListener {
@@ -82,52 +64,52 @@ class EditPostFragment : Fragment() {
 
     private fun loadPostData() {
         BookPostModel.instance.getPostById(postId!!) { post: BookPost? ->
-            if (post != null) {
-                bookNameInput!!.editText?.setText(post.bookName)
-                recommendationInput!!.editText?.setText(post.recommendation)
-                val validRating = post.rating.coerceIn(0, 10)
-                ratingSlider.value = validRating.toFloat()
-                imageUrl = post.bookImage
-                Picasso.get().load(imageUrl).into(bookImageView)
+            post?.let {
+                binding.bookNameInput.editText?.setText(it.bookName)
+                binding.recommendationInput.editText?.setText(it.recommendation)
+                binding.bookRatingSlider.value = it.rating.coerceIn(0, 10).toFloat()
+                imageUrl = it.bookImage
+                Picasso.get().load(imageUrl).into(binding.bookImagePreview)
             }
         }
     }
 
-    private val imagePickerLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+    private val imagePickerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            val imageUri: Uri? = result.data?.data
-            imageUri?.let { uri ->
+            result.data?.data?.let { uri ->
                 imageBitmap = getBitmapFromUri(uri)
-                bookImageView?.setImageBitmap(imageBitmap)
+                binding.bookImagePreview.setImageBitmap(imageBitmap)
             }
         }
     }
 
     private fun getBitmapFromUri(uri: Uri): Bitmap? {
-        try {
+        return try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val source = ImageDecoder.createSource(requireActivity().contentResolver, uri)
-                return ImageDecoder.decodeBitmap(source)
+                ImageDecoder.decodeBitmap(source)
             } else {
-                return MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uri)
+                MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uri)
             }
         } catch (e: Exception) {
             Toast.makeText(requireContext(), "Failed to load image", Toast.LENGTH_SHORT).show()
-            return null
+            null
         }
     }
 
     private fun updatePost() {
-        val bookName = bookNameInput!!.editText?.text.toString()
-        val recommendation = recommendationInput!!.editText?.text.toString()
-        val rating = ratingSlider.value.toInt()
+        val bookName = binding.bookNameInput.editText?.text.toString()
+        val recommendation = binding.recommendationInput.editText?.text.toString()
+        val rating = binding.bookRatingSlider.value.toInt()
 
         if (bookName.isEmpty() || recommendation.isEmpty()) {
             Toast.makeText(requireContext(), "Please fill all fields!", Toast.LENGTH_SHORT).show()
             return
         }
 
-        submitButton!!.isEnabled = false
+        binding.submitPostButton.isEnabled = false
 
         if (imageBitmap != null) {
             BookPostModel.instance.saveBookImage(
@@ -140,18 +122,20 @@ class EditPostFragment : Fragment() {
         }
     }
 
-    private fun saveUpdatedPost(updatedBookName: String, updatedRecommendation: String,
-                                updatedRating: Int, updatedImageUrl: String?) {
-        val updatedFields = mutableMapOf<String, Any>()
+    private fun saveUpdatedPost(
+        updatedBookName: String,
+        updatedRecommendation: String,
+        updatedRating: Int,
+        updatedImageUrl: String?
+    ) {
+        val updatedFields = mutableMapOf<String, Any>(
+            "bookName" to updatedBookName,
+            "recommendation" to updatedRecommendation,
+            "rating" to updatedRating,
+            "lastUpdated" to System.currentTimeMillis()
+        )
 
-        updatedFields["bookName"] = updatedBookName
-        updatedFields["recommendation"] = updatedRecommendation
-        updatedFields["rating"] = updatedRating
-        updatedFields["lastUpdated"] = System.currentTimeMillis()
-
-        if (updatedImageUrl != null) {
-            updatedFields["bookImage"] = updatedImageUrl
-        }
+        updatedImageUrl?.let { updatedFields["bookImage"] = it }
 
         if (updatedFields.isNotEmpty()) {
             BookPostModel.instance.updatePost(postId!!, updatedFields) {
@@ -161,5 +145,10 @@ class EditPostFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(), "No changes made!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
