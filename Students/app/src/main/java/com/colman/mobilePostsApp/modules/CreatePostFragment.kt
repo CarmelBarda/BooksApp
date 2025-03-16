@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
+import com.google.android.material.slider.Slider
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -27,6 +28,7 @@ class CreatePostFragment : Fragment() {
     private lateinit var bookImageView: ImageView
     private lateinit var profileImageView: ImageView
     private lateinit var userNameView: TextView
+    private lateinit var ratingSlider: Slider
     private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
@@ -46,7 +48,7 @@ class CreatePostFragment : Fragment() {
         val submitButton: Button = view.findViewById(R.id.submitPostButton)
         bookImageView = view.findViewById(R.id.bookImagePreview)
         val pickImageButton: Button = view.findViewById(R.id.selectBookImageButton)
-        val ratingSeekBar: SeekBar = view.findViewById(R.id.bookRatingSeekBar)
+        ratingSlider = view.findViewById(R.id.bookRatingSlider)
         val ratingLabel: TextView = view.findViewById(R.id.ratingLabel)
         val progressBar: ProgressBar = view.findViewById(R.id.postProgressSpinner)
 
@@ -54,15 +56,10 @@ class CreatePostFragment : Fragment() {
         loadUserData()
 
         var selectedRating = 10
-        ratingSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                selectedRating = progress
-                ratingLabel.text = "Rating: $progress"
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
+        ratingSlider.addOnChangeListener { _, value, _ ->
+            selectedRating = value.toInt()
+            ratingLabel.text = "Rating: ${selectedRating}"
+        }
 
         // 🔹 Image picker logic
         pickImageButton.setOnClickListener {

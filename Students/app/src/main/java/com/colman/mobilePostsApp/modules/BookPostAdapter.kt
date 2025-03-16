@@ -2,6 +2,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.colman.mobilePostsApp.R
@@ -14,12 +15,13 @@ class BookPostAdapter(
 ) : RecyclerView.Adapter<BookPostAdapter.BookViewHolder>() {
 
     inner class BookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val userImage: ImageView = itemView.findViewById(R.id.profileImage)
         val userName: TextView = itemView.findViewById(R.id.userName)
         val bookName: TextView = itemView.findViewById(R.id.bookName)
         val recommendationText: TextView = itemView.findViewById(R.id.recommendationText)
         val bookImage: ImageView = itemView.findViewById(R.id.bookImage)
         val ratingText: TextView = itemView.findViewById(R.id.ratingText)
+        val bookLoadingSpinner: ProgressBar = itemView.findViewById(R.id.imageLoadingSpinner)
+        val editButton: ImageView = itemView.findViewById(R.id.editButton)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
@@ -31,14 +33,28 @@ class BookPostAdapter(
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
         val book = bookList[position]
 
-        if (!book.userProfile.isNullOrEmpty()) {
+        holder.bookLoadingSpinner.visibility = View.VISIBLE
+        holder.bookImage.visibility = View.GONE
+
+        if (!book.bookImage.isNullOrEmpty()) {
             Picasso.get()
-                .load(book.userProfile)
-                .placeholder(R.drawable.profile_pic_placeholder)
-                .error(R.drawable.profile_pic_placeholder)
-                .into(holder.userImage)
+                .load(book.bookImage)
+                .error(R.drawable.ic_book_placeholder)
+                .into(holder.bookImage, object : com.squareup.picasso.Callback {
+                    override fun onSuccess() {
+                        holder.bookLoadingSpinner.visibility = View.GONE
+                        holder.bookImage.visibility = View.VISIBLE
+                    }
+
+                    override fun onError(e: Exception?) {
+                        holder.bookLoadingSpinner.visibility = View.GONE
+                        holder.bookImage.visibility = View.VISIBLE
+                    }
+                })
         } else {
-            holder.userImage.setImageResource(R.drawable.profile_pic_placeholder)
+            holder.bookImage.setImageResource(R.drawable.ic_book_placeholder)
+            holder.bookLoadingSpinner.visibility = View.GONE
+            holder.bookImage.visibility = View.VISIBLE
         }
 
         holder.userName.text = book.userName
@@ -46,23 +62,9 @@ class BookPostAdapter(
         holder.recommendationText.text = book.recommendation
         holder.ratingText.text = "${book.rating}/10"
 
-        if (!book.bookImage.isNullOrEmpty()) {
-            Picasso.get()
-                .load(book.bookImage)
-                .placeholder(R.drawable.ic_book_placeholder)
-                .error(R.drawable.ic_book_placeholder)
-                .into(holder.bookImage)
-        } else {
-            holder.bookImage.setImageResource(R.drawable.ic_book_placeholder)
-        }
-
-        holder.itemView.setOnClickListener { onItemClick(bookList[position]) }
+        holder.editButton.setOnClickListener { onItemClick(book) }
     }
+
 
     override fun getItemCount() = bookList.size
-
-    fun updatePosts(newPosts: List<BookPost>) {
-        bookList = newPosts
-        notifyDataSetChanged()
-    }
 }
