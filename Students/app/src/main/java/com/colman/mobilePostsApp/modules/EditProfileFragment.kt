@@ -85,6 +85,10 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun saveProfile() {
+        binding.saveButton.isEnabled = false
+        binding.saveButton.text = ""
+        binding.profileProgressSpinner.visibility = View.VISIBLE
+
         val newName = binding.nameEditText.editText?.text.toString().trim()
         val user = auth.currentUser
 
@@ -98,6 +102,10 @@ class EditProfileFragment : Fragment() {
                         }
                     }
                     .addOnFailureListener {
+                        binding.saveButton.isEnabled = true
+                        binding.saveButton.text = "Save"
+                        binding.profileProgressSpinner.visibility = View.GONE
+
                         Toast.makeText(requireContext(), "Image upload failed", Toast.LENGTH_SHORT).show()
                     }
             } else {
@@ -122,6 +130,10 @@ class EditProfileFragment : Fragment() {
                 }
             }
             .addOnFailureListener {
+                binding.saveButton.isEnabled = true
+                binding.saveButton.text = "Save"
+                binding.profileProgressSpinner.visibility = View.GONE
+
                 if (isAdded) {
                     Toast.makeText(requireContext(), "Profile update failed", Toast.LENGTH_SHORT).show()
                 }
@@ -139,11 +151,19 @@ class EditProfileFragment : Fragment() {
             .update(userMap)
             .addOnSuccessListener {
                 if (isAdded) {
+                    binding.saveButton.isEnabled = true
+                    binding.saveButton.text = "Save"
+                    binding.profileProgressSpinner.visibility = View.GONE
+
                     Toast.makeText(requireContext(), "Firestore updated", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener {
                 if (isAdded) {
+                    binding.saveButton.isEnabled = true
+                    binding.saveButton.text = "Save"
+                    binding.profileProgressSpinner.visibility = View.GONE
+
                     Toast.makeText(requireContext(), "Failed to update Firestore", Toast.LENGTH_SHORT).show()
                 }
             }
