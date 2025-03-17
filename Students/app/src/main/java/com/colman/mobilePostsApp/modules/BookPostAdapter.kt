@@ -10,68 +10,71 @@ import androidx.recyclerview.widget.RecyclerView
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.squareup.picasso.Picasso
+import com.colman.mobilePostsApp.databinding.FragmentBookPostItemBinding
 
 class BookPostAdapter(
     private var bookList: List<BookPost>,
     private val navController: NavController
 ) : RecyclerView.Adapter<BookPostAdapter.BookViewHolder>() {
 
-    inner class BookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val userName: TextView = itemView.findViewById(R.id.userName)
-        val bookName: TextView = itemView.findViewById(R.id.bookName)
-        val recommendationText: TextView = itemView.findViewById(R.id.recommendationText)
-        val bookImage: ImageView = itemView.findViewById(R.id.bookImage)
-        val ratingText: TextView = itemView.findViewById(R.id.ratingText)
-        val bookLoadingSpinner: ProgressBar = itemView.findViewById(R.id.imageLoadingSpinner)
-        val editButton: ImageView = itemView.findViewById(R.id.editButton)
-    }
+    inner class BookViewHolder(private val binding: FragmentBookPostItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_book_post_item, parent, false)
-        return BookViewHolder(view)
-    }
+        fun bind(book: BookPost) {
+            binding.imageLoadingSpinner.visibility = View.VISIBLE
+            binding.bookImage.visibility = View.GONE
 
-    override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
-        val book = bookList[position]
+            if (!book.userProfile.isNullOrEmpty()) {
+                Picasso.get()
+                    .load(book.userProfile)
+                    .error(R.drawable.ic_student_placeholder)
+                    .into(binding.profileImage)
+            } else {
+                binding.profileImage.setImageResource(R.drawable.ic_student_placeholder)
+            }
 
-        holder.bookLoadingSpinner.visibility = View.VISIBLE
-        holder.bookImage.visibility = View.GONE
+            if (!book.bookImage.isNullOrEmpty()) {
+                Picasso.get()
+                    .load(book.bookImage)
+                    .error(R.drawable.ic_book_placeholder)
+                    .into(binding.bookImage, object : com.squareup.picasso.Callback {
+                        override fun onSuccess() {
+                            binding.imageLoadingSpinner.visibility = View.GONE
+                            binding.bookImage.visibility = View.VISIBLE
+                        }
 
-        if (!book.bookImage.isNullOrEmpty()) {
-            Picasso.get()
-                .load(book.bookImage)
-                .error(R.drawable.ic_book_placeholder)
-                .into(holder.bookImage, object : com.squareup.picasso.Callback {
-                    override fun onSuccess() {
-                        holder.bookLoadingSpinner.visibility = View.GONE
-                        holder.bookImage.visibility = View.VISIBLE
-                    }
+                        override fun onError(e: Exception?) {
+                            binding.imageLoadingSpinner.visibility = View.GONE
+                            binding.bookImage.visibility = View.VISIBLE
+                        }
+                    })
+            } else {
+                binding.bookImage.setImageResource(R.drawable.ic_book_placeholder)
+                binding.imageLoadingSpinner.visibility = View.GONE
+                binding.bookImage.visibility = View.VISIBLE
+            }
 
-                    override fun onError(e: Exception?) {
-                        holder.bookLoadingSpinner.visibility = View.GONE
-                        holder.bookImage.visibility = View.VISIBLE
-                    }
-                })
-        } else {
-            holder.bookImage.setImageResource(R.drawable.ic_book_placeholder)
-            holder.bookLoadingSpinner.visibility = View.GONE
-            holder.bookImage.visibility = View.VISIBLE
-        }
+            binding.userName.text = book.userName
+            binding.bookName.text = book.bookName
+            binding.recommendationText.text = book.recommendation
+            binding.ratingText.text = "${book.rating}/10"
 
-        holder.userName.text = book.userName
-        holder.bookName.text = book.bookName
-        holder.recommendationText.text = book.recommendation
-        holder.ratingText.text = "${book.rating}/10"
-
-        holder.editButton.setOnClickListener {
-            val bundle = Bundle().apply {
+            binding.editButton.setOnClickListener {
+                val bundle = Bundle().apply {
                 putString("postId", book.id)
             }
-            navController.navigate(R.id.action_postsContainerFragment_to_editPostFragment, bundle)
+                navController.navigate(R.id.action_postsContainerFragment_to_editPostFragment, bundle) }
         }
     }
-
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
+        val binding = FragmentBookPostItemBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+        return BookViewHolder(binding)
+    }
+        override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
+        holder.bind(bookList[position])
+    }
 
     override fun getItemCount() = bookList.size
 }
