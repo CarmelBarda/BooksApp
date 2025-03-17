@@ -19,6 +19,15 @@ class BookPostAdapter(
             binding.imageLoadingSpinner.visibility = View.VISIBLE
             binding.bookImage.visibility = View.GONE
 
+            if (!book.userProfile.isNullOrEmpty()) {
+                Picasso.get()
+                    .load(book.userProfile)
+                    .error(R.drawable.ic_student_placeholder)
+                    .into(binding.profileImage)
+            } else {
+                binding.profileImage.setImageResource(R.drawable.ic_student_placeholder)
+            }
+
             if (!book.bookImage.isNullOrEmpty()) {
                 Picasso.get()
                     .load(book.bookImage)

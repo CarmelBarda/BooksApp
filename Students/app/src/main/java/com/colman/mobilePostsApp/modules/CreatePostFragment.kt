@@ -79,7 +79,7 @@ class CreatePostFragment : Fragment() {
             it.photoUrl?.let { uri ->
                 Picasso.get()
                     .load(uri)
-                    .placeholder(com.colman.mobilePostsApp.R.drawable.profile_pic_placeholder)
+                    .error(com.colman.mobilePostsApp.R.drawable.profile_pic_placeholder)
                     .into(binding.profileImage)
             }
         }
