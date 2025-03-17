@@ -1,6 +1,11 @@
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
@@ -9,7 +14,7 @@ import com.colman.mobilePostsApp.databinding.FragmentBookPostItemBinding
 
 class BookPostAdapter(
     private var bookList: List<BookPost>,
-    private val onItemClick: (BookPost) -> Unit
+    private val navController: NavController
 ) : RecyclerView.Adapter<BookPostAdapter.BookViewHolder>() {
 
     inner class BookViewHolder(private val binding: FragmentBookPostItemBinding) :
@@ -54,21 +59,22 @@ class BookPostAdapter(
             binding.recommendationText.text = book.recommendation
             binding.ratingText.text = "${book.rating}/10"
 
-            binding.editButton.setOnClickListener { onItemClick(book) }
+            binding.editButton.setOnClickListener {
+                val bundle = Bundle().apply {
+                putString("postId", book.id)
+            }
+                navController.navigate(R.id.action_postsContainerFragment_to_editPostFragment, bundle) }
         }
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val binding = FragmentBookPostItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
         return BookViewHolder(binding)
     }
-
-    override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
         holder.bind(bookList[position])
     }
 
     override fun getItemCount() = bookList.size
 }
-

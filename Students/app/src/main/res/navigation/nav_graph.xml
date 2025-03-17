@@ -82,7 +82,15 @@
         android:label="Edit Profile">
     </fragment>
 
-
+    <fragment
+        android:id="@+id/userPageFragment"
+        android:name="com.colman.mobilePostsApp.modules.UserPageFragment"
+        android:label="User Page"
+        tools:layout="@layout/fragment_user_page">
+    <action
+        android:id="@+id/action_profileFragment_to_editProfileFragment"
+        app:destination="@id/editProfileFragment" />
+    </fragment>
 
     <!-- Student List Fragment -->
 

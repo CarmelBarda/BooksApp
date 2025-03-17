@@ -73,7 +73,6 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/rounded_button"
             android:text="Select Book Image"
             android:textColor="#FFFFFF"
             app:cornerRadius="8dp" />
@@ -112,7 +111,6 @@
                 android:layout_height="wrap_content"
                 android:text="Save changes"
                 android:textColor="#FFFFFF"
-                android:background="@drawable/rounded_button"
                 android:padding="12dp"
                 android:textSize="16sp"
                 android:gravity="center"
