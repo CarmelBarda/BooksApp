@@ -23,15 +23,18 @@ class BookPostModel private constructor() {
         fun onComplete(url: String)
     }
 
-    fun getAllBookPosts(): LiveData<List<BookPost>> {
-        if (posts.value == null) {
-            refreshAllPosts()
+    fun getAllBookPosts(): LiveData<List<Pair<BookPost, String?>>> {
+        val liveData = MutableLiveData<List<Pair<BookPost, String?>>>()
+
+        firebaseModel.getAllBookPosts { bookPostsWithNames ->
+            liveData.postValue(bookPostsWithNames)
         }
-        return posts
+
+        return liveData
     }
 
     fun getBookPostsByUserName(userName: String): LiveData<List<BookPost>> {
-        return database.bookPostDao().getPostsByUserName(userName)
+        return database.bookPostDao().getPostsByUserId(userName)
     }
 
     fun refreshAllPosts() {

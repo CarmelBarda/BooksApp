@@ -36,23 +36,34 @@ class BookPostFirebaseModel {
         storage = FirebaseStorage.getInstance()
     }
 
-    fun getAllBookPosts(callback: (List<BookPost>) -> Unit) {
+    fun getAllBookPosts(callback: (List<Pair<BookPost, String?>>) -> Unit) {
         db.collection(POSTS_COLLECTION_PATH)
-            .get().addOnCompleteListener {
-                when (it.isSuccessful) {
-                    true -> {
-                        val bookPosts: MutableList<BookPost> = mutableListOf()
-                        for (json in it.result) {
-                            val bookPost = BookPost.fromJSON(json.data)
-                            bookPosts.add(bookPost)
-                        }
-                        callback(bookPosts)
-                    }
+            .get().addOnCompleteListener { postTask ->
+                if (postTask.isSuccessful) {
+                    val bookPosts: MutableList<Pair<BookPost, String?>> = mutableListOf()
+                    val userIds = postTask.result?.documents?.mapNotNull { it.getString("userId") }?.toSet() ?: emptySet()
 
-                    false -> callback(listOf())
+                    db.collection("users")
+                        .whereIn("id", userIds.toList())
+                        .get()
+                        .addOnCompleteListener { userTask ->
+                            val userMap = userTask.result?.documents?.associateBy(
+                                { it.id }, { it.getString("userName") }
+                            ) ?: emptyMap()
+
+                            for (json in postTask.result!!) {
+                                val bookPost = BookPost.fromJSON(json.data!!)
+                                val userName = userMap[bookPost.userId] ?: "Unknown User"
+                                bookPosts.add(Pair(bookPost, userName))
+                            }
+                            callback(bookPosts)
+                        }
+                } else {
+                    callback(listOf())
                 }
             }
     }
+
 
     fun addBookImage(
         imageBitmap: Bitmap,
