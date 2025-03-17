@@ -43,15 +43,20 @@ class BookPostFirebaseModel {
                     val bookPosts = mutableListOf<BookPost>()
                     val userIds = postTask.result?.documents?.mapNotNull { it.getString("userId") }?.toSet() ?: emptySet()
 
+                    if (userIds.isEmpty()) {
+                        callback(bookPosts)
+                        return@addOnCompleteListener
+                    }
+
                     db.collection("users")
                         .whereIn("id", userIds.toList())
                         .get()
                         .addOnCompleteListener { userTask ->
-                            val userMap = userTask.result?.documents?.associate { it.id to it.getString("userName") } ?: emptyMap()
+                            val userMap = userTask.result?.documents?.associate { it.id to it.getString("name") } ?: emptyMap()
 
                             for (json in postTask.result!!) {
                                 val bookPost = BookPost.fromJSON(json.data!!)
-                                bookPost.userName = userMap[bookPost.userId] ?: "Unknown User" // Assign dynamically
+                                bookPost.userName = userMap[bookPost.userId] ?: "Unknown User"
                                 bookPosts.add(bookPost)
                             }
                             callback(bookPosts)
@@ -61,6 +66,7 @@ class BookPostFirebaseModel {
                 }
             }
     }
+
 
 
 
