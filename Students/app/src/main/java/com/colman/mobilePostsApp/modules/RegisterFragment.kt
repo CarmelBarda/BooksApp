@@ -15,11 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.fragment.app.viewModels
 import com.colman.mobilePostsApp.R
-import com.colman.mobilePostsApp.data.user.User
-import com.colman.mobilePostsApp.data.user.UserModel
 import com.colman.mobilePostsApp.databinding.FragmentRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.result.ActivityResult
 import androidx.annotation.RequiresExtension
