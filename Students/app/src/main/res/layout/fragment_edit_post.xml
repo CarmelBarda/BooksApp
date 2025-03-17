@@ -14,39 +14,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/profileImage"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/ic_student_placeholder" />
-
-            <TextView
-                android:id="@+id/userName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#5C4033" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginBottom="12dp">
-
-            <TextView
-                android:id="@+id/nameText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Book Name:"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/button_color"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/bookNameInput"
@@ -55,8 +24,6 @@
                 android:layout_height="wrap_content"
                 android:hint="Book Name"
                 app:boxStrokeColor="@color/button_color"
-                app:hintTextColor="@color/button_color"
-                app:layout_constraintTop_toBottomOf="@id/nameText"
                 app:startIconTint="@color/button_color">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -72,25 +39,13 @@
             android:orientation="vertical"
             android:layout_marginBottom="12dp">
 
-            <TextView
-                android:id="@+id/reccomendationText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Recommendation:"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/button_color"/>
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/recommendationInput"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="Recommendation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Write your recommendation..."
-                app:boxStrokeColor="@color/button_color"
-                app:hintTextColor="@color/button_color"
-                app:layout_constraintTop_toBottomOf="@id/nameText"
-                app:startIconTint="@color/button_color">
+                app:boxStrokeColor="@color/button_color">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -115,13 +70,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/selectBookImageButton"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="Select Book Image"
             android:textColor="#FFFFFF"
-            android:backgroundTint="#8D6E63"
-            android:layout_marginTop="8dp"
-            app:cornerRadius="8dp"/>
+            app:cornerRadius="8dp" />
 
         <TextView
             android:id="@+id/ratingLabel"
@@ -155,9 +109,8 @@
                 android:id="@+id/submitPostButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Create Post"
+                android:text="Save changes"
                 android:textColor="#FFFFFF"
-                android:backgroundTint="#8D6E63"
                 android:padding="12dp"
                 android:textSize="16sp"
                 android:gravity="center"

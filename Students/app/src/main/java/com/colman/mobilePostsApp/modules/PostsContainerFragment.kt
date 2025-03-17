@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.colman.mobilePostsApp.R
@@ -36,7 +37,7 @@ class PostsContainerFragment : Fragment(R.layout.fragment_posts_container) {
         recyclerView.visibility = View.GONE
 
         viewModel.getPosts(userName).observe(viewLifecycleOwner) { bookPosts ->
-            adapter = BookPostAdapter(bookPosts)
+            adapter = BookPostAdapter(bookPosts, findNavController())
             recyclerView.adapter = adapter
 
             progressBar.visibility = View.GONE
