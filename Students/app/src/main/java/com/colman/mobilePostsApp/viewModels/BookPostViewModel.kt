@@ -10,11 +10,11 @@ import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 class BookPostViewModel : ViewModel() {
     private val bookPostModel = BookPostModel.instance
 
-    fun getPosts(userName: String?): LiveData<List<BookPost>> {
-        return if (userName == null) {
+    fun getPosts(userId: String?): LiveData<List<BookPost>> {
+        return if (userId == null) {
             bookPostModel.getAllBookPosts()
         } else {
-            bookPostModel.getBookPostsByUserName(userName)
+            bookPostModel.getBookPostsByUserId(userId)
         }
     }
 

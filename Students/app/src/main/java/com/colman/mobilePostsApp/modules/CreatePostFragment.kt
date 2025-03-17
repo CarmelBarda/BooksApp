@@ -143,7 +143,7 @@ class CreatePostFragment : Fragment() {
             if (imageUrl.isNotEmpty()) {
                 val newPost = BookPost(
                     id = UUID.randomUUID().toString(),
-                    userName = userName,
+                    userId = userId,
                     userProfile = profileImage,
                     bookName = bookName,
                     recommendation = recommendation,

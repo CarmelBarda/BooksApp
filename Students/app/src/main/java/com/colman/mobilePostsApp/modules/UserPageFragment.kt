@@ -24,12 +24,12 @@ class UserPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
-        val userName = currentUser?.displayName
+        val userId = currentUser?.uid;
 
-        if (userName != null) {
+        if (userId != null) {
             val postsFragment = PostsContainerFragment().apply {
                 arguments = Bundle().apply {
-                    putString("userName", userName)
+                    putString("userId", userId)
                 }
             }
 

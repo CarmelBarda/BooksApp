@@ -31,8 +31,8 @@ class BookPostModel private constructor() {
         return posts
     }
 
-    fun getBookPostsByUserName(userName: String): LiveData<List<BookPost>> {
-        return database.bookPostDao().getPostsByUserId(userName)
+    fun getBookPostsByUserId(userId: String): LiveData<List<BookPost>> {
+        return database.bookPostDao().getPostsByUserId(userId)
     }
 
     fun refreshAllPosts() {

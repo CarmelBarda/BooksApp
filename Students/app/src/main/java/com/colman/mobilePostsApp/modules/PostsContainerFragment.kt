@@ -18,11 +18,11 @@ class PostsContainerFragment : Fragment(R.layout.fragment_posts_container) {
     private lateinit var adapter: BookPostAdapter
     private val viewModel: BookPostViewModel by viewModels()
 
-    private var userName: String? = null
+    private var userId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userName = arguments?.getString("userName")
+        userId = arguments?.getString("userId")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,7 +35,7 @@ class PostsContainerFragment : Fragment(R.layout.fragment_posts_container) {
         progressBar.visibility = View.VISIBLE
         recyclerView.visibility = View.GONE
 
-        viewModel.getPosts(userName).observe(viewLifecycleOwner) { bookPosts ->
+        viewModel.getPosts(userId).observe(viewLifecycleOwner) { bookPosts ->
             adapter = BookPostAdapter(bookPosts)
             recyclerView.adapter = adapter
 
