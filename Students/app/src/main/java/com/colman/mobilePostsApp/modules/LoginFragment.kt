@@ -6,15 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.databinding.FragmentLoginBinding
+import com.colman.mobilePostsApp.viewModels.UserViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private val userViewModel: UserViewModel by viewModels()
 
     private lateinit var auth: FirebaseAuth
 
@@ -39,15 +42,14 @@ class LoginFragment : Fragment() {
             val password = binding.layoutPassword.editText?.text.toString().trim()
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
-                auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
-                            findNavController().navigate(R.id.action_loginFragment_to_postsContainerFragment)
-                        } else {
-                            Toast.makeText(requireContext(), "Login Failed.", Toast.LENGTH_LONG).show()
-                        }
+                userViewModel.login(email, password) { success ->
+                    if (success) {
+                        Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.action_loginFragment_to_postsContainerFragment)
+                    } else {
+                        Toast.makeText(requireContext(), "Login Failed.", Toast.LENGTH_LONG).show()
                     }
+                }
             } else {
                 Toast.makeText(requireContext(), "Please enter email and password", Toast.LENGTH_SHORT).show()
             }
