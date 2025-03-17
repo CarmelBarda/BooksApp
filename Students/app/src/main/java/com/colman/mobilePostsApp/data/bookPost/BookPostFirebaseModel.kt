@@ -36,33 +36,32 @@ class BookPostFirebaseModel {
         storage = FirebaseStorage.getInstance()
     }
 
-    fun getAllBookPosts(callback: (List<Pair<BookPost, String?>>) -> Unit) {
+    fun getAllBookPosts(callback: (List<BookPost>) -> Unit) {
         db.collection(POSTS_COLLECTION_PATH)
             .get().addOnCompleteListener { postTask ->
                 if (postTask.isSuccessful) {
-                    val bookPosts: MutableList<Pair<BookPost, String?>> = mutableListOf()
+                    val bookPosts = mutableListOf<BookPost>()
                     val userIds = postTask.result?.documents?.mapNotNull { it.getString("userId") }?.toSet() ?: emptySet()
 
                     db.collection("users")
                         .whereIn("id", userIds.toList())
                         .get()
                         .addOnCompleteListener { userTask ->
-                            val userMap = userTask.result?.documents?.associateBy(
-                                { it.id }, { it.getString("userName") }
-                            ) ?: emptyMap()
+                            val userMap = userTask.result?.documents?.associate { it.id to it.getString("userName") } ?: emptyMap()
 
                             for (json in postTask.result!!) {
                                 val bookPost = BookPost.fromJSON(json.data!!)
-                                val userName = userMap[bookPost.userId] ?: "Unknown User"
-                                bookPosts.add(Pair(bookPost, userName))
+                                bookPost.userName = userMap[bookPost.userId] ?: "Unknown User" // Assign dynamically
+                                bookPosts.add(bookPost)
                             }
                             callback(bookPosts)
                         }
                 } else {
-                    callback(listOf())
+                    callback(emptyList())
                 }
             }
     }
+
 
 
     fun addBookImage(

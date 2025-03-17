@@ -17,6 +17,7 @@ class BookPost(
     var recommendation: String,
     var bookImage: String?,
     var rating: Int,
+    var userName: String? = null,
     var lastUpdated: Long? = null
 ) {
     companion object {
