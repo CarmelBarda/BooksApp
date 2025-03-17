@@ -9,11 +9,11 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.firebase.FirebaseApp
 import com.colman.mobilePostsApp.modules.Student
-import com.google.android.material.bottomnavigation.BottomNavigationView
-
+import com.colman.mobilePostsApp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
+    private lateinit var binding: ActivityMainBinding
 
     companion object {
         val students = mutableListOf(
@@ -52,7 +52,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         try {
             FirebaseApp.initializeApp(this)
@@ -65,11 +66,10 @@ class MainActivity : AppCompatActivity() {
             title = "Book Recommendations"
         }
 
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        NavigationUI.setupWithNavController(bottomNav, navController)
+        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController) // Use binding
 
         setupActionBarWithNavController(navController)
 
@@ -77,15 +77,15 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.loginFragment,
                 R.id.registerFragment -> {
-                    bottomNav.visibility = android.view.View.GONE
+                    binding.bottomNavigationView.visibility = android.view.View.GONE
                 }
                 else -> {
-                    bottomNav.visibility = android.view.View.VISIBLE
+                    binding.bottomNavigationView.visibility = android.view.View.VISIBLE
                 }
             }
         }
 
-        bottomNav.setOnItemSelectedListener { item ->
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
                     navController.navigate(R.id.postsContainerFragment)
