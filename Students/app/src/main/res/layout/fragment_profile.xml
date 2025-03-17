@@ -36,7 +36,6 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp" />
 
-    <!-- Edit Profile Button with White Outline -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/editProfileButton"
         android:layout_width="48dp"
