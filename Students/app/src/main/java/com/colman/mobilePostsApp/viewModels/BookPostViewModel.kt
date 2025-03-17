@@ -8,7 +8,13 @@ import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 class BookPostViewModel : ViewModel() {
     private val bookPostModel = BookPostModel.instance
 
-    val bookPosts: LiveData<List<BookPost>> = BookPostModel.instance.getAllBookPosts()
+    fun getPosts(userName: String?): LiveData<List<BookPost>> {
+        return if (userName == null) {
+            bookPostModel.getAllBookPosts()
+        } else {
+            bookPostModel.getBookPostsByUserName(userName)
+        }
+    }
 
     fun refreshPosts() {
         bookPostModel.refreshAllPosts()

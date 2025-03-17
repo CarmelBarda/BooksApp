@@ -1,9 +1,11 @@
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
@@ -11,7 +13,7 @@ import com.squareup.picasso.Picasso
 
 class BookPostAdapter(
     private var bookList: List<BookPost>,
-    private val onItemClick: (BookPost) -> Unit
+    private val navController: NavController
 ) : RecyclerView.Adapter<BookPostAdapter.BookViewHolder>() {
 
     inner class BookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -62,7 +64,12 @@ class BookPostAdapter(
         holder.recommendationText.text = book.recommendation
         holder.ratingText.text = "${book.rating}/10"
 
-        holder.editButton.setOnClickListener { onItemClick(book) }
+        holder.editButton.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("postId", book.id)
+            }
+            navController.navigate(R.id.action_postsContainerFragment_to_editPostFragment, bundle)
+        }
     }
 
 
