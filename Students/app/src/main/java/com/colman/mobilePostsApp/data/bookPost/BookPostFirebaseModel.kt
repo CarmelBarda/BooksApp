@@ -86,13 +86,16 @@ class BookPostFirebaseModel {
             }
     }
 
-    fun updateBookPost(bookPost: BookPost?, callback: () -> Unit) {
+    fun updateBookPost(postId: String, updatedFields: Map<String, Any>, callback: (Boolean) -> Unit) {
         db.collection(POSTS_COLLECTION_PATH)
-            .document(bookPost!!.id).update(bookPost.updateJson)
+            .document(postId)
+            .update(updatedFields)
             .addOnSuccessListener {
-                callback()
-            }.addOnFailureListener {
-                Log.d("Error", "Can't update this post document: " + it.message)
+                callback(true)
+            }
+            .addOnFailureListener {
+                Log.d("Error", "Failed to update post: ${it.message}")
+                callback(false)
             }
     }
 

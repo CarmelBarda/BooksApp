@@ -48,6 +48,10 @@
             android:id="@+id/action_postsContainerFragment_to_createPostFragment"
             app:destination="@id/createPostFragment" />
 
+        <action
+            android:id="@+id/action_postsContainerFragment_to_editPostFragment"
+            app:destination="@id/editPostFragment" />
+
     </fragment>
 
     <!-- Create Post Fragment -->
@@ -58,7 +62,13 @@
         android:label="Create Post"
         app:destination="@id/createPostFragment" />
 
+    <!-- Edit Post Fragment -->
 
+    <fragment
+        android:id="@+id/editPostFragment"
+        android:name="com.colman.mobilePostsApp.modules.EditPostFragment"
+        android:label="Edit Post"
+        app:destination="@id/editPostFragment" />
 
     <fragment
         android:id="@+id/profileFragment"
