@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.viewModels
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.user.User
 import com.colman.mobilePostsApp.data.user.UserModel
@@ -23,6 +24,7 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.activity.result.ActivityResult
 import androidx.annotation.RequiresExtension
 import com.google.android.material.imageview.ShapeableImageView
+import com.colman.mobilePostsApp.viewModels.UserViewModel
 
 class RegisterFragment : Fragment() {
 
@@ -31,6 +33,7 @@ class RegisterFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var imageSelectionCallBack: ActivityResultLauncher<Intent>
+    private val userViewModel: UserViewModel by viewModels()
     private var selectedImageURI: Uri? = null
 
     override fun onCreateView(
@@ -66,27 +69,13 @@ class RegisterFragment : Fragment() {
             val password = binding.layoutPassword.editText?.text.toString().trim()
 
             if (email.isNotEmpty() && name.isNotEmpty() && password.length >= 6 && selectedImageURI != null) {
-                auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
-                    val authenticatedUser = it.user!!
-
-                    val profileUpdates = UserProfileChangeRequest.Builder()
-                        .setPhotoUri(selectedImageURI)
-                        .setDisplayName(name)
-                        .build()
-
-                    authenticatedUser.updateProfile(profileUpdates)
-
-                    UserModel.instance.addUser(
-                        User(authenticatedUser.uid, name),
-                        selectedImageURI!!
-                    ) {
-                        Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT)
-                            .show()
+                userViewModel.register(name, email, password, selectedImageURI) { success ->
+                    if (success) {
+                        Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+                    } else {
+                        Toast.makeText(requireContext(), "Registration failed", Toast.LENGTH_SHORT).show()
                     }
-                }.addOnFailureListener {
-                    Toast.makeText(requireContext(), "Registration failed", Toast.LENGTH_SHORT)
-                        .show()
                 }
             } else {
                 Toast.makeText(requireContext(), "Invalid input. Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
