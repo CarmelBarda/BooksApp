@@ -18,7 +18,6 @@ import com.colman.mobilePostsApp.data.user.User
 import com.colman.mobilePostsApp.data.user.UserModel
 import com.colman.mobilePostsApp.databinding.FragmentRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.result.ActivityResult
 import androidx.annotation.RequiresExtension
@@ -69,24 +68,12 @@ class RegisterFragment : Fragment() {
                 auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
                     val authenticatedUser = it.user!!
 
-                    val profileUpdates = UserProfileChangeRequest.Builder()
-                        .setPhotoUri(selectedImageURI)
-                        .setDisplayName(name)
-                        .build()
-
-                    authenticatedUser.updateProfile(profileUpdates)
-
-                    UserModel.instance.addUser(
-                        User(authenticatedUser.uid, name),
-                        selectedImageURI!!
-                    ) {
-                        Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT)
-                            .show()
+                    UserModel.instance.addUser(User(authenticatedUser.uid, name), selectedImageURI!!) {
+                        Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                     }
                 }.addOnFailureListener {
-                    Toast.makeText(requireContext(), "Registration failed", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(requireContext(), "Registration failed", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 Toast.makeText(requireContext(), "Invalid input. Password must be at least 6 characters", Toast.LENGTH_SHORT).show()

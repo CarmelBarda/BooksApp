@@ -54,8 +54,21 @@ class UserFirebaseModel {
             }
     }
 
+    private fun updateFirestoreUserProfileImage(userId: String, downloadUri: Uri, callback: (String) -> Unit) {
+        val userDocRef = Firebase.firestore.collection("users").document(userId)
 
-    fun addUserImage(userId: String, selectedImageUri: Uri, callback: () -> Unit) {
+        userDocRef.update("profileImage", downloadUri.toString())
+            .addOnSuccessListener {
+                Log.d("Firebase", "Profile image updated in Firestore")
+                callback(downloadUri.toString())  // ✅ Pass the URL back to the app
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firebase", "Failed to update Firestore: ${e.message}")
+            }
+    }
+
+
+    private fun updateUserProfileImage(userId: String, downloadUri: Uri, callback: (String) -> Unit) {
         val user = FirebaseAuth.getInstance().currentUser
         if (user == null) {
             Log.e("Firebase", "User not logged in.")
@@ -63,18 +76,37 @@ class UserFirebaseModel {
         }
 
         val profileUpdates = UserProfileChangeRequest.Builder()
-            .setPhotoUri(selectedImageUri)
+            .setPhotoUri(downloadUri)  // ✅ Use Firebase Storage URL
             .build()
 
         user.updateProfile(profileUpdates)
             .addOnSuccessListener {
-                Log.d("Firebase", "Profile image updated successfully")
-                callback()
+                Log.d("Firebase", "Profile image updated in Firebase Auth")
+                updateFirestoreUserProfileImage(userId, downloadUri, callback)
             }
             .addOnFailureListener { e ->
                 Log.e("Firebase", "Failed to update profile image: ${e.message}")
             }
     }
+
+
+    fun addUserImage(userId: String, selectedImageUri: Uri, callback: (String) -> Unit) {
+        val storageRef = Firebase.storage.reference.child("users/$userId/profile.jpg")
+
+        storageRef.putFile(selectedImageUri)
+            .addOnSuccessListener {
+                storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                    // ✅ Pass the download URL to update Firebase Auth and Firestore
+                    updateUserProfileImage(userId, downloadUri, callback)
+                }.addOnFailureListener { e ->
+                    Log.e("Firebase", "Failed to get download URL: ${e.message}")
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firebase", "Failed to upload image: ${e.message}")
+            }
+    }
+
 
     fun updateUser(user: User?, callback: () -> Unit) {
         db.collection(USERS_COLLECTION_PATH)

@@ -55,7 +55,7 @@ class CreatePostFragment : Fragment() {
 
         binding.submitPostButton.setOnClickListener {
             val userName = binding.userName.text.toString()
-            val profileImage = binding.profileImage.toString()
+            val profileImage = binding.profileImage.tag?.toString() ?: ""
             val bookName = binding.bookNameInput.editText?.text.toString()
             val recommendation = binding.recommendationInput.editText?.text.toString()
 
@@ -75,13 +75,16 @@ class CreatePostFragment : Fragment() {
         val user = auth.currentUser
         user?.let {
             binding.userName.text = it.displayName
+            val profileImageUrl = it.photoUrl?.toString() ?: ""
 
-            it.photoUrl?.let { uri ->
+            if (profileImageUrl.isNotEmpty()) {
                 Picasso.get()
-                    .load(uri)
-                    .error(com.colman.mobilePostsApp.R.drawable.profile_pic_placeholder)
+                    .load(profileImageUrl)
+                    .error(com.colman.mobilePostsApp.R.drawable.ic_profile)
                     .into(binding.profileImage)
             }
+
+            binding.profileImage.tag = profileImageUrl
         }
     }
 
