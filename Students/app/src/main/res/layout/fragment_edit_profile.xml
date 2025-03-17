@@ -57,12 +57,33 @@
 
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/submitPostContainer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save"
-        android:padding="12dp"
-        android:layout_marginTop="26dp"
-        app:cornerRadius="8dp" />
+        android:layout_marginTop="12dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="@color/button_color"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:gravity="center"
+            app:cornerRadius="8dp"/>
+
+        <ProgressBar
+            android:id="@+id/profileProgressSpinner"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:indeterminateTint="@android:color/white"
+            style="?android:attr/progressBarStyleSmall"/>
+
+    </FrameLayout>
 </LinearLayout>
