@@ -111,4 +111,13 @@ class BookPostFirebaseModel {
                 callback()
             }
     }
+
+    fun deleteBookPost(postId: String, callback: (Boolean) -> Unit) {
+        db.collection(POSTS_COLLECTION_PATH)
+            .document(postId)
+            .delete()
+            .addOnSuccessListener { callback(true) }
+            .addOnFailureListener { callback(false) }
+    }
+
 }
