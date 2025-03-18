@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.firebase.FirebaseApp
 import com.colman.mobilePostsApp.modules.Student
 import com.colman.mobilePostsApp.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
@@ -66,10 +68,11 @@ class MainActivity : AppCompatActivity() {
             title = "Book Recommendations"
         }
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController) // Use binding
+        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
 
         setupActionBarWithNavController(navController)
 
@@ -100,6 +103,14 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 else -> false
+            }
+        }
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        if (currentUser != null) {
+            if (navController.currentDestination?.id == R.id.loginFragment) {
+                navController.navigate(R.id.postsContainerFragment)
             }
         }
     }
