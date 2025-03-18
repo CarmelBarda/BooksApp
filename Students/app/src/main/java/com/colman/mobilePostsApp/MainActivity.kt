@@ -11,7 +11,6 @@ import com.google.firebase.FirebaseApp
 import com.colman.mobilePostsApp.modules.Student
 import com.colman.mobilePostsApp.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
-import android.content.Context
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
