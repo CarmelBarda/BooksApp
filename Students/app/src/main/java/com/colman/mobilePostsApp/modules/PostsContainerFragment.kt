@@ -21,11 +21,11 @@ class PostsContainerFragment : Fragment(R.layout.fragment_posts_container) {
     private lateinit var adapter: BookPostAdapter
     private val viewModel: BookPostViewModel by viewModels()
 
-    private var userName: String? = null
+    private var userId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userName = arguments?.getString("userName")
+        userId = arguments?.getString("userId")
     }
 
     override fun onCreateView(
@@ -45,7 +45,7 @@ class PostsContainerFragment : Fragment(R.layout.fragment_posts_container) {
         binding.recyclerViewPosts.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewPosts.visibility = View.GONE
 
-        viewModel.getPosts(userName).observe(viewLifecycleOwner) { bookPosts ->
+        viewModel.getPosts(userId).observe(viewLifecycleOwner) { bookPosts ->
             adapter = BookPostAdapter(bookPosts, findNavController())
             binding.recyclerViewPosts.adapter = adapter
 

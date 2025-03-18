@@ -19,6 +19,7 @@ import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 import com.colman.mobilePostsApp.databinding.FragmentCreatePostBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -28,6 +29,7 @@ class CreatePostFragment : Fragment() {
 
     private var imageBitmap: Bitmap? = null
     private lateinit var auth: FirebaseAuth
+    private var user: FirebaseUser? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,7 +74,7 @@ class CreatePostFragment : Fragment() {
     }
 
     private fun loadUserData() {
-        val user = auth.currentUser
+        user = auth.currentUser
         user?.let {
             binding.userName.text = it.displayName
 
@@ -121,7 +123,7 @@ class CreatePostFragment : Fragment() {
             if (imageUrl.isNotEmpty()) {
                 val newPost = BookPost(
                     id = UUID.randomUUID().toString(),
-                    userName = userName,
+                    userId = user?.uid.toString(),
                     userProfile = profileImage,
                     bookName = bookName,
                     recommendation = recommendation,

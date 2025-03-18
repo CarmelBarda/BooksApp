@@ -19,8 +19,8 @@ interface BookPostDAO {
     @Update
     fun update(post: BookPost)
 
-    @Query("SELECT * FROM bookPost WHERE userName = :userName")
-    fun getPostsByUserName(userName: String): LiveData<List<BookPost>>
+    @Query("SELECT * FROM bookPost WHERE userId = :userId")
+    fun getPostsByUserId(userId: String): LiveData<List<BookPost>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(bookPost: BookPost)
