@@ -38,21 +38,37 @@ class BookPostFirebaseModel {
 
     fun getAllBookPosts(callback: (List<BookPost>) -> Unit) {
         db.collection(POSTS_COLLECTION_PATH)
-            .get().addOnCompleteListener {
-                when (it.isSuccessful) {
-                    true -> {
-                        val bookPosts: MutableList<BookPost> = mutableListOf()
-                        for (json in it.result) {
-                            val bookPost = BookPost.fromJSON(json.data)
-                            bookPosts.add(bookPost)
-                        }
+            .get().addOnCompleteListener { postTask ->
+                if (postTask.isSuccessful) {
+                    val bookPosts = mutableListOf<BookPost>()
+                    val userIds = postTask.result?.documents?.mapNotNull { it.getString("userId") }?.toSet() ?: emptySet()
+
+                    if (userIds.isEmpty()) {
                         callback(bookPosts)
+                        return@addOnCompleteListener
                     }
 
-                    false -> callback(listOf())
+                    db.collection("users")
+                        .whereIn("id", userIds.toList())
+                        .get()
+                        .addOnCompleteListener { userTask ->
+                            val userMap = userTask.result?.documents?.associate { it.id to it.getString("name") } ?: emptyMap()
+
+                            for (json in postTask.result!!) {
+                                val bookPost = BookPost.fromJSON(json.data!!)
+                                bookPost.userName = userMap[bookPost.userId] ?: "Unknown User"
+                                bookPosts.add(bookPost)
+                            }
+                            callback(bookPosts)
+                        }
+                } else {
+                    callback(emptyList())
                 }
             }
     }
+
+
+
 
     fun addBookImage(
         imageBitmap: Bitmap,

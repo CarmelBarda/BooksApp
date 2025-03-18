@@ -11,12 +11,13 @@ import com.google.firebase.firestore.FieldValue
 class BookPost(
     @PrimaryKey
     val id: String,
-    val userName: String,
+    val userId: String,
     val userProfile: String?,
     var bookName: String,
     var recommendation: String,
     var bookImage: String?,
     var rating: Int,
+    var userName: String? = null,
     var lastUpdated: Long? = null
 ) {
     companion object {
@@ -34,7 +35,7 @@ class BookPost(
             }
 
         const val ID_KEY = "id"
-        const val USERNAME_KEY = "userName"
+        const val USER_ID_KEY = "userId"
         const val USER_PROFILE_KEY = "userProfile"
         const val BOOK_NAME_KEY = "bookName"
         const val RECOMMENDATION_KEY = "recommendation"
@@ -45,14 +46,14 @@ class BookPost(
 
         fun fromJSON(json: Map<String, Any>): BookPost {
             val id = json[ID_KEY] as? String ?: ""
-            val userName = json[USERNAME_KEY] as? String ?: ""
+            val userId = json[USER_ID_KEY] as? String ?: ""
             val userProfile = json[USER_PROFILE_KEY] as? String
             val bookName = json[BOOK_NAME_KEY] as? String ?: ""
             val recommendation = json[RECOMMENDATION_KEY] as? String ?: ""
             val bookImage = json[BOOK_IMAGE_KEY] as? String
             val rating = (json[RATING_KEY] as? Long)?.toInt() ?: 0
 
-            val bookPost = BookPost(id, userName, userProfile, bookName, recommendation, bookImage, rating)
+            val bookPost = BookPost(id, userId, userProfile, bookName, recommendation, bookImage, rating)
 
             val lastUpdated: Timestamp? = json[LAST_UPDATED_KEY] as? Timestamp
             lastUpdated?.let {
@@ -67,7 +68,7 @@ class BookPost(
         get() {
             return hashMapOf(
                 ID_KEY to id,
-                USERNAME_KEY to userName,
+                USER_ID_KEY to userId,
                 USER_PROFILE_KEY to (userProfile ?: ""),
                 BOOK_NAME_KEY to bookName,
                 RECOMMENDATION_KEY to recommendation,
@@ -80,7 +81,7 @@ class BookPost(
     val updateJson: Map<String, Any>
         get() {
             return hashMapOf(
-                USERNAME_KEY to userName,
+                USER_ID_KEY to userId,
                 USER_PROFILE_KEY to (userProfile ?: ""),
                 BOOK_NAME_KEY to bookName,
                 RECOMMENDATION_KEY to recommendation,
