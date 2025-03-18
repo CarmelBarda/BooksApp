@@ -2,9 +2,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.colman.mobilePostsApp.R
@@ -27,10 +24,10 @@ class BookPostAdapter(
             if (!book.userProfile.isNullOrEmpty()) {
                 Picasso.get()
                     .load(book.userProfile)
-                    .error(R.drawable.ic_student_placeholder)
+                    .error(R.drawable.ic_profile_placeholder)
                     .into(binding.profileImage)
             } else {
-                binding.profileImage.setImageResource(R.drawable.ic_student_placeholder)
+                binding.profileImage.setImageResource(R.drawable.ic_profile_placeholder)
             }
 
             if (!book.bookImage.isNullOrEmpty()) {
