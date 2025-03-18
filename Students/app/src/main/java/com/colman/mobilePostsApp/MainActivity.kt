@@ -128,4 +128,8 @@ class MainActivity : AppCompatActivity() {
 
         navController.navigate(R.id.loginFragment)
     }
+
+    fun setBottomNavSelectedItem(itemId: Int) {
+        binding.bottomNavigationView.selectedItemId = itemId
+    }
 }
