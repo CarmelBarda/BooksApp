@@ -56,8 +56,6 @@ class CreatePostFragment : Fragment() {
         }
 
         binding.submitPostButton.setOnClickListener {
-            val userName = binding.userName.text.toString()
-            val profileImage = binding.profileImage.tag?.toString() ?: ""
             val bookName = binding.bookNameInput.editText?.text.toString()
             val recommendation = binding.recommendationInput.editText?.text.toString()
 
@@ -66,7 +64,7 @@ class CreatePostFragment : Fragment() {
                 binding.submitPostButton.text = ""
                 binding.postProgressSpinner.visibility = View.VISIBLE
 
-                savePost(userName, profileImage, bookName, recommendation, selectedRating)
+                savePost(bookName, recommendation, selectedRating)
             } else {
                 Toast.makeText(requireContext(), "Please fill all fields and pick an image!", Toast.LENGTH_SHORT).show()
             }
@@ -113,7 +111,7 @@ class CreatePostFragment : Fragment() {
         }
     }
 
-    private fun savePost(userName: String, profileImage: String, bookName: String, recommendation: String, rate: Int) {
+    private fun savePost(bookName: String, recommendation: String, rate: Int) {
         if (imageBitmap == null) {
             Toast.makeText(context, "Please select an image!", Toast.LENGTH_SHORT).show()
             binding.submitPostButton.isEnabled = true
@@ -127,7 +125,6 @@ class CreatePostFragment : Fragment() {
                 val newPost = BookPost(
                     id = UUID.randomUUID().toString(),
                     userId = user?.uid.toString(),
-                    userProfile = profileImage,
                     bookName = bookName,
                     recommendation = recommendation,
                     bookImage = imageUrl,
