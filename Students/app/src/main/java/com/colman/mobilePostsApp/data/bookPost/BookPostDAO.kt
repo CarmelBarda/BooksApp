@@ -30,4 +30,8 @@ interface BookPostDAO {
 
     @Delete
     fun delete(bookPost: BookPost)
+
+    @Query("DELETE FROM bookPost WHERE id = :postId")
+    fun deletePostById(postId: String)
+
 }
