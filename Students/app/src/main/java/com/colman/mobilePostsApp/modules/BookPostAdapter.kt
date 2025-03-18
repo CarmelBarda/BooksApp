@@ -2,12 +2,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
+import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 import com.squareup.picasso.Picasso
 import com.colman.mobilePostsApp.databinding.FragmentBookPostItemBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class BookPostAdapter(
     private var bookList: List<BookPost>,
@@ -18,8 +24,18 @@ class BookPostAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(book: BookPost) {
+            val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+
             binding.imageLoadingSpinner.visibility = View.VISIBLE
             binding.bookImage.visibility = View.GONE
+
+            if (book.userId == currentUserId) {
+                binding.editButton.visibility = View.VISIBLE
+                binding.deleteButton.visibility = View.VISIBLE
+            } else {
+                binding.editButton.visibility = View.GONE
+                binding.deleteButton.visibility = View.GONE
+            }
 
             if (!book.userProfile.isNullOrEmpty()) {
                 Picasso.get()
@@ -60,7 +76,22 @@ class BookPostAdapter(
                 val bundle = Bundle().apply {
                 putString("postId", book.id)
             }
-                navController.navigate(R.id.action_postsContainerFragment_to_editPostFragment, bundle) }
+                navController.navigate(R.id.action_postsContainerFragment_to_editPostFragment, bundle)
+            }
+
+            binding.deleteButton.setOnClickListener {
+                deletePost(book)
+            }
+        }
+
+        private fun deletePost(book: BookPost) {
+            BookPostModel.instance.deletePost(book.id) { success ->
+                if (success) {
+                    Toast.makeText(binding.root.context, "Post deleted!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(binding.root.context, "Failed to delete post!", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {

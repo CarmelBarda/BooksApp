@@ -65,7 +65,26 @@ class RegisterFragment : Fragment() {
             val email = binding.layoutEmail.editText?.text.toString().trim()
             val password = binding.layoutPassword.editText?.text.toString().trim()
 
-            if (email.isNotEmpty() && name.isNotEmpty() && password.length >= 6 && selectedImageURI != null) {
+            if(name.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), "Invalid input. Name cannot be empty", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if(email.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), "Invalid input. Email cannot be empty", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if(password.length < 6) {
+                Toast.makeText(requireContext(), "Invalid input. Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if(selectedImageURI === null) {
+                Toast.makeText(requireContext(), "Invalid input. Please select a profile picture", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
                 auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
                     val authenticatedUser = it.user!!
 
@@ -88,9 +107,6 @@ class RegisterFragment : Fragment() {
                     Toast.makeText(requireContext(), "Registration failed", Toast.LENGTH_SHORT)
                         .show()
                 }
-            } else {
-                Toast.makeText(requireContext(), "Invalid input. Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
-            }
         }
     }
 

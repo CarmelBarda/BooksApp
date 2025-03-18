@@ -20,13 +20,6 @@ class UserFirebaseModel {
         const val USERS_COLLECTION_PATH = "users"
     }
 
-    init {
-        val settings = firestoreSettings {
-            setLocalCacheSettings(memoryCacheSettings { })
-        }
-        db.firestoreSettings = settings
-    }
-
     fun getAllUsers(since: Long, callback: (List<User>) -> Unit) {
         db.collection(USERS_COLLECTION_PATH)
             .whereGreaterThanOrEqualTo(User.LAST_UPDATED_KEY, Timestamp(since, 0))

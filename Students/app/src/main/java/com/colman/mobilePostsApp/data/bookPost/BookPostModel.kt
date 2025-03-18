@@ -80,4 +80,16 @@ class BookPostModel private constructor() {
             callback()
         }
     }
+
+    fun deletePost(postId: String, callback: (Boolean) -> Unit) {
+        firebaseModel.deleteBookPost(postId) { success ->
+            if (success) {
+                postsExecutor.execute {
+                    database.bookPostDao().deletePostById(postId)
+                }
+            }
+            callback(success)
+        }
+    }
+
 }
