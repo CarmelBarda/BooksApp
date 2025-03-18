@@ -107,8 +107,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         val currentUser = FirebaseAuth.getInstance().currentUser
+
         if (currentUser != null) {
-            // Navigate only if we are at the start destination
             if (navController.currentDestination?.id == R.id.loginFragment) {
                 navController.navigate(R.id.postsContainerFragment)
             }
