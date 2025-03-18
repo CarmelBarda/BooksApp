@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -102,6 +101,10 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.userPageFragment)
                     true
                 }
+                R.id.nav_logout -> {
+                    logoutUser()
+                    true
+                }
                 else -> false
             }
         }
@@ -117,5 +120,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    private fun logoutUser() {
+        FirebaseAuth.getInstance().signOut()
+
+        navController.navigate(R.id.loginFragment)
+    }
+
+    fun setBottomNavSelectedItem(itemId: Int) {
+        binding.bottomNavigationView.selectedItemId = itemId
     }
 }
