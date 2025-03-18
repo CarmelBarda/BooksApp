@@ -9,4 +9,9 @@
     <style name="WhiteProgressBar" parent="android:Widget.ProgressBar.Small">
         <item name="android:indeterminateTint">@android:color/white</item>
     </style>
+
+    <style name="CircleImageShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

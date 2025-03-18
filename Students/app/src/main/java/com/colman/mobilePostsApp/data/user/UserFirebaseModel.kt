@@ -53,7 +53,7 @@ class UserFirebaseModel {
         userDocRef.update("profileImage", downloadUri.toString())
             .addOnSuccessListener {
                 Log.d("Firebase", "Profile image updated in Firestore")
-                callback(downloadUri.toString())  // ✅ Pass the URL back to the app
+                callback(downloadUri.toString())
             }
             .addOnFailureListener { e ->
                 Log.e("Firebase", "Failed to update Firestore: ${e.message}")
@@ -69,7 +69,7 @@ class UserFirebaseModel {
         }
 
         val profileUpdates = UserProfileChangeRequest.Builder()
-            .setPhotoUri(downloadUri)  // ✅ Use Firebase Storage URL
+            .setPhotoUri(downloadUri)
             .build()
 
         user.updateProfile(profileUpdates)
@@ -89,7 +89,6 @@ class UserFirebaseModel {
         storageRef.putFile(selectedImageUri)
             .addOnSuccessListener {
                 storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                    // ✅ Pass the download URL to update Firebase Auth and Firestore
                     updateUserProfileImage(userId, downloadUri, callback)
                 }.addOnFailureListener { e ->
                     Log.e("Firebase", "Failed to get download URL: ${e.message}")
