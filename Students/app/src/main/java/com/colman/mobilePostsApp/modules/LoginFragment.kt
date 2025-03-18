@@ -43,9 +43,7 @@ class LoginFragment : Fragment() {
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            val navController = findNavController()
-
-                            navController.navigate(R.id.action_loginFragment_to_postsContainerFragment)
+                            findNavController().navigate(R.id.action_loginFragment_to_postsContainerFragment)
                             (activity as? MainActivity)?.setBottomNavSelectedItem(R.id.nav_home)
 
                             Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
