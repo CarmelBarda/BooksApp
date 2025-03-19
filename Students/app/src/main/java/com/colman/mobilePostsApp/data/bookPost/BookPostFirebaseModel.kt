@@ -52,11 +52,17 @@ class BookPostFirebaseModel {
                         .whereIn("id", userIds.toList())
                         .get()
                         .addOnCompleteListener { userTask ->
-                            val userMap = userTask.result?.documents?.associate { it.id to it.getString("name") } ?: emptyMap()
+                            val userMap = userTask.result?.documents?.associate {
+                                it.id to Pair(it.getString("name") ?: "Unknown User", it.getString("profileImage"))
+                            } ?: emptyMap()
 
                             for (json in postTask.result!!) {
                                 val bookPost = BookPost.fromJSON(json.data!!)
-                                bookPost.userName = userMap[bookPost.userId] ?: "Unknown User"
+                                val userData = userMap[bookPost.userId]
+
+                                bookPost.userName = userData?.first ?: "Unknown User"
+                                bookPost.userProfile = userData?.second
+
                                 bookPosts.add(bookPost)
                             }
                             callback(bookPosts)
@@ -66,6 +72,7 @@ class BookPostFirebaseModel {
                 }
             }
     }
+
 
 
 

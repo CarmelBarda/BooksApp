@@ -40,10 +40,10 @@ class BookPostAdapter(
             if (!book.userProfile.isNullOrEmpty()) {
                 Picasso.get()
                     .load(book.userProfile)
-                    .error(R.drawable.ic_student_placeholder)
+                    .error(R.drawable.ic_profile)
                     .into(binding.profileImage)
             } else {
-                binding.profileImage.setImageResource(R.drawable.ic_student_placeholder)
+                binding.profileImage.setImageResource(R.drawable.ic_profile)
             }
 
             if (!book.bookImage.isNullOrEmpty()) {

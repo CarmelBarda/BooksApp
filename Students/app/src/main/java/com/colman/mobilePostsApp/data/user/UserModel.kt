@@ -66,7 +66,8 @@ class UserModel private constructor() {
 
     fun addUser(user: User, selectedImageUri: Uri, callback: () -> Unit) {
         firebaseModel.addUser(user) {
-            firebaseModel.addUserImage(user.id, selectedImageUri) {
+            firebaseModel.addUserImage(user.id, selectedImageUri) { downloadUrl ->
+                user.profileImage = downloadUrl
                 refreshAllUsers()
                 callback()
             }
