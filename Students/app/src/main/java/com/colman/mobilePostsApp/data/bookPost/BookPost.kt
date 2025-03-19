@@ -12,11 +12,11 @@ class BookPost(
     @PrimaryKey
     val id: String,
     val userId: String,
-    val userProfile: String?,
     var bookName: String,
     var recommendation: String,
     var bookImage: String?,
     var rating: Int,
+    var userProfile: String? = null,
     var userName: String? = null,
     var lastUpdated: Long? = null
 ) {
@@ -47,13 +47,12 @@ class BookPost(
         fun fromJSON(json: Map<String, Any>): BookPost {
             val id = json[ID_KEY] as? String ?: ""
             val userId = json[USER_ID_KEY] as? String ?: ""
-            val userProfile = json[USER_PROFILE_KEY] as? String
             val bookName = json[BOOK_NAME_KEY] as? String ?: ""
             val recommendation = json[RECOMMENDATION_KEY] as? String ?: ""
             val bookImage = json[BOOK_IMAGE_KEY] as? String
             val rating = (json[RATING_KEY] as? Long)?.toInt() ?: 0
 
-            val bookPost = BookPost(id, userId, userProfile, bookName, recommendation, bookImage, rating)
+            val bookPost = BookPost(id, userId, bookName, recommendation, bookImage, rating)
 
             val lastUpdated: Timestamp? = json[LAST_UPDATED_KEY] as? Timestamp
             lastUpdated?.let {
