@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.colman.mobilePostsApp.databinding.FragmentUserPageBinding
 import com.google.firebase.auth.FirebaseAuth
-import androidx.navigation.fragment.findNavController
 
 
 class UserPageFragment : Fragment() {
@@ -29,19 +28,19 @@ class UserPageFragment : Fragment() {
         val userId = currentUser?.uid;
 
         if (userId != null) {
-            val action = UserPageFragmentDirections
-                .actionUserPageFragmentToPostsContainerFragment(userId)
-
-            findNavController().navigate(action)
-//            val postsFragment = PostsContainerFragment().apply {
-//                arguments = Bundle().apply {
-//                    putString("userId", userId)
-//                }
-//            }
+//            val action = UserPageFragmentDirections
+//                .actionUserPageFragmentToPostsContainerFragment(userId.toString())
 //
-//            childFragmentManager.beginTransaction()
-//                .replace(binding.postsFragmentContainer.id, postsFragment)
-//                .commit()
+//            findNavController().navigate(action)
+            val postsFragment = PostsContainerFragment().apply {
+                arguments = Bundle().apply {
+                    putString("userId", userId)
+                }
+            }
+
+            childFragmentManager.beginTransaction()
+                .replace(binding.postsFragmentContainer.id, postsFragment)
+                .commit()
         }
     }
 

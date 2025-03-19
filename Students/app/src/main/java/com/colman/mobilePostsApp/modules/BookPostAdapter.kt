@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
@@ -11,6 +12,7 @@ import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 import com.squareup.picasso.Picasso
 import com.colman.mobilePostsApp.databinding.FragmentBookPostItemBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.colman.mobilePostsApp.modules.PostsContainerFragmentDirections
 
 class BookPostAdapter(
     private var bookList: List<BookPost>,
@@ -70,10 +72,16 @@ class BookPostAdapter(
             binding.ratingText.text = "${book.rating}/10"
 
             binding.editButton.setOnClickListener {
-                val bundle = Bundle().apply {
-                putString("postId", book.id)
-            }
-                navController.navigate(R.id.action_postsContainerFragment_to_editPostFragment, bundle)
+//                val bundle = Bundle().apply {
+//                putString("postId", book.id)
+//            }
+
+                val action = PostsContainerFragmentDirections
+                    .actionPostsContainerFragmentToEditPostFragment(book.id)
+
+                navController.navigate(action)
+
+//                navController.navigate(R.id.action_postsContainerFragment_to_editPostFragment, bundle)
             }
 
             binding.deleteButton.setOnClickListener {
