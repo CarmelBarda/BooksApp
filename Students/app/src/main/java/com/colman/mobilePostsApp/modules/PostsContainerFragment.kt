@@ -40,12 +40,6 @@ class PostsContainerFragment : Fragment(R.layout.fragment_posts_container) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val userId = try {
-//            args.userId
-//        } catch (e: IllegalArgumentException) {
-//            null
-//        }
-
         binding.postsLoadingSpinner.visibility = View.VISIBLE
         binding.recyclerViewPosts.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewPosts.visibility = View.GONE
