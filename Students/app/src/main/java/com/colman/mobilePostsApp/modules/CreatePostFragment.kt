@@ -45,7 +45,7 @@ class CreatePostFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         loadUserData()
 
-        var selectedRating = 10
+        var selectedRating = 0
         binding.bookRatingSlider.addOnChangeListener { _, value, _ ->
             selectedRating = value.toInt()
             binding.ratingLabel.text = "Rating: $selectedRating"

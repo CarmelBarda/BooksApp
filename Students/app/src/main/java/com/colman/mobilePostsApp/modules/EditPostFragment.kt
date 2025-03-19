@@ -141,7 +141,7 @@ class EditPostFragment : Fragment() {
             "bookName" to selectedBookName,
             "recommendation" to updatedRecommendation,
             "rating" to updatedRating,
-            "lastUpdated" to System.currentTimeMillis()
+            "lastUpdated" to com.google.firebase.Timestamp.now()
         )
 
         updatedImageUrl?.let { updatedFields["bookImage"] = it }
