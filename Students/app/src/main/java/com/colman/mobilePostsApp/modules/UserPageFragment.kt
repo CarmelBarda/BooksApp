@@ -28,10 +28,6 @@ class UserPageFragment : Fragment() {
         val userId = currentUser?.uid;
 
         if (userId != null) {
-//            val action = UserPageFragmentDirections
-//                .actionUserPageFragmentToPostsContainerFragment(userId.toString())
-//
-//            findNavController().navigate(action)
             val postsFragment = PostsContainerFragment().apply {
                 arguments = Bundle().apply {
                     putString("userId", userId)

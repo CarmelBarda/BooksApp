@@ -8,14 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.databinding.FragmentPostsContainerBinding
-import androidx.navigation.fragment.navArgs
-import com.colman.mobilePostsApp.data.bookPost.BookPost
-
 
 class PostsContainerFragment : Fragment(R.layout.fragment_posts_container) {
     private var _binding: FragmentPostsContainerBinding? = null
@@ -24,14 +20,10 @@ class PostsContainerFragment : Fragment(R.layout.fragment_posts_container) {
     private lateinit var adapter: BookPostAdapter
     private val viewModel: BookPostViewModel by viewModels()
 
-//    private val args: PostsContainerFragmentArgs by navArgs()
-
     private var userId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        val safeArgs: PostsContainerFragmentArgs? = arguments?.let { PostsContainerFragmentArgs.fromBundle(it) }
-//        userId = safeArgs?.userId
         userId = arguments?.getString("userId")
     }
 

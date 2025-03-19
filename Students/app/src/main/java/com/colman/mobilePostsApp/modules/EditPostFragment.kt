@@ -48,7 +48,6 @@ class EditPostFragment : Fragment() {
         val safeArgs: EditPostFragmentArgs? = arguments?.let { EditPostFragmentArgs.fromBundle(it) }
         postId = safeArgs?.postId
 
-//        postId = requireArguments().getString("postId")
         loadPostData()
 
         binding.ratingLabel.text = "Rating: ${binding.bookRatingSlider.value.toInt()}"
