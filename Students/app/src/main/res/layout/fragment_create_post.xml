@@ -48,22 +48,11 @@
                 android:textStyle="bold"
                 android:textColor="@color/button_color"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/bookNameInput"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/bookSearchFragment"
+                android:name="com.colman.mobilePostsApp.modules.BookSearchFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Book Name"
-                app:boxStrokeColor="@color/button_color"
-                app:hintTextColor="@color/button_color"
-                app:layout_constraintTop_toBottomOf="@id/nameText"
-                app:startIconTint="@color/button_color">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout

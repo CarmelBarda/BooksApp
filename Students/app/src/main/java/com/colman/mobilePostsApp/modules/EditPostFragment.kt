@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 import com.colman.mobilePostsApp.databinding.FragmentEditPostBinding
@@ -26,6 +27,7 @@ class EditPostFragment : Fragment() {
     private var imageBitmap: Bitmap? = null
     private var postId: String? = null
     private var imageUrl: String? = null
+    private var selectedBookName: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,11 +62,14 @@ class EditPostFragment : Fragment() {
     private fun loadPostData() {
         BookPostModel.instance.getPostById(postId!!) { post: BookPost? ->
             post?.let {
-                binding.bookNameInput.editText?.setText(it.bookName)
+                selectedBookName = it.bookName
                 binding.recommendationInput.editText?.setText(it.recommendation)
                 binding.bookRatingSlider.value = it.rating.coerceIn(0, 10).toFloat()
                 imageUrl = it.bookImage
                 Picasso.get().load(imageUrl).into(binding.bookImagePreview)
+
+                val bookSearchFragment = childFragmentManager.findFragmentById(R.id.bookSearchFragment) as? BookSearchFragment
+                bookSearchFragment?.setSelectedBook(selectedBookName)
             }
         }
     }
@@ -93,11 +98,13 @@ class EditPostFragment : Fragment() {
     }
 
     private fun updatePost() {
-        val bookName = binding.bookNameInput.editText?.text.toString()
         val recommendation = binding.recommendationInput.editText?.text.toString()
         val rating = binding.bookRatingSlider.value.toInt()
 
-        if (bookName.isEmpty() || recommendation.isEmpty()) {
+        val bookSearchFragment = childFragmentManager.findFragmentById(R.id.bookSearchFragment) as? BookSearchFragment
+        selectedBookName = bookSearchFragment?.getSelectedBook() ?: ""
+
+        if (selectedBookName.isEmpty() || recommendation.isEmpty()) {
             Toast.makeText(requireContext(), "Please fill all fields!", Toast.LENGTH_SHORT).show()
             return
         }
@@ -110,22 +117,23 @@ class EditPostFragment : Fragment() {
                 binding.submitPostButton.text = ""
                 binding.postProgressSpinner.visibility = View.VISIBLE
 
-                saveUpdatedPost(bookName, recommendation, rating, newImageUrl)
+                saveUpdatedPost(recommendation, rating, newImageUrl)
             }
         } else {
+            binding.submitPostButton.isEnabled = false
+            binding.submitPostButton.text = ""
             binding.postProgressSpinner.visibility = View.VISIBLE
-            saveUpdatedPost(bookName, recommendation, rating, imageUrl!!)
+            saveUpdatedPost(recommendation, rating, imageUrl!!)
         }
     }
 
     private fun saveUpdatedPost(
-        updatedBookName: String,
         updatedRecommendation: String,
         updatedRating: Int,
         updatedImageUrl: String?
     ) {
         val updatedFields = mutableMapOf<String, Any>(
-            "bookName" to updatedBookName,
+            "bookName" to selectedBookName,
             "recommendation" to updatedRecommendation,
             "rating" to updatedRating,
             "lastUpdated" to System.currentTimeMillis()

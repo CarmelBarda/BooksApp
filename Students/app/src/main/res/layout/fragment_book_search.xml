@@ -10,16 +10,8 @@
         android:id="@+id/bookSearchInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Type book name..."
+        android:hint="search your book..."
         android:completionThreshold="2"
         android:padding="10dp"
         android:textSize="16sp"/>
-
-    <TextView
-        android:id="@+id/selectedBookTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Selected Book: "
-        android:textSize="18sp"
-        android:paddingTop="10dp"/>
 </LinearLayout>

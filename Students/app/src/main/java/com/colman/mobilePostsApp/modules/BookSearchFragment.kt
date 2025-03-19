@@ -17,6 +17,7 @@ class BookSearchFragment : Fragment() {
     private var _binding: FragmentBookSearchBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: BookViewModel
+    private var selectedBook: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -33,16 +34,12 @@ class BookSearchFragment : Fragment() {
         val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line)
         binding.bookSearchInput.setAdapter(adapter)
 
-        binding.bookSearchInput.setOnItemClickListener { _, _, position, _ ->
-            val selectedBook = adapter.getItem(position)
-            binding.selectedBookTextView.text = "Selected Book: $selectedBook"
-        }
-
         binding.bookSearchInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s.toString().trim()
+                selectedBook = query
                 if (query.length > 2) { // Start search after 3+ characters
                     viewModel.searchBooks(query)
                 }
@@ -51,11 +48,24 @@ class BookSearchFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
+        binding.bookSearchInput.setOnItemClickListener { _, _, position, _ ->
+            selectedBook = adapter.getItem(position).toString()
+        }
+
         viewModel.bookTitles.observe(viewLifecycleOwner) { bookTitles ->
             adapter.clear()
             adapter.addAll(bookTitles)
             adapter.notifyDataSetChanged()
         }
+    }
+
+    fun setSelectedBook(bookName: String) {
+        selectedBook = bookName
+        binding.bookSearchInput.setText(bookName, false)
+    }
+
+    fun getSelectedBook(): String {
+        return selectedBook
     }
 
     override fun onDestroyView() {

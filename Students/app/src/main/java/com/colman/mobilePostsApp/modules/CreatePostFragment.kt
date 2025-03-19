@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 import com.colman.mobilePostsApp.databinding.FragmentCreatePostBinding
@@ -28,6 +29,7 @@ class CreatePostFragment : Fragment() {
     private var imageBitmap: Bitmap? = null
     private lateinit var auth: FirebaseAuth
     private var user: FirebaseUser? = null
+    private var selectedBookName: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,15 +56,17 @@ class CreatePostFragment : Fragment() {
         }
 
         binding.submitPostButton.setOnClickListener {
-            val bookName = binding.bookNameInput.editText?.text.toString()
             val recommendation = binding.recommendationInput.editText?.text.toString()
 
-            if (bookName.isNotBlank() && recommendation.isNotBlank() && imageBitmap != null) {
+            val bookSearchFragment = childFragmentManager.findFragmentById(R.id.bookSearchFragment) as? BookSearchFragment
+            selectedBookName = bookSearchFragment?.getSelectedBook() ?: ""
+
+            if (selectedBookName.isNotBlank() && recommendation.isNotBlank() && imageBitmap != null) {
                 binding.submitPostButton.isEnabled = false
                 binding.submitPostButton.text = ""
                 binding.postProgressSpinner.visibility = View.VISIBLE
 
-                savePost(bookName, recommendation, selectedRating)
+                savePost(selectedBookName, recommendation, selectedRating)
             } else {
                 Toast.makeText(requireContext(), "Please fill all fields and pick an image!", Toast.LENGTH_SHORT).show()
             }
@@ -78,7 +82,7 @@ class CreatePostFragment : Fragment() {
             if (profileImageUrl.isNotEmpty()) {
                 Picasso.get()
                     .load(profileImageUrl)
-                    .error(com.colman.mobilePostsApp.R.drawable.ic_profile)
+                    .error(R.drawable.ic_profile)
                     .into(binding.profileImage)
             }
 
