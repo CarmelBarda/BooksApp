@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Students</string>
-    <string name="add_student">Add Student</string>
+    <string name="app_name">Books</string>
     <string name="login">Login</string>
     <string name="sign_up">Sign up</string>
 </resources>
