@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.databinding.FragmentPostsContainerBinding
 
-
 class PostsContainerFragment : Fragment(R.layout.fragment_posts_container) {
     private var _binding: FragmentPostsContainerBinding? = null
     private val binding get() = _binding!!

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.colman.mobilePostsApp.databinding.FragmentUserPageBinding
 import com.google.firebase.auth.FirebaseAuth
 
+
 class UserPageFragment : Fragment() {
 
     private var _binding: FragmentUserPageBinding? = null

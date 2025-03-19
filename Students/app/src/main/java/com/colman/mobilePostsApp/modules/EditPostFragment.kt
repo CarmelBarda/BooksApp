@@ -13,12 +13,13 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.colman.mobilePostsApp.R
+import androidx.navigation.fragment.navArgs
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 import com.colman.mobilePostsApp.databinding.FragmentEditPostBinding
 import com.squareup.picasso.Picasso
 import java.util.UUID
+import kotlin.getValue
 
 class EditPostFragment : Fragment() {
     private var _binding: FragmentEditPostBinding? = null
@@ -28,6 +29,8 @@ class EditPostFragment : Fragment() {
     private var postId: String? = null
     private var imageUrl: String? = null
     private var selectedBookName: String = ""
+
+    private val args: EditPostFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +44,9 @@ class EditPostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        postId = requireArguments().getString("postId")
+        val safeArgs: EditPostFragmentArgs? = arguments?.let { EditPostFragmentArgs.fromBundle(it) }
+        postId = safeArgs?.postId
+
         loadPostData()
 
         binding.ratingLabel.text = "Rating: ${binding.bookRatingSlider.value.toInt()}"
