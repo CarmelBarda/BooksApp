@@ -1,7 +1,5 @@
 package com.colman.mobilePostsApp.modules
 
-import android.app.Activity
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -15,11 +13,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 import com.colman.mobilePostsApp.databinding.FragmentEditPostBinding
-import com.google.android.material.slider.Slider
 import com.squareup.picasso.Picasso
 import java.util.UUID
 
@@ -53,8 +49,7 @@ class EditPostFragment : Fragment() {
         }
 
         binding.selectBookImageButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            imagePickerLauncher.launch(intent)
+            imagePicker.launch("image/*")
         }
 
         binding.submitPostButton.setOnClickListener {
@@ -74,14 +69,12 @@ class EditPostFragment : Fragment() {
         }
     }
 
-    private val imagePickerLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.data?.let { uri ->
-                imageBitmap = getBitmapFromUri(uri)
-                binding.bookImagePreview.setImageBitmap(imageBitmap)
-            }
+    private val imagePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null) {
+            imageBitmap = getBitmapFromUri(uri)
+            binding.bookImagePreview.setImageBitmap(imageBitmap)
+        } else {
+            Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -109,15 +102,18 @@ class EditPostFragment : Fragment() {
             return
         }
 
-        binding.submitPostButton.isEnabled = false
-
         if (imageBitmap != null) {
             BookPostModel.instance.saveBookImage(
                 imageBitmap!!, UUID.randomUUID().toString() + ".jpg"
             ) { newImageUrl: String ->
+                binding.submitPostButton.isEnabled = false
+                binding.submitPostButton.text = ""
+                binding.postProgressSpinner.visibility = View.VISIBLE
+
                 saveUpdatedPost(bookName, recommendation, rating, newImageUrl)
             }
         } else {
+            binding.postProgressSpinner.visibility = View.VISIBLE
             saveUpdatedPost(bookName, recommendation, rating, imageUrl!!)
         }
     }
@@ -139,10 +135,16 @@ class EditPostFragment : Fragment() {
 
         if (updatedFields.isNotEmpty()) {
             BookPostModel.instance.updatePost(postId!!, updatedFields) {
+                binding.submitPostButton.isEnabled = true
+                binding.submitPostButton.text = "Save changes"
+                binding.postProgressSpinner.visibility = View.GONE
                 Toast.makeText(requireContext(), "Post updated successfully!", Toast.LENGTH_LONG).show()
                 findNavController().navigateUp()
             }
         } else {
+            binding.submitPostButton.isEnabled = true
+            binding.submitPostButton.text = "Save changes"
+            binding.postProgressSpinner.visibility = View.GONE
             Toast.makeText(requireContext(), "No changes made!", Toast.LENGTH_SHORT).show()
         }
     }

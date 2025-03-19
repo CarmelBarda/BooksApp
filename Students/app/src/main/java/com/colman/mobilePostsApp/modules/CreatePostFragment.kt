@@ -1,7 +1,5 @@
 package com.colman.mobilePostsApp.modules
 
-import android.app.Activity
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -89,16 +87,15 @@ class CreatePostFragment : Fragment() {
     }
 
     private fun pickImageFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        imagePickerLauncher.launch(intent)
+        imagePicker.launch("image/*")
     }
 
-    private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.data?.let { uri ->
-                imageBitmap = getBitmapFromUri(uri)
-                binding.bookImagePreview.setImageBitmap(imageBitmap)
-            }
+    private val imagePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null) {
+            imageBitmap = getBitmapFromUri(uri)
+            binding.bookImagePreview.setImageBitmap(imageBitmap)
+        } else {
+            Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
         }
     }
 
