@@ -5,6 +5,7 @@ import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.firestoreSettings
@@ -13,11 +14,42 @@ import com.google.firebase.storage.storage
 
 class UserFirebaseModel {
 
+    private var mAuth: FirebaseAuth
+    private var mUser: FirebaseUser?
+
     private val db = Firebase.firestore
     private val storage = Firebase.storage
 
+    init {
+        mAuth = FirebaseAuth.getInstance()
+        mUser = mAuth.currentUser
+    }
+
     companion object {
         const val USERS_COLLECTION_PATH = "users"
+    }
+
+    fun getUser(id: String, optionalListener: UserModel.GetLoggedUserListener) {
+        val documentRef = db.collection("users").document(id)
+
+        documentRef.get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val document = task.result
+                    if (document != null && document.exists()) {
+                        var user = document.toObject(User::class.java)
+                        user?.id = document.id
+                        optionalListener.onComplete(user ?: User("", "", ""))
+                    } else {
+                        optionalListener.onComplete(User("", "", ""))
+                    }
+                } else {
+                    optionalListener.onComplete(User("", "", ""))
+                }
+            }
+            .addOnFailureListener {
+                optionalListener.onComplete(User("", "", ""))
+            }
     }
 
     fun getAllUsers(since: Long, callback: (List<User>) -> Unit) {

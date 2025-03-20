@@ -2,8 +2,10 @@ package com.colman.mobilePostsApp.data.user
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.colman.mobilePostsApp.data.AppLocalDatabase
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import java.util.concurrent.Executors
 
@@ -12,11 +14,31 @@ class UserModel private constructor() {
     private val database = AppLocalDatabase.db
     private var usersExecutor = Executors.newSingleThreadExecutor()
     private val firebaseModel = UserFirebaseModel()
-    private val users: LiveData<MutableList<User>>? = null
+    val loggedUser: MutableLiveData<User> = MutableLiveData()
+    val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
+
+    interface GetLoggedUserListener {
+        fun onComplete(user: User)
+    }
 
     companion object {
         val instance: UserModel = UserModel()
+    }
+
+    fun getLoggedUser(): LiveData<User> {
+        if (loggedUser.value == null) {
+            refreshLoggedUser()
+        }
+        return loggedUser
+    }
+
+    private fun refreshLoggedUser() {
+        return firebaseModel.getUser(mAuth.uid!!, object : GetLoggedUserListener {
+            override fun onComplete(user: User) {
+                loggedUser.postValue(user)
+            }
+        })
     }
 
     fun getCurrentUser(): LiveData<User> {
@@ -48,14 +70,14 @@ class UserModel private constructor() {
 
     fun updateUser(user: User?, callback: () -> Unit) {
         firebaseModel.updateUser(user) {
-            refreshAllUsers()
+            refreshLoggedUser()
             callback()
         }
     }
 
     fun updateUserImage(userId: String, selectedImageUri: Uri, callback: () -> Unit) {
         firebaseModel.addUserImage(userId, selectedImageUri) {
-            refreshAllUsers()
+            refreshLoggedUser()
             callback()
         }
     }
@@ -68,7 +90,7 @@ class UserModel private constructor() {
         firebaseModel.addUser(user) {
             firebaseModel.addUserImage(user.id, selectedImageUri) { downloadUrl ->
                 user.profileImage = downloadUrl
-                refreshAllUsers()
+                refreshLoggedUser()
                 callback()
             }
         }

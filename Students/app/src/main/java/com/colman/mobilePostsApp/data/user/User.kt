@@ -10,7 +10,7 @@ import com.google.firebase.firestore.FieldValue
 @Entity
 class User(
     @PrimaryKey
-    val id: String,
+    var id: String,
     val name: String,
     var profileImage: String? = null,
     var lastUpdated: Long? = null,
