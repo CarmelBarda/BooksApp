@@ -13,15 +13,16 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.fragment.app.viewModels
 import com.colman.mobilePostsApp.R
+import com.colman.mobilePostsApp.data.user.User
+import com.colman.mobilePostsApp.data.user.UserModel
 import com.colman.mobilePostsApp.databinding.FragmentRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.result.ActivityResult
 import androidx.annotation.RequiresExtension
 import com.google.android.material.imageview.ShapeableImageView
-import com.colman.mobilePostsApp.viewModels.UserViewModel
+import com.google.firebase.auth.UserProfileChangeRequest
 
 class RegisterFragment : Fragment() {
 
@@ -30,7 +31,6 @@ class RegisterFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var imageSelectionCallBack: ActivityResultLauncher<Intent>
-    private val userViewModel: UserViewModel by viewModels()
     private var selectedImageURI: Uri? = null
 
     override fun onCreateView(
@@ -65,17 +65,50 @@ class RegisterFragment : Fragment() {
             val email = binding.layoutEmail.editText?.text.toString().trim()
             val password = binding.layoutPassword.editText?.text.toString().trim()
 
-            if (email.isNotEmpty() && name.isNotEmpty() && password.length >= 6 && selectedImageURI != null) {
-                userViewModel.register(name, email, password, selectedImageURI) { success ->
-                    if (success) {
-                        Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-                    } else {
-                        Toast.makeText(requireContext(), "Registration failed", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } else {
+            binding.registerButton.isEnabled = false
+            binding.registerButton.text = ""
+            binding.postProgressSpinner.visibility = View.VISIBLE
+
+            if(name.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), "Invalid input. Name cannot be empty", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if(email.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), "Invalid input. Email cannot be empty", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if(password.length < 6) {
                 Toast.makeText(requireContext(), "Invalid input. Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if(selectedImageURI === null) {
+                Toast.makeText(requireContext(), "Invalid input. Please select a profile picture", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
+                val authenticatedUser = it.user!!
+
+                val profileUpdates = UserProfileChangeRequest.Builder()
+                    .setPhotoUri(selectedImageURI)
+                    .setDisplayName(name)
+                    .build()
+
+                authenticatedUser.updateProfile(profileUpdates)
+
+                UserModel.instance.addUser(User(authenticatedUser.uid, name), selectedImageURI!!) {
+                    binding.postProgressSpinner.visibility = View.GONE
+
+                    Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+                }
+            }.addOnFailureListener {
+                binding.postProgressSpinner.visibility = View.GONE
+
+                Toast.makeText(requireContext(), "Registration failed", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.databinding.FragmentProfileBinding
 import com.colman.mobilePostsApp.viewModels.UserViewModel
-import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 
 class ProfileFragment : Fragment() {

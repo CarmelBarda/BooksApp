@@ -38,21 +38,44 @@ class BookPostFirebaseModel {
 
     fun getAllBookPosts(callback: (List<BookPost>) -> Unit) {
         db.collection(POSTS_COLLECTION_PATH)
-            .get().addOnCompleteListener {
-                when (it.isSuccessful) {
-                    true -> {
-                        val bookPosts: MutableList<BookPost> = mutableListOf()
-                        for (json in it.result) {
-                            val bookPost = BookPost.fromJSON(json.data)
-                            bookPosts.add(bookPost)
-                        }
+            .get().addOnCompleteListener { postTask ->
+                if (postTask.isSuccessful) {
+                    val bookPosts = mutableListOf<BookPost>()
+                    val userIds = postTask.result?.documents?.mapNotNull { it.getString("userId") }?.toSet() ?: emptySet()
+
+                    if (userIds.isEmpty()) {
                         callback(bookPosts)
+                        return@addOnCompleteListener
                     }
 
-                    false -> callback(listOf())
+                    db.collection("users")
+                        .whereIn("id", userIds.toList())
+                        .get()
+                        .addOnCompleteListener { userTask ->
+                            val userMap = userTask.result?.documents?.associate {
+                                it.id to Pair(it.getString("name") ?: "Unknown User", it.getString("profileImage"))
+                            } ?: emptyMap()
+
+                            for (json in postTask.result!!) {
+                                val bookPost = BookPost.fromJSON(json.data!!)
+                                val userData = userMap[bookPost.userId]
+
+                                bookPost.userName = userData?.first ?: "Unknown User"
+                                bookPost.userProfile = userData?.second
+
+                                bookPosts.add(bookPost)
+                            }
+                            callback(bookPosts)
+                        }
+                } else {
+                    callback(emptyList())
                 }
             }
     }
+
+
+
+
 
     fun addBookImage(
         imageBitmap: Bitmap,
@@ -76,13 +99,16 @@ class BookPostFirebaseModel {
             }
     }
 
-    fun updateBookPost(bookPost: BookPost?, callback: () -> Unit) {
+    fun updateBookPost(postId: String, updatedFields: Map<String, Any>, callback: (Boolean) -> Unit) {
         db.collection(POSTS_COLLECTION_PATH)
-            .document(bookPost!!.id).update(bookPost.updateJson)
+            .document(postId)
+            .update(updatedFields)
             .addOnSuccessListener {
-                callback()
-            }.addOnFailureListener {
-                Log.d("Error", "Can't update this post document: " + it.message)
+                callback(true)
+            }
+            .addOnFailureListener {
+                Log.d("Error", "Failed to update post: ${it.message}")
+                callback(false)
             }
     }
 
@@ -92,4 +118,13 @@ class BookPostFirebaseModel {
                 callback()
             }
     }
+
+    fun deleteBookPost(postId: String, callback: (Boolean) -> Unit) {
+        db.collection(POSTS_COLLECTION_PATH)
+            .document(postId)
+            .delete()
+            .addOnSuccessListener { callback(true) }
+            .addOnFailureListener { callback(false) }
+    }
+
 }

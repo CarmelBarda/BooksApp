@@ -1,18 +1,19 @@
 package com.colman.mobilePostsApp.modules
 
-import android.app.Activity
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.databinding.FragmentEditProfileBinding
+import com.colman.mobilePostsApp.viewModels.UserViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -30,6 +31,7 @@ class EditProfileFragment : Fragment() {
     private lateinit var storageRef: StorageReference
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+    private val userViewModel: UserViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -57,49 +59,68 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun loadUserData() {
-        val user = auth.currentUser
-        if (user != null) {
-            binding.nameEditText.editText?.setText(user.displayName)
+        userViewModel.currentUser.observe(viewLifecycleOwner, Observer { user ->
+            if (user != null) {
+                binding.nameEditText.editText?.setText(user.name)
 
-            if (user.photoUrl != null) {
-                Picasso.get()
-                    .load(user.photoUrl)
-                    .placeholder(R.drawable.profile_pic_placeholder)
-                    .error(R.drawable.profile_pic_placeholder)
-                    .into(binding.profileImageView)
+                if (user.profileImage != null) {
+                    Picasso.get()
+                        .load(user.profileImage)
+                        .placeholder(R.drawable.profile_pic_placeholder)
+                        .error(R.drawable.profile_pic_placeholder)
+                        .into(binding.profileImageView)
+                }
             }
+        })
+    }
+
+    private val imagePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null) {
+            selectedImageUri = uri
+            binding.profileImageView.setImageURI(uri)
+        } else {
+            Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, IMAGE_PICK_REQUEST)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_PICK_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-            selectedImageUri = data.data
-            binding.profileImageView.setImageURI(selectedImageUri)
-        }
+        imagePicker.launch("image/*")
     }
 
     private fun saveProfile() {
+        binding.saveButton.isEnabled = false
+        binding.saveButton.text = ""
+        binding.profileProgressSpinner.visibility = View.VISIBLE
+
         val newName = binding.nameEditText.editText?.text.toString().trim()
         val user = auth.currentUser
 
         if (user != null) {
             if (selectedImageUri != null) {
-                val imageRef = storageRef.child("${user.uid}.jpg")
-                imageRef.putFile(selectedImageUri!!)
-                    .addOnSuccessListener {
-                        imageRef.downloadUrl.addOnSuccessListener { uri ->
-                            updateUserProfile(user, newName, uri.toString())
-                        }
+
+                userViewModel.updateProfile(newName, selectedImageUri) { success ->
+                    binding.saveButton.isEnabled = true
+                    binding.profileProgressSpinner.visibility = View.GONE
+                    if (success) {
+                        Toast.makeText(requireContext(), "Profile updated", Toast.LENGTH_SHORT).show()
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                    } else {
+                        Toast.makeText(requireContext(), "Profile update failed", Toast.LENGTH_SHORT).show()
                     }
-                    .addOnFailureListener {
-                        Toast.makeText(requireContext(), "Image upload failed", Toast.LENGTH_SHORT).show()
-                    }
+                }
+
+//                val imageRef = storageRef.child("${user.uid}.jpg")
+//                imageRef.putFile(selectedImageUri!!)
+//                    .addOnSuccessListener {
+//                        imageRef.downloadUrl.addOnSuccessListener { uri ->
+//                            updateUserProfile(user, newName, uri.toString())
+//                        }
+//                    }
+//                    .addOnFailureListener {
+//                        turnOnSaveButton()
+//
+//                        Toast.makeText(requireContext(), "Image upload failed", Toast.LENGTH_SHORT).show()
+//                    }
             } else {
                 updateUserProfile(user, newName, user.photoUrl?.toString())
             }
@@ -122,6 +143,8 @@ class EditProfileFragment : Fragment() {
                 }
             }
             .addOnFailureListener {
+                turnOnSaveButton()
+
                 if (isAdded) {
                     Toast.makeText(requireContext(), "Profile update failed", Toast.LENGTH_SHORT).show()
                 }
@@ -139,14 +162,24 @@ class EditProfileFragment : Fragment() {
             .update(userMap)
             .addOnSuccessListener {
                 if (isAdded) {
+                    turnOnSaveButton()
+
                     Toast.makeText(requireContext(), "Firestore updated", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener {
                 if (isAdded) {
+                    turnOnSaveButton()
+
                     Toast.makeText(requireContext(), "Failed to update Firestore", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun turnOnSaveButton() {
+        binding.saveButton.isEnabled = true
+        binding.saveButton.text = "Save"
+        binding.profileProgressSpinner.visibility = View.GONE
     }
 
     override fun onDestroyView() {

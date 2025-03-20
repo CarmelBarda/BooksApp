@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.colman.mobilePostsApp.MainActivity
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.databinding.FragmentLoginBinding
 import com.colman.mobilePostsApp.viewModels.UserViewModel
@@ -17,9 +18,9 @@ class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private val userViewModel: UserViewModel by viewModels()
 
     private lateinit var auth: FirebaseAuth
+    private val userViewModel: UserViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -43,13 +44,15 @@ class LoginFragment : Fragment() {
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 userViewModel.login(email, password) { success ->
-                    if (success) {
-                        Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_loginFragment_to_postsContainerFragment)
-                    } else {
-                        Toast.makeText(requireContext(), "Login Failed.", Toast.LENGTH_LONG).show()
+                        if (success) {
+                            findNavController().navigate(R.id.action_loginFragment_to_postsContainerFragment)
+                            (activity as? MainActivity)?.setBottomNavSelectedItem(R.id.nav_home)
+
+                            Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(requireContext(), "Login Failed.", Toast.LENGTH_LONG).show()
+                        }
                     }
-                }
             } else {
                 Toast.makeText(requireContext(), "Please enter email and password", Toast.LENGTH_SHORT).show()
             }

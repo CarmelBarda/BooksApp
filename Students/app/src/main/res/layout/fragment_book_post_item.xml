@@ -19,33 +19,53 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_student_placeholder"
-            android:background="@drawable/ic_student_placeholder" /> <!-- Rounded bg for profile -->
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_pic_placeholder"
+            app:shapeAppearanceOverlay="@style/CircleImageShape"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2dp" />
 
         <TextView
             android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#5C4033" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/editButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/edit_icon"
+            android:background="@drawable/edit_icon" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete" />
+
     </LinearLayout>
 
     <TextView
         android:id="@+id/bookName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="24sp"
+        android:layout_gravity="center"
         android:textStyle="bold"
         android:textColor="#8D6E63"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="4dp" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="8dp"
-        android:background="#E8B4B8"
-        android:padding="8dp">
+        android:background="@drawable/rounded_edit_text"
+        android:padding="12dp"
+        android:layout_marginTop="8dp" >
 
         <TextView
             android:id="@+id/recommendationText"
@@ -56,14 +76,28 @@
             android:padding="4dp" />
     </ScrollView>
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/bookImage"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="8dp"
-        android:scaleType="centerCrop"
-        android:background="#DDBEA9"
-        android:src="@drawable/ic_book_placeholder" />
+        android:layout_marginTop="8dp">
+
+        <ProgressBar
+            android:id="@+id/imageLoadingSpinner"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            style="?android:attr/progressBarStyleLarge" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/bookImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
+            android:background="#DDBEA9"
+            android:visibility="gone"
+            android:src="@drawable/ic_book_placeholder" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
