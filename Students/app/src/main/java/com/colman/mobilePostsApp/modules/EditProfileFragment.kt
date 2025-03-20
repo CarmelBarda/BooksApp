@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.databinding.FragmentEditProfileBinding
+import com.colman.mobilePostsApp.viewModels.UserProfileViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -28,6 +30,7 @@ class EditProfileFragment : Fragment() {
     private lateinit var storageRef: StorageReference
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+    private val userProfileViewModel: UserProfileViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -55,13 +58,11 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun loadUserData() {
-        val user = auth.currentUser
-        if (user != null) {
-            binding.nameEditText.editText?.setText(user.displayName)
-
-            if (user.photoUrl != null) {
+        userProfileViewModel.getCurrentUser().observe(viewLifecycleOwner) { user ->
+            binding.nameEditText.editText?.setText(user.name)
+            if (user.profileImage != null) {
                 Picasso.get()
-                    .load(user.photoUrl)
+                    .load(user.profileImage)
                     .placeholder(R.drawable.profile_pic_placeholder)
                     .error(R.drawable.profile_pic_placeholder)
                     .into(binding.profileImageView)

@@ -12,11 +12,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.user.User
-import com.colman.mobilePostsApp.data.user.UserModel
 import com.colman.mobilePostsApp.databinding.FragmentRegisterBinding
+import com.colman.mobilePostsApp.viewModels.UserProfileViewModel
 import com.google.firebase.auth.FirebaseAuth
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.result.ActivityResult
@@ -32,6 +33,7 @@ class RegisterFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var imageSelectionCallBack: ActivityResultLauncher<Intent>
     private var selectedImageURI: Uri? = null
+    private val userProfileViewModel: UserProfileViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -89,27 +91,27 @@ class RegisterFragment : Fragment() {
                 return@setOnClickListener
             }
 
-                auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
-                    val authenticatedUser = it.user!!
+            auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
+                val authenticatedUser = it.user!!
 
-                    val profileUpdates = UserProfileChangeRequest.Builder()
-                        .setPhotoUri(selectedImageURI)
-                        .setDisplayName(name)
-                        .build()
+                val profileUpdates = UserProfileChangeRequest.Builder()
+                    .setPhotoUri(selectedImageURI)
+                    .setDisplayName(name)
+                    .build()
 
-                    authenticatedUser.updateProfile(profileUpdates)
+                authenticatedUser.updateProfile(profileUpdates)
 
-                    UserModel.instance.addUser(User(authenticatedUser.uid, name), selectedImageURI!!) {
-                        binding.postProgressSpinner.visibility = View.GONE
-
-                        Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-                    }
-                }.addOnFailureListener {
+                userProfileViewModel.updateUser(User(authenticatedUser.uid, name)) {
                     binding.postProgressSpinner.visibility = View.GONE
 
-                    Toast.makeText(requireContext(), "Registration failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                 }
+            }.addOnFailureListener {
+                binding.postProgressSpinner.visibility = View.GONE
+
+                Toast.makeText(requireContext(), "Registration failed", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
