@@ -19,7 +19,7 @@ interface BookPostDAO {
     @Update
     fun update(post: BookPost)
 
-    @Query("SELECT * FROM bookPost WHERE userId = :userId")
+    @Query("SELECT * FROM bookPost WHERE userId = :userId ORDER BY lastUpdated DESC")
     fun getPostsByUserId(userId: String): LiveData<List<BookPost>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
