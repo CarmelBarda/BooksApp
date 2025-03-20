@@ -8,18 +8,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.databinding.FragmentEditProfileBinding
 import com.colman.mobilePostsApp.viewModels.UserViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 
 class EditProfileFragment : Fragment() {
@@ -27,11 +21,8 @@ class EditProfileFragment : Fragment() {
     private var _binding: FragmentEditProfileBinding? = null
     private val binding get() = _binding!!
 
-    private var selectedImageUri: Uri? = null
-    private lateinit var storageRef: StorageReference
-    private lateinit var firestore: FirebaseFirestore
-    private lateinit var auth: FirebaseAuth
     private val userViewModel: UserViewModel by viewModels()
+    private var selectedImageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -43,11 +34,18 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        auth = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
-        storageRef = FirebaseStorage.getInstance().reference.child("profile_images")
+        userViewModel.loadCurrentUser()
 
-        loadUserData()
+        userViewModel.currentUser.observe(viewLifecycleOwner, Observer { user ->
+            if (user != null) {
+                binding.nameEditText.editText?.setText(user.name)
+                user.profileImage?.let {
+                    Picasso.get().load(it)
+                        .placeholder(R.drawable.profile_pic_placeholder)
+                        .into(binding.profileImageView)
+                }
+            }
+        })
 
         binding.changePhotoButton.setOnClickListener {
             openGallery()
@@ -56,22 +54,6 @@ class EditProfileFragment : Fragment() {
         binding.saveButton.setOnClickListener {
             saveProfile()
         }
-    }
-
-    private fun loadUserData() {
-        userViewModel.currentUser.observe(viewLifecycleOwner, Observer { user ->
-            if (user != null) {
-                binding.nameEditText.editText?.setText(user.name)
-
-                if (user.profileImage != null) {
-                    Picasso.get()
-                        .load(user.profileImage)
-                        .placeholder(R.drawable.profile_pic_placeholder)
-                        .error(R.drawable.profile_pic_placeholder)
-                        .into(binding.profileImageView)
-                }
-            }
-        })
     }
 
     private val imagePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -89,105 +71,27 @@ class EditProfileFragment : Fragment() {
 
     private fun saveProfile() {
         binding.saveButton.isEnabled = false
-        binding.saveButton.text = ""
+        binding.nameEditText.visibility = View.GONE
         binding.profileProgressSpinner.visibility = View.VISIBLE
 
         val newName = binding.nameEditText.editText?.text.toString().trim()
-        val user = auth.currentUser
 
-        if (user != null) {
-            if (selectedImageUri != null) {
+        userViewModel.updateProfile(newName, selectedImageUri) { success ->
+            binding.saveButton.isEnabled = true
+            binding.profileProgressSpinner.visibility = View.GONE
+            binding.nameEditText.visibility = View.GONE
 
-                userViewModel.updateProfile(newName, selectedImageUri) { success ->
-                    binding.saveButton.isEnabled = true
-                    binding.profileProgressSpinner.visibility = View.GONE
-                    if (success) {
-                        Toast.makeText(requireContext(), "Profile updated", Toast.LENGTH_SHORT).show()
-                        requireActivity().onBackPressedDispatcher.onBackPressed()
-                    } else {
-                        Toast.makeText(requireContext(), "Profile update failed", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-//                val imageRef = storageRef.child("${user.uid}.jpg")
-//                imageRef.putFile(selectedImageUri!!)
-//                    .addOnSuccessListener {
-//                        imageRef.downloadUrl.addOnSuccessListener { uri ->
-//                            updateUserProfile(user, newName, uri.toString())
-//                        }
-//                    }
-//                    .addOnFailureListener {
-//                        turnOnSaveButton()
-//
-//                        Toast.makeText(requireContext(), "Image upload failed", Toast.LENGTH_SHORT).show()
-//                    }
+            if (success) {
+                Toast.makeText(requireContext(), "Profile updated", Toast.LENGTH_SHORT).show()
+                findNavController().navigateUp()
             } else {
-                updateUserProfile(user, newName, user.photoUrl?.toString())
+                Toast.makeText(requireContext(), "Profile update failed", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    private fun updateUserProfile(user: FirebaseUser, newName: String, imageUrl: String?) {
-        val profileUpdates = UserProfileChangeRequest.Builder()
-            .setDisplayName(newName)
-            .setPhotoUri(imageUrl?.let { Uri.parse(it) })
-            .build()
-
-        user.updateProfile(profileUpdates)
-            .addOnSuccessListener {
-                updateUserInFirestore(user.uid, newName, imageUrl)
-
-                if (isAdded) {
-                    Toast.makeText(requireContext(), "Profile updated", Toast.LENGTH_SHORT).show()
-                    findNavController().navigateUp()
-                }
-            }
-            .addOnFailureListener {
-                turnOnSaveButton()
-
-                if (isAdded) {
-                    Toast.makeText(requireContext(), "Profile update failed", Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
-
-    private fun updateUserInFirestore(userId: String, newName: String, imageUrl: String?) {
-        val userMap = mutableMapOf<String, Any>("name" to newName)
-        if (imageUrl != null) {
-            userMap["profileImage"] = imageUrl
-        }
-
-        firestore.collection("users")
-            .document(userId)
-            .update(userMap)
-            .addOnSuccessListener {
-                if (isAdded) {
-                    turnOnSaveButton()
-
-                    Toast.makeText(requireContext(), "Firestore updated", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .addOnFailureListener {
-                if (isAdded) {
-                    turnOnSaveButton()
-
-                    Toast.makeText(requireContext(), "Failed to update Firestore", Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
-
-    private fun turnOnSaveButton() {
-        binding.saveButton.isEnabled = true
-        binding.saveButton.text = "Save"
-        binding.profileProgressSpinner.visibility = View.GONE
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private const val IMAGE_PICK_REQUEST = 1001
     }
 }
