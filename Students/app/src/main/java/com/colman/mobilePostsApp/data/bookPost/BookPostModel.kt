@@ -38,12 +38,20 @@ class BookPostModel private constructor() {
     fun refreshAllPosts() {
         val lastUpdated: Long = BookPost.lastUpdated
 
-        firebaseModel.getAllBookPosts() { list ->
+        firebaseModel.getAllBookPosts(lastUpdated) { list ->
+            var latestUpdateTime = lastUpdated
+
             if (list.isNotEmpty()) {
                 postsExecutor.execute {
                     database.bookPostDao().insertAll(list)
 
-                    val latestUpdateTime = list.maxOfOrNull { it.lastUpdated ?: 0 } ?: lastUpdated
+                    for (post in list) {
+                        post.lastUpdated?.let {
+                            if (latestUpdateTime < it) {
+                                latestUpdateTime = it
+                            }
+                        }
+                    }
                     BookPost.lastUpdated = latestUpdateTime
                 }
             }

@@ -2,6 +2,7 @@ package com.colman.mobilePostsApp.data.bookPost
 
 import android.graphics.Bitmap
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.storage.FirebaseStorage
@@ -36,8 +37,9 @@ class BookPostFirebaseModel {
         storage = FirebaseStorage.getInstance()
     }
 
-    fun getAllBookPosts(callback: (List<BookPost>) -> Unit) {
+    fun getAllBookPosts(since: Long, callback: (List<BookPost>) -> Unit) {
         db.collection(POSTS_COLLECTION_PATH)
+            .whereGreaterThanOrEqualTo(BookPost.LAST_UPDATED_KEY, Timestamp(since, 0))
             .get().addOnCompleteListener { postTask ->
                 if (postTask.isSuccessful) {
                     val bookPosts = mutableListOf<BookPost>()
@@ -72,10 +74,6 @@ class BookPostFirebaseModel {
                 }
             }
     }
-
-
-
-
 
     fun addBookImage(
         imageBitmap: Bitmap,
