@@ -20,6 +20,7 @@ import com.colman.mobilePostsApp.databinding.FragmentEditPostBinding
 import com.squareup.picasso.Picasso
 import java.util.UUID
 import kotlin.getValue
+import com.colman.mobilePostsApp.R
 
 class EditPostFragment : Fragment() {
     private var _binding: FragmentEditPostBinding? = null
