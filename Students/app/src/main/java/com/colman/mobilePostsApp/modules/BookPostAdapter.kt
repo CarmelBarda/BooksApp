@@ -11,6 +11,7 @@ import com.squareup.picasso.Picasso
 import com.colman.mobilePostsApp.databinding.FragmentBookPostItemBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.colman.mobilePostsApp.modules.PostsContainerFragmentDirections
+import com.colman.mobilePostsApp.utils.ImageLoader
 
 class BookPostAdapter(
     private var bookList: List<BookPost>,
@@ -43,26 +44,11 @@ class BookPostAdapter(
                 binding.profileImage.setImageResource(R.drawable.ic_profile_placeholder)
             }
 
-            if (!book.bookImage.isNullOrEmpty()) {
-                Picasso.get()
-                    .load(book.bookImage)
-                    .error(R.drawable.ic_book_placeholder)
-                    .into(binding.bookImage, object : com.squareup.picasso.Callback {
-                        override fun onSuccess() {
-                            binding.imageLoadingSpinner.visibility = View.GONE
-                            binding.bookImage.visibility = View.VISIBLE
-                        }
-
-                        override fun onError(e: Exception?) {
-                            binding.imageLoadingSpinner.visibility = View.GONE
-                            binding.bookImage.visibility = View.VISIBLE
-                        }
-                    })
-            } else {
-                binding.bookImage.setImageResource(R.drawable.ic_book_placeholder)
-                binding.imageLoadingSpinner.visibility = View.GONE
-                binding.bookImage.visibility = View.VISIBLE
-            }
+            ImageLoader.loadImage(
+                imageUrl = book.bookImage,
+                imageView = binding.bookImage,
+                progressBar = binding.imageLoadingSpinner
+            )
 
             binding.userName.text = book.userName
             binding.bookName.text = book.bookName
