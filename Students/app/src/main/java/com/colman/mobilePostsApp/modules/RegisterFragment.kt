@@ -111,12 +111,16 @@ class RegisterFragment : Fragment() {
                         Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                     }
-                }.addOnFailureListener {
+                }.addOnFailureListener { exception ->
                     binding.postProgressSpinner.visibility = View.GONE
                     binding.registerButton.isEnabled = true
                     binding.registerButton.text = "Register"
 
-                    Toast.makeText(requireContext(), "Registration failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Registration failed: ${exception.localizedMessage}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
         }
     }
