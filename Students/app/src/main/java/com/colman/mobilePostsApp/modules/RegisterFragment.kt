@@ -111,13 +111,21 @@ class RegisterFragment : Fragment() {
                         Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                     }
-                }.addOnFailureListener {
+                }.addOnFailureListener { exception ->
                     binding.postProgressSpinner.visibility = View.GONE
                     binding.registerButton.isEnabled = true
                     binding.registerButton.text = "Register"
 
-                    Toast.makeText(requireContext(), "Registration failed", Toast.LENGTH_SHORT).show()
-                }
+                    val errorMessage = when {
+                        exception.message?.contains("email address is already in use") == true -> {
+                            "This email is already registered. Try logging in instead."
+                        }
+                        else -> {
+                            "Registration failed: ${exception.localizedMessage}"
+                        }
+                    }
+
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()                }
         }
     }
 
