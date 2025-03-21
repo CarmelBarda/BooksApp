@@ -116,16 +116,12 @@ class RegisterFragment : Fragment() {
                     binding.registerButton.isEnabled = true
                     binding.registerButton.text = "Register"
 
-                    val errorMessage = when {
-                        exception.message?.contains("email address is already in use") == true -> {
-                            "This email is already registered. Try logging in instead."
-                        }
-                        else -> {
-                            "Registration failed: ${exception.localizedMessage}"
-                        }
-                    }
-
-                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()                }
+                    Toast.makeText(
+                        requireContext(),
+                        "Registration failed: ${exception.localizedMessage}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
         }
     }
 
