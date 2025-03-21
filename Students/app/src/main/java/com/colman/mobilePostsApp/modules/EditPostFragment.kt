@@ -17,10 +17,10 @@ import androidx.navigation.fragment.navArgs
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 import com.colman.mobilePostsApp.databinding.FragmentEditPostBinding
-import com.squareup.picasso.Picasso
 import java.util.UUID
 import kotlin.getValue
 import com.colman.mobilePostsApp.R
+import com.colman.mobilePostsApp.utils.ImageService
 
 class EditPostFragment : Fragment() {
     private var _binding: FragmentEditPostBinding? = null
@@ -72,7 +72,11 @@ class EditPostFragment : Fragment() {
                 binding.recommendationInput.editText?.setText(it.recommendation)
                 binding.bookRatingSlider.value = it.rating.coerceIn(0, 10).toFloat()
                 imageUrl = it.bookImage
-                Picasso.get().load(imageUrl).into(binding.bookImagePreview)
+
+                ImageService.loadImage(
+                    imageUrl = imageUrl,
+                    imageView = binding.bookImagePreview
+                )
 
                 val bookSearchFragment = childFragmentManager.findFragmentById(R.id.bookSearchFragment) as? BookSearchFragment
                 bookSearchFragment?.setSelectedBook(selectedBookName)
