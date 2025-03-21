@@ -40,12 +40,16 @@ class UserModel private constructor() {
         }
     }
 
-    fun updateUser(user: User, selectedImageUri: Uri, callback: () -> Unit) {
-        firebaseModel.updateUser(user) {
-            firebaseModel.addUserImage(user.id, selectedImageUri) { downloadUrl ->
-                user.profileImage = downloadUrl
-                refreshAllUsers()
-                callback()
+    fun updateUser(user: User, selectedImageUri: Uri, success: () -> Unit, failure: () -> Unit) {
+        firebaseModel.updateUser(user) { isSuccess ->
+            if (isSuccess) {
+                firebaseModel.addUserImage(user.id, selectedImageUri) { downloadUrl ->
+                    user.profileImage = downloadUrl
+                    refreshAllUsers()
+                    success()
+                }
+            } else {
+                failure()
             }
         }
     }

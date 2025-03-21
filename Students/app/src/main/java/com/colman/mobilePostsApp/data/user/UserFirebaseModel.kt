@@ -100,13 +100,14 @@ class UserFirebaseModel {
     }
 
 
-    fun updateUser(user: User?, callback: () -> Unit) {
+    fun updateUser(user: User?, callback: (Boolean) -> Unit) {
         db.collection(USERS_COLLECTION_PATH)
             .document(user!!.id).update(user.updateJson)
             .addOnSuccessListener {
-                callback()
+                callback(true)
             }.addOnFailureListener {
                 Log.d("Error", "Can't update this user document: " + it.message)
+                callback(false)
             }
     }
 

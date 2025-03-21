@@ -101,12 +101,19 @@ class EditProfileFragment : Fragment() {
 
         if (user != null) {
             if (selectedImageUri != null) {
-                UserModel.instance.updateUser(User(user.uid, newName), selectedImageUri!!) {
-                    updateUserProfile(user, newName, selectedImageUri.toString())
-
-                    turnOnSaveButton()
-                    Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
-                }
+                UserModel.instance.updateUser(
+                    User(user.uid, newName),
+                    selectedImageUri!!,
+                    success = {
+                        updateUserProfile(user, newName, selectedImageUri.toString())
+                        turnOnSaveButton()
+                        Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
+                    },
+                    failure = {
+                        turnOnSaveButton()
+                        Toast.makeText(requireContext(), "update Failed :(", Toast.LENGTH_SHORT).show()
+                    }
+                )
             } else {
                 updateUserProfile(user, newName, user.photoUrl?.toString())
             }
