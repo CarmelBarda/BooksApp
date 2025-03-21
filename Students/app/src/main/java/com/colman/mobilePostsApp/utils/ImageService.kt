@@ -7,7 +7,7 @@ import com.colman.mobilePostsApp.R
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-object ImageLoader {
+object ImageService {
 
     fun loadImage(
         imageUrl: String?,

@@ -7,11 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
-import com.squareup.picasso.Picasso
 import com.colman.mobilePostsApp.databinding.FragmentBookPostItemBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.colman.mobilePostsApp.modules.PostsContainerFragmentDirections
-import com.colman.mobilePostsApp.utils.ImageLoader
+import com.colman.mobilePostsApp.utils.ImageService
 
 class BookPostAdapter(
     private var bookList: List<BookPost>,
@@ -35,13 +34,13 @@ class BookPostAdapter(
                 binding.deleteButton.visibility = View.GONE
             }
 
-            ImageLoader.loadImage(
+            ImageService.loadImage(
                 imageUrl = book.userProfile,
                 imageView = binding.profileImage,
                 placeholderResId = R.drawable.ic_profile_placeholder
             )
 
-            ImageLoader.loadImage(
+            ImageService.loadImage(
                 imageUrl = book.bookImage,
                 imageView = binding.bookImage,
                 progressBar = binding.imageLoadingSpinner

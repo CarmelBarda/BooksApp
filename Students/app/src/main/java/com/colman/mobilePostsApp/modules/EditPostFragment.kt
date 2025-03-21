@@ -17,11 +17,10 @@ import androidx.navigation.fragment.navArgs
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 import com.colman.mobilePostsApp.databinding.FragmentEditPostBinding
-import com.squareup.picasso.Picasso
 import java.util.UUID
 import kotlin.getValue
 import com.colman.mobilePostsApp.R
-import com.colman.mobilePostsApp.utils.ImageLoader
+import com.colman.mobilePostsApp.utils.ImageService
 
 class EditPostFragment : Fragment() {
     private var _binding: FragmentEditPostBinding? = null
@@ -74,7 +73,7 @@ class EditPostFragment : Fragment() {
                 binding.bookRatingSlider.value = it.rating.coerceIn(0, 10).toFloat()
                 imageUrl = it.bookImage
 
-                ImageLoader.loadImage(
+                ImageService.loadImage(
                     imageUrl = imageUrl,
                     imageView = binding.bookImagePreview
                 )
