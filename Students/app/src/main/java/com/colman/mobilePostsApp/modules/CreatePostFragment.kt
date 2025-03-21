@@ -17,6 +17,7 @@ import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 import com.colman.mobilePostsApp.databinding.FragmentCreatePostBinding
+import com.colman.mobilePostsApp.utils.ImageLoader
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
@@ -79,12 +80,11 @@ class CreatePostFragment : Fragment() {
             binding.userName.text = it.displayName
             val profileImageUrl = it.photoUrl?.toString() ?: ""
 
-            if (profileImageUrl.isNotEmpty()) {
-                Picasso.get()
-                    .load(profileImageUrl)
-                    .error(R.drawable.ic_profile)
-                    .into(binding.profileImage)
-            }
+            ImageLoader.loadImage(
+                imageUrl = profileImageUrl,
+                imageView = binding.profileImage,
+                placeholderResId = R.drawable.ic_profile
+            )
 
             binding.profileImage.tag = profileImageUrl
         }

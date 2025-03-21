@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.databinding.FragmentEditProfileBinding
+import com.colman.mobilePostsApp.utils.ImageLoader
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -59,13 +60,11 @@ class EditProfileFragment : Fragment() {
         if (user != null) {
             binding.nameEditText.editText?.setText(user.displayName)
 
-            if (user.photoUrl != null) {
-                Picasso.get()
-                    .load(user.photoUrl)
-                    .placeholder(R.drawable.profile_pic_placeholder)
-                    .error(R.drawable.profile_pic_placeholder)
-                    .into(binding.profileImageView)
-            }
+            ImageLoader.loadImage(
+                imageUrl = user.photoUrl.toString(),
+                imageView = binding.profileImageView,
+                placeholderResId = R.drawable.profile_pic_placeholder
+            )
         }
     }
 

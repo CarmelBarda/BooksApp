@@ -101,5 +101,8 @@
         <action
             android:id="@+id/action_postsContainerFragment_to_editPostFragment"
             app:destination="@id/editPostFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
     </fragment>
 </navigation>

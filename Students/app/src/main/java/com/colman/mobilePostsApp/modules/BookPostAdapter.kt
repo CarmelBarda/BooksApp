@@ -35,14 +35,11 @@ class BookPostAdapter(
                 binding.deleteButton.visibility = View.GONE
             }
 
-            if (!book.userProfile.isNullOrEmpty()) {
-                Picasso.get()
-                    .load(book.userProfile)
-                    .error(R.drawable.ic_profile_placeholder)
-                    .into(binding.profileImage)
-            } else {
-                binding.profileImage.setImageResource(R.drawable.ic_profile_placeholder)
-            }
+            ImageLoader.loadImage(
+                imageUrl = book.userProfile,
+                imageView = binding.profileImage,
+                placeholderResId = R.drawable.ic_profile_placeholder
+            )
 
             ImageLoader.loadImage(
                 imageUrl = book.bookImage,

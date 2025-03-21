@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.databinding.FragmentProfileBinding
+import com.colman.mobilePostsApp.utils.ImageLoader
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 
@@ -38,12 +39,11 @@ class ProfileFragment : Fragment() {
         if (user != null) {
             binding.userProfileName.text = user.displayName
 
-            if (user.photoUrl != null) {
-                Picasso.get()
-                    .load(user.photoUrl)
-                    .placeholder(R.drawable.profile_pic_placeholder)
-                    .into(binding.profileImage)
-            }
+            ImageLoader.loadImage(
+                imageUrl = user.photoUrl.toString(),
+                imageView = binding.profileImage,
+                placeholderResId = R.drawable.profile_pic_placeholder
+            )
         }
     }
 
