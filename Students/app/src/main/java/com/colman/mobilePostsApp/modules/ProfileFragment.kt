@@ -41,7 +41,7 @@ class ProfileFragment : Fragment() {
             ImageService.loadImage(
                 imageUrl = user.photoUrl.toString(),
                 imageView = binding.profileImage,
-                placeholderResId = R.drawable.profile_pic_placeholder
+                placeholderResId = R.drawable.ic_profile
             )
         }
     }
