@@ -37,11 +37,13 @@ class UserFirebaseModel {
             }
     }
 
-    fun getImage(imageId: String, callback: (Uri) -> Unit) {
-        storage.reference.child("images/$USERS_COLLECTION_PATH/$imageId")
+    fun getImage(userId: String, callback: (Uri) -> Unit) {
+        storage.reference.child("users/$userId/profile.jpg")
             .downloadUrl
             .addOnSuccessListener { uri ->
                 callback(uri)
+            }.addOnFailureListener {
+                Log.d("GetFirebaseImage", "couldn't load the image")
             }
     }
 
