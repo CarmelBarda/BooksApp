@@ -105,9 +105,10 @@ class EditProfileFragment : Fragment() {
                     User(user.uid, newName),
                     selectedImageUri!!,
                     success = {
-                        updateUserProfile(user, newName, selectedImageUri.toString())
+                        updateUserProfile(user, newName, user.photoUrl.toString())
                         turnOnSaveButton()
                         Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate("add")
                     },
                     failure = {
                         turnOnSaveButton()
@@ -127,21 +128,6 @@ class EditProfileFragment : Fragment() {
             .build()
 
         user.updateProfile(profileUpdates)
-            .addOnSuccessListener {
-                updateUserInFirestore(user.uid, newName, imageUrl)
-
-                if (isAdded) {
-                    Toast.makeText(requireContext(), "Profile updated", Toast.LENGTH_SHORT).show()
-                    findNavController().navigateUp()
-                }
-            }
-            .addOnFailureListener {
-                turnOnSaveButton()
-
-                if (isAdded) {
-                    Toast.makeText(requireContext(), "Profile update failed", Toast.LENGTH_SHORT).show()
-                }
-            }
     }
 
     private fun updateUserInFirestore(userId: String, newName: String, imageUrl: String?) {
