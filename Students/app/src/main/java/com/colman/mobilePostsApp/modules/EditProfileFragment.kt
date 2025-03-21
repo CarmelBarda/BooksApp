@@ -108,7 +108,7 @@ class EditProfileFragment : Fragment() {
                         updateUserProfile(user, newName, user.photoUrl.toString())
                         turnOnSaveButton()
                         Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate("add")
+                        findNavController().navigate(R.id.action_editProfile_to_userPageFragment)
                     },
                     failure = {
                         turnOnSaveButton()
@@ -117,6 +117,9 @@ class EditProfileFragment : Fragment() {
                 )
             } else {
                 updateUserProfile(user, newName, user.photoUrl?.toString())
+                turnOnSaveButton()
+                Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_editProfile_to_userPageFragment)
             }
         }
     }

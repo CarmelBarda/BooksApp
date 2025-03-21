@@ -78,7 +78,11 @@
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.colman.mobilePostsApp.modules.EditProfileFragment"
-        android:label="Edit Profile" />
+        android:label="Edit Profile">
+        <action
+            android:id="@+id/action_editProfile_to_userPageFragment"
+            app:destination="@id/userPageFragment" />
+    </fragment>
 
     <!-- User Page Fragment -->
     <fragment
