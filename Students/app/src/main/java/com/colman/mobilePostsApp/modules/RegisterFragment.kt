@@ -125,12 +125,6 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    @SuppressLint("Recycle")
-    private fun getImageSize(uri: Uri?): Long {
-        val inputStream = requireContext().contentResolver.openInputStream(uri!!)
-        return inputStream?.available()?.toLong() ?: 0
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
