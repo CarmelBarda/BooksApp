@@ -1,24 +1,18 @@
 package com.colman.mobilePostsApp.modules
 
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 import com.colman.mobilePostsApp.databinding.FragmentEditPostBinding
 import java.util.UUID
-import kotlin.getValue
 import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.utils.ImageService
 
@@ -31,8 +25,22 @@ class EditPostFragment : Fragment() {
     private var imageUrl: String? = null
     private var selectedBookName: String = ""
 
-    private val args: EditPostFragmentArgs by navArgs()
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        imagePickerLauncher = ImageService.registerImagePicker(
+            caller = this,
+            onImagePicked = { uri ->
+                imageBitmap = ImageService.getBitmapFromUri(requireContext().contentResolver, uri)
+                binding.bookImagePreview.setImageBitmap(imageBitmap)
+            },
+            onCancel = {
+                Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,12 +65,16 @@ class EditPostFragment : Fragment() {
         }
 
         binding.selectBookImageButton.setOnClickListener {
-            imagePicker.launch("image/*")
+            pickImageFromGallery()
         }
 
         binding.submitPostButton.setOnClickListener {
             updatePost()
         }
+    }
+
+    private fun pickImageFromGallery() {
+        ImageService.launchImagePicker(imagePickerLauncher)
     }
 
     private fun loadPostData() {
@@ -81,29 +93,6 @@ class EditPostFragment : Fragment() {
                 val bookSearchFragment = childFragmentManager.findFragmentById(R.id.bookSearchFragment) as? BookSearchFragment
                 bookSearchFragment?.setSelectedBook(selectedBookName)
             }
-        }
-    }
-
-    private val imagePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            imageBitmap = getBitmapFromUri(uri)
-            binding.bookImagePreview.setImageBitmap(imageBitmap)
-        } else {
-            Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun getBitmapFromUri(uri: Uri): Bitmap? {
-        return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                val source = ImageDecoder.createSource(requireActivity().contentResolver, uri)
-                ImageDecoder.decodeBitmap(source)
-            } else {
-                MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uri)
-            }
-        } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Failed to load image", Toast.LENGTH_SHORT).show()
-            null
         }
     }
 

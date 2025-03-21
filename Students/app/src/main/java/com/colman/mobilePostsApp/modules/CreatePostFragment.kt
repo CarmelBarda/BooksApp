@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.colman.mobilePostsApp.R
@@ -30,6 +30,23 @@ class CreatePostFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private var user: FirebaseUser? = null
     private var selectedBookName: String = ""
+
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        imagePickerLauncher = ImageService.registerImagePicker(
+            caller = this,
+            onImagePicked = { uri ->
+                imageBitmap = ImageService.getBitmapFromUri(requireContext().contentResolver, uri)
+                binding.bookImagePreview.setImageBitmap(imageBitmap)
+            },
+            onCancel = {
+                Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,6 +90,10 @@ class CreatePostFragment : Fragment() {
         }
     }
 
+    private fun pickImageFromGallery() {
+        ImageService.launchImagePicker(imagePickerLauncher)
+    }
+
     private fun loadUserData() {
         user = auth.currentUser
         user?.let {
@@ -86,28 +107,6 @@ class CreatePostFragment : Fragment() {
             )
 
             binding.profileImage.tag = profileImageUrl
-        }
-    }
-
-    private fun pickImageFromGallery() {
-        imagePicker.launch("image/*")
-    }
-
-    private val imagePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            imageBitmap = getBitmapFromUri(uri)
-            binding.bookImagePreview.setImageBitmap(imageBitmap)
-        } else {
-            Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun getBitmapFromUri(uri: Uri): Bitmap {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            val source = ImageDecoder.createSource(requireActivity().contentResolver, uri)
-            ImageDecoder.decodeBitmap(source)
-        } else {
-            MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uri)
         }
     }
 

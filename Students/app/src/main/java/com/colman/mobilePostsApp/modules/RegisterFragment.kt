@@ -1,11 +1,8 @@
 package com.colman.mobilePostsApp.modules
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +15,7 @@ import com.colman.mobilePostsApp.data.user.User
 import com.colman.mobilePostsApp.data.user.UserModel
 import com.colman.mobilePostsApp.databinding.FragmentRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
-import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
-import androidx.activity.result.ActivityResult
-import androidx.annotation.RequiresExtension
-import com.google.android.material.imageview.ShapeableImageView
+import com.colman.mobilePostsApp.utils.ImageService
 import com.google.firebase.auth.UserProfileChangeRequest
 
 class RegisterFragment : Fragment() {
@@ -30,8 +24,24 @@ class RegisterFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var imageSelectionCallBack: ActivityResultLauncher<Intent>
     private var selectedImageURI: Uri? = null
+
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        imagePickerLauncher = ImageService.registerImagePicker(
+            caller = this,
+            onImagePicked = { uri ->
+                selectedImageURI = uri
+                binding.profileImageView.setImageURI(selectedImageURI)
+            },
+            onCancel = {
+                Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -40,23 +50,20 @@ class RegisterFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("NewApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
 
-        defineImageSelectionCallBack()
-        openGallery()
         createNewUser()
+
+        binding.btnPickImage.setOnClickListener {
+            pickImageFromGallery()
+        }
     }
 
-    @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
-    private fun openGallery() {
-        binding.btnPickImage.setOnClickListener {
-            val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
-            imageSelectionCallBack.launch(intent)
-        }
+    private fun pickImageFromGallery() {
+        ImageService.launchImagePicker(imagePickerLauncher)
     }
 
     private fun createNewUser() {
@@ -118,32 +125,6 @@ class RegisterFragment : Fragment() {
     private fun getImageSize(uri: Uri?): Long {
         val inputStream = requireContext().contentResolver.openInputStream(uri!!)
         return inputStream?.available()?.toLong() ?: 0
-    }
-
-    private fun defineImageSelectionCallBack() {
-        imageSelectionCallBack = registerForActivityResult(
-            StartActivityForResult()
-        ) { result: ActivityResult ->
-            try {
-                val imageUri: Uri? = result.data?.data
-                if (imageUri != null) {
-                    val imageSize = getImageSize(imageUri)
-                    val maxCanvasSize = 5 * 1024 * 1024 // 5MB
-                    if (imageSize > maxCanvasSize) {
-                        Toast.makeText(requireContext(), "Selected image is too large", Toast.LENGTH_SHORT).show()
-                    } else {
-                        selectedImageURI = imageUri
-
-                        val profileImageView = binding.root.findViewById<ShapeableImageView>(R.id.profileImageView)
-                        profileImageView.setImageURI(imageUri)
-                    }
-                } else {
-                    Toast.makeText(requireContext(), "No Image Selected", Toast.LENGTH_SHORT).show()
-                }
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error processing result", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     override fun onDestroyView() {
