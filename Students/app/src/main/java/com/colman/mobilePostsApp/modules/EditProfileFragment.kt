@@ -105,7 +105,7 @@ class EditProfileFragment : Fragment() {
                     updateUserProfile(user, newName, selectedImageUri.toString())
 
                     turnOnSaveButton()
-                    Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 updateUserProfile(user, newName, user.photoUrl?.toString())
