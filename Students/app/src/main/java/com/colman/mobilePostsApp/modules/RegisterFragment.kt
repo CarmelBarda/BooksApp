@@ -1,7 +1,6 @@
 package com.colman.mobilePostsApp.modules
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -27,7 +26,6 @@ class RegisterFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private var selectedImageURI: Uri? = null
 
-    private var imageBitmap: Bitmap? = null
     private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,8 +34,8 @@ class RegisterFragment : Fragment() {
         imagePickerLauncher = ImageService.registerImagePicker(
             caller = this,
             onImagePicked = { uri ->
-                imageBitmap = ImageService.getBitmapFromUri(requireContext().contentResolver, uri)
-                binding.profileImageView.setImageBitmap(imageBitmap)
+                selectedImageURI = uri
+                binding.profileImageView.setImageURI(selectedImageURI)
             },
             onCancel = {
                 Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()

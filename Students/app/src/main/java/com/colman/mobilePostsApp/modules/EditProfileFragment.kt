@@ -1,6 +1,5 @@
 package com.colman.mobilePostsApp.modules
 
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,7 +30,6 @@ class EditProfileFragment : Fragment() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
 
-    private var imageBitmap: Bitmap? = null
     private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,8 +38,8 @@ class EditProfileFragment : Fragment() {
         imagePickerLauncher = ImageService.registerImagePicker(
             caller = this,
             onImagePicked = { uri ->
-                imageBitmap = ImageService.getBitmapFromUri(requireContext().contentResolver, uri)
-                binding.profileImageView.setImageBitmap(imageBitmap)
+                selectedImageUri = uri
+                binding.profileImageView.setImageURI(selectedImageUri)
             },
             onCancel = {
                 Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
