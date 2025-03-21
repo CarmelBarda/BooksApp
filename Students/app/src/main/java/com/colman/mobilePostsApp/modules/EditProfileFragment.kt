@@ -1,5 +1,6 @@
 package com.colman.mobilePostsApp.modules
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,8 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import androidx.activity.result.ActivityResultLauncher
+
 
 class EditProfileFragment : Fragment() {
 
@@ -28,6 +31,24 @@ class EditProfileFragment : Fragment() {
     private lateinit var storageRef: StorageReference
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+
+    private var imageBitmap: Bitmap? = null
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        imagePickerLauncher = ImageService.registerImagePicker(
+            caller = this,
+            onImagePicked = { uri ->
+                imageBitmap = ImageService.getBitmapFromUri(requireContext().contentResolver, uri)
+                binding.profileImageView.setImageBitmap(imageBitmap)
+            },
+            onCancel = {
+                Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -46,7 +67,7 @@ class EditProfileFragment : Fragment() {
         loadUserData()
 
         binding.changePhotoButton.setOnClickListener {
-            openGallery()
+            pickImageFromGallery()
         }
 
         binding.saveButton.setOnClickListener {
@@ -67,17 +88,8 @@ class EditProfileFragment : Fragment() {
         }
     }
 
-    private val imagePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            selectedImageUri = uri
-            binding.profileImageView.setImageURI(uri)
-        } else {
-            Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun openGallery() {
-        imagePicker.launch("image/*")
+    private fun pickImageFromGallery() {
+        ImageService.launchImagePicker(imagePickerLauncher)
     }
 
     private fun saveProfile() {
