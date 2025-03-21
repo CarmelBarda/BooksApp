@@ -65,10 +65,6 @@ class RegisterFragment : Fragment() {
             val email = binding.layoutEmail.editText?.text.toString().trim()
             val password = binding.layoutPassword.editText?.text.toString().trim()
 
-            binding.registerButton.isEnabled = false
-            binding.registerButton.text = ""
-            binding.postProgressSpinner.visibility = View.VISIBLE
-
             if(name.isNullOrEmpty()) {
                 Toast.makeText(requireContext(), "Invalid input. Name cannot be empty", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -88,6 +84,9 @@ class RegisterFragment : Fragment() {
                 Toast.makeText(requireContext(), "Invalid input. Please select a profile picture", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+                binding.registerButton.isEnabled = false
+                binding.registerButton.text = ""
+                binding.postProgressSpinner.visibility = View.VISIBLE
 
                 auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
                     val authenticatedUser = it.user!!
@@ -107,6 +106,8 @@ class RegisterFragment : Fragment() {
                     }
                 }.addOnFailureListener {
                     binding.postProgressSpinner.visibility = View.GONE
+                    binding.registerButton.isEnabled = true
+                    binding.registerButton.text = "Register"
 
                     Toast.makeText(requireContext(), "Registration failed", Toast.LENGTH_SHORT).show()
                 }
