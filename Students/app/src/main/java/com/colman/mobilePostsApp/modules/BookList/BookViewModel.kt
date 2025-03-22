@@ -1,4 +1,4 @@
-package com.colman.mobilePostsApp.data.book
+package com.colman.mobilePostsApp.modules.BookList
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
