@@ -16,9 +16,6 @@ import com.colman.mobilePostsApp.utils.ImageService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import androidx.activity.result.ActivityResultLauncher
 
 
@@ -28,8 +25,6 @@ class EditProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var selectedImageUri: Uri? = null
-    private lateinit var storageRef: StorageReference
-    private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
 
     private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
@@ -60,8 +55,6 @@ class EditProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
-        storageRef = FirebaseStorage.getInstance().reference.child("profile_images")
 
         loadUserData()
 
@@ -97,7 +90,7 @@ class EditProfileFragment : Fragment() {
         binding.profileProgressSpinner.visibility = View.VISIBLE
 
         val newName = binding.nameEditText.editText?.text.toString().trim()
-        val user = auth.currentUser
+        val user = FirebaseAuth.getInstance().currentUser
 
         if (user != null) {
             UserModel.instance.updateUser(

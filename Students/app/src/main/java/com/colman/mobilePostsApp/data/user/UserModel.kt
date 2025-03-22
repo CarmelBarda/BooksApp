@@ -50,6 +50,7 @@ class UserModel private constructor() {
                         success()
                     }
                 } else {
+                    refreshAllUsers()
                     success()
                 }
             } else {
