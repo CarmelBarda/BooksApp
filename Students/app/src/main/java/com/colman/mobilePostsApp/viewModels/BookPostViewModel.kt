@@ -16,7 +16,7 @@ class BookPostViewModel : ViewModel() {
         }
     }
 
-    fun refreshPosts() {
-        bookPostModel.refreshAllPosts()
+    fun refreshPosts(updatedOnly: Boolean = true) {
+        bookPostModel.refreshAllPosts(updatedOnly)
     }
 }

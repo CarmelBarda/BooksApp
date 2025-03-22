@@ -17,6 +17,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import androidx.activity.result.ActivityResultLauncher
+import androidx.fragment.app.viewModels
+import com.colman.mobilePostsApp.viewModels.BookPostViewModel
+import kotlin.getValue
 
 
 class EditProfileFragment : Fragment() {
@@ -28,6 +31,8 @@ class EditProfileFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
 
     private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
+
+    private val postsViewModel: BookPostViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +103,7 @@ class EditProfileFragment : Fragment() {
                 selectedImageUri,
                 success = {
                     updateUserProfile(user, newName, user.photoUrl.toString())
+                    postsViewModel.refreshPosts(updatedOnly = false)
                     turnOnSaveButton()
                     Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
                 },
