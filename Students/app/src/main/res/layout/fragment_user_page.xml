@@ -19,7 +19,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/postsFragmentContainer"
-            android:name="com.colman.mobilePostsApp.modules.PostsContainerFragment"
+            android:name="com.colman.mobilePostsApp.modules.BookPost.PostsContainerFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

@@ -33,7 +33,7 @@
     <!-- Posts Container Fragment -->
     <fragment
         android:id="@+id/postsContainerFragment"
-        android:name="com.colman.mobilePostsApp.modules.PostsContainerFragment"
+        android:name="com.colman.mobilePostsApp.modules.BookPost.PostsContainerFragment"
         tools:layout="@layout/fragment_posts_container"
         android:label="All book recommendations">
         <argument

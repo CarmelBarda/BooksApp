@@ -1,5 +1,6 @@
-package com.colman.mobilePostsApp.modules
+package com.colman.mobilePostsApp.modules.BookList
 
+import android.R
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,7 +11,6 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.colman.mobilePostsApp.databinding.FragmentBookSearchBinding
-import com.colman.mobilePostsApp.data.book.BookViewModel
 
 class BookSearchFragment : Fragment() {
 
@@ -31,7 +31,7 @@ class BookSearchFragment : Fragment() {
 
         viewModel = ViewModelProvider(this)[BookViewModel::class.java]
 
-        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line)
+        val adapter = ArrayAdapter<String>(requireContext(), R.layout.simple_dropdown_item_1line)
         binding.bookSearchInput.setAdapter(adapter)
 
         binding.bookSearchInput.addTextChangedListener(object : TextWatcher {

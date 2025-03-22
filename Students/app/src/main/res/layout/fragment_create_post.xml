@@ -50,7 +50,7 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/bookSearchFragment"
-                android:name="com.colman.mobilePostsApp.modules.BookSearchFragment"
+                android:name="com.colman.mobilePostsApp.modules.BookList.BookSearchFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

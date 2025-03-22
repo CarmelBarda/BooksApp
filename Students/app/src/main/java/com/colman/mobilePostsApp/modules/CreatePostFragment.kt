@@ -1,11 +1,7 @@
 package com.colman.mobilePostsApp.modules
 
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +13,7 @@ import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 import com.colman.mobilePostsApp.databinding.FragmentCreatePostBinding
+import com.colman.mobilePostsApp.modules.BookList.BookSearchFragment
 import com.colman.mobilePostsApp.utils.ImageService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

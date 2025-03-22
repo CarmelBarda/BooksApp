@@ -14,6 +14,7 @@ import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 import com.colman.mobilePostsApp.databinding.FragmentEditPostBinding
 import java.util.UUID
 import com.colman.mobilePostsApp.R
+import com.colman.mobilePostsApp.modules.BookList.BookSearchFragment
 import com.colman.mobilePostsApp.utils.ImageService
 
 class EditPostFragment : Fragment() {

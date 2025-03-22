@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.viewModels
-import com.colman.mobilePostsApp.viewModels.BookPostViewModel
+import com.colman.mobilePostsApp.modules.BookPost.BookPostViewModel
 import kotlin.getValue
 
 class EditProfileFragment : Fragment() {

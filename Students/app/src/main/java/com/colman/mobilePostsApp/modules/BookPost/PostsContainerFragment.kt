@@ -1,7 +1,6 @@
-package com.colman.mobilePostsApp.modules
+package com.colman.mobilePostsApp.modules.BookPost
 
 import BookPostAdapter
-import com.colman.mobilePostsApp.viewModels.BookPostViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
