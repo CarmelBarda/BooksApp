@@ -8,8 +8,8 @@ import com.colman.mobilePostsApp.R
 import com.colman.mobilePostsApp.data.bookPost.BookPost
 import com.colman.mobilePostsApp.data.bookPost.BookPostModel
 import com.colman.mobilePostsApp.databinding.FragmentBookPostItemBinding
+import com.colman.mobilePostsApp.modules.BookPost.PostsContainerFragmentDirections
 import com.google.firebase.auth.FirebaseAuth
-import com.colman.mobilePostsApp.modules.PostsContainerFragmentDirections
 import com.colman.mobilePostsApp.utils.ImageService
 
 class BookPostAdapter(

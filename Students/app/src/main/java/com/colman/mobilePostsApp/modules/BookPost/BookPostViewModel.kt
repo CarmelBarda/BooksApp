@@ -1,4 +1,4 @@
-package com.colman.mobilePostsApp.viewModels
+package com.colman.mobilePostsApp.modules.BookPost
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.colman.mobilePostsApp.databinding.FragmentUserPageBinding
+import com.colman.mobilePostsApp.modules.BookPost.PostsContainerFragment
 import com.google.firebase.auth.FirebaseAuth
 
 
