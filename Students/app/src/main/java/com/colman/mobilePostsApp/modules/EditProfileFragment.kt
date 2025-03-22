@@ -90,7 +90,7 @@ class EditProfileFragment : Fragment() {
         binding.profileProgressSpinner.visibility = View.VISIBLE
 
         val newName = binding.nameEditText.editText?.text.toString().trim()
-        val user = FirebaseAuth.getInstance().currentUser
+        val user = auth.currentUser
 
         if (user != null) {
             UserModel.instance.updateUser(
@@ -100,7 +100,6 @@ class EditProfileFragment : Fragment() {
                     updateUserProfile(user, newName, user.photoUrl.toString())
                     turnOnSaveButton()
                     Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_editProfile_to_userPageFragment)
                 },
                 failure = {
                     turnOnSaveButton()
@@ -116,7 +115,15 @@ class EditProfileFragment : Fragment() {
             .setPhotoUri(imageUrl?.let { Uri.parse(it) })
             .build()
 
-        user.updateProfile(profileUpdates)
+        user.updateProfile(profileUpdates).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                user.reload().addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        findNavController().navigate(R.id.action_editProfile_to_userPageFragment)
+                    }
+                }
+            }
+        }
     }
 
     private fun turnOnSaveButton() {
