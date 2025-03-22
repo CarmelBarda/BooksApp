@@ -2,39 +2,21 @@ package com.colman.mobilePostsApp.data.bookPost
 
 import android.graphics.Bitmap
 import android.util.Log
+import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import java.io.ByteArrayOutputStream
+import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.storage
 
 class BookPostFirebaseModel {
 
-    private val db: FirebaseFirestore
-    private var storage: FirebaseStorage
+    private val db = Firebase.firestore
+    private val storage = Firebase.storage
 
     companion object {
         const val POSTS_COLLECTION_PATH = "posts"
-
-        private val firestoreInstance: FirebaseFirestore by lazy {
-            FirebaseFirestore.getInstance().apply {
-                try {
-                    val settings = FirebaseFirestoreSettings.Builder()
-                        .setPersistenceEnabled(true)
-                        .build()
-                    firestoreSettings = settings
-                } catch (e: IllegalStateException) {
-                    Log.w("Firestore", "Firestore settings already set. Skipping update.")
-                }
-            }
-        }
-    }
-
-    init {
-        db = firestoreInstance
-        storage = FirebaseStorage.getInstance()
     }
 
     fun getAllBookPosts(since: Long, callback: (List<BookPost>) -> Unit) {
