@@ -16,9 +16,6 @@ import com.colman.mobilePostsApp.utils.ImageService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import androidx.activity.result.ActivityResultLauncher
 
 
@@ -28,8 +25,6 @@ class EditProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var selectedImageUri: Uri? = null
-    private lateinit var storageRef: StorageReference
-    private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
 
     private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
@@ -60,8 +55,6 @@ class EditProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
-        storageRef = FirebaseStorage.getInstance().reference.child("profile_images")
 
         loadUserData()
 
@@ -100,27 +93,19 @@ class EditProfileFragment : Fragment() {
         val user = auth.currentUser
 
         if (user != null) {
-            if (selectedImageUri != null) {
-                UserModel.instance.updateUser(
-                    User(user.uid, newName),
-                    selectedImageUri!!,
-                    success = {
-                        updateUserProfile(user, newName, user.photoUrl.toString())
-                        turnOnSaveButton()
-                        Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_editProfile_to_userPageFragment)
-                    },
-                    failure = {
-                        turnOnSaveButton()
-                        Toast.makeText(requireContext(), "update Failed :(", Toast.LENGTH_SHORT).show()
-                    }
-                )
-            } else {
-                updateUserProfile(user, newName, user.photoUrl?.toString())
-                turnOnSaveButton()
-                Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_editProfile_to_userPageFragment)
-            }
+            UserModel.instance.updateUser(
+                User(user.uid, newName),
+                selectedImageUri,
+                success = {
+                    updateUserProfile(user, newName, user.photoUrl.toString())
+                    turnOnSaveButton()
+                    Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
+                },
+                failure = {
+                    turnOnSaveButton()
+                    Toast.makeText(requireContext(), "update Failed :(", Toast.LENGTH_SHORT).show()
+                }
+            )
         }
     }
 
@@ -130,7 +115,15 @@ class EditProfileFragment : Fragment() {
             .setPhotoUri(imageUrl?.let { Uri.parse(it) })
             .build()
 
-        user.updateProfile(profileUpdates)
+        user.updateProfile(profileUpdates).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                user.reload().addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        findNavController().navigate(R.id.action_editProfile_to_userPageFragment)
+                    }
+                }
+            }
+        }
     }
 
     private fun turnOnSaveButton() {
@@ -142,9 +135,5 @@ class EditProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private const val IMAGE_PICK_REQUEST = 1001
     }
 }

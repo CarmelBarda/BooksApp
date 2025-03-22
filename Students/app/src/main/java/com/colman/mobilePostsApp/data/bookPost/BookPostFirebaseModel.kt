@@ -39,7 +39,7 @@ class BookPostFirebaseModel {
 
     fun getAllBookPosts(since: Long, callback: (List<BookPost>) -> Unit) {
         db.collection(POSTS_COLLECTION_PATH)
-            .whereGreaterThanOrEqualTo(BookPost.LAST_UPDATED_KEY, Timestamp(since, 0))
+//            .whereGreaterThanOrEqualTo(BookPost.LAST_UPDATED_KEY, Timestamp(since, 0))
             .get().addOnCompleteListener { postTask ->
                 if (postTask.isSuccessful) {
                     val bookPosts = mutableListOf<BookPost>()
