@@ -21,7 +21,6 @@ import androidx.fragment.app.viewModels
 import com.colman.mobilePostsApp.viewModels.BookPostViewModel
 import kotlin.getValue
 
-
 class EditProfileFragment : Fragment() {
 
     private var _binding: FragmentEditProfileBinding? = null
@@ -103,7 +102,10 @@ class EditProfileFragment : Fragment() {
                 selectedImageUri,
                 success = {
                     updateUserProfile(user, newName, user.photoUrl.toString())
+
+                    // posts are relied on users data so they need a refresh
                     postsViewModel.refreshPosts(updatedOnly = false)
+
                     turnOnSaveButton()
                     Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
                 },
