@@ -100,27 +100,20 @@ class EditProfileFragment : Fragment() {
         val user = auth.currentUser
 
         if (user != null) {
-            if (selectedImageUri != null) {
-                UserModel.instance.updateUser(
-                    User(user.uid, newName),
-                    selectedImageUri!!,
-                    success = {
-                        updateUserProfile(user, newName, user.photoUrl.toString())
-                        turnOnSaveButton()
-                        Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_editProfile_to_userPageFragment)
-                    },
-                    failure = {
-                        turnOnSaveButton()
-                        Toast.makeText(requireContext(), "update Failed :(", Toast.LENGTH_SHORT).show()
-                    }
-                )
-            } else {
-                updateUserProfile(user, newName, user.photoUrl?.toString())
-                turnOnSaveButton()
-                Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_editProfile_to_userPageFragment)
-            }
+            UserModel.instance.updateUser(
+                User(user.uid, newName),
+                selectedImageUri,
+                success = {
+                    updateUserProfile(user, newName, user.photoUrl.toString())
+                    turnOnSaveButton()
+                    Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_editProfile_to_userPageFragment)
+                },
+                failure = {
+                    turnOnSaveButton()
+                    Toast.makeText(requireContext(), "update Failed :(", Toast.LENGTH_SHORT).show()
+                }
+            )
         }
     }
 
@@ -142,9 +135,5 @@ class EditProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private const val IMAGE_PICK_REQUEST = 1001
     }
 }
