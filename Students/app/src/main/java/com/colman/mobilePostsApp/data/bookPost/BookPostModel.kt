@@ -5,6 +5,8 @@ import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import com.colman.mobilePostsApp.data.AppLocalDatabase
+import java.text.SimpleDateFormat
+import java.util.Locale
 import java.util.concurrent.Executors
 
 class BookPostModel private constructor() {
@@ -35,8 +37,13 @@ class BookPostModel private constructor() {
         return database.bookPostDao().getPostsByUserId(userId)
     }
 
-    fun refreshAllPosts() {
-        val lastUpdated: Long = BookPost.lastUpdated
+    fun refreshAllPosts(updatedOnly: Boolean = true) {
+        // if you want to get all books no matter what
+        val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val initlalDate = formatter.parse("01/01/2025")
+        val initalDateTimeStamp = (initlalDate?.time ?: 0) / 1000
+
+        val lastUpdated: Long = if (updatedOnly) BookPost.lastUpdated else initalDateTimeStamp
 
         firebaseModel.getAllBookPosts(lastUpdated) { list ->
             var latestUpdateTime = lastUpdated
