@@ -15,7 +15,7 @@
         android:scaleType="centerCrop"
         app:strokeWidth="2dp"
         app:strokeColor="@color/white"
-        android:src="@drawable/profile_pic_placeholder"
+        android:src="@drawable/ic_profile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

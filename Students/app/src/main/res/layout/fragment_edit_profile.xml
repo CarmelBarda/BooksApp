@@ -13,7 +13,7 @@
         android:layout_height="200dp"
         android:layout_marginBottom="24dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/profile_pic_placeholder"
+        android:src="@drawable/ic_profile"
         app:shapeAppearanceOverlay="@style/CircleImageShape"
         app:strokeColor="@color/white"
         app:strokeWidth="2dp" />

@@ -80,8 +80,6 @@ class BookPost(
     val updateJson: Map<String, Any>
         get() {
             return hashMapOf(
-                USER_ID_KEY to userId,
-                USER_PROFILE_KEY to (userProfile ?: ""),
                 BOOK_NAME_KEY to bookName,
                 RECOMMENDATION_KEY to recommendation,
                 BOOK_IMAGE_KEY to (bookImage ?: ""),

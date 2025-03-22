@@ -82,7 +82,7 @@ class EditProfileFragment : Fragment() {
             ImageService.loadImage(
                 imageUrl = user.photoUrl.toString(),
                 imageView = binding.profileImageView,
-                placeholderResId = R.drawable.profile_pic_placeholder
+                placeholderResId = R.drawable.ic_profile
             )
         }
     }
@@ -131,31 +131,6 @@ class EditProfileFragment : Fragment() {
             .build()
 
         user.updateProfile(profileUpdates)
-    }
-
-    private fun updateUserInFirestore(userId: String, newName: String, imageUrl: String?) {
-        val userMap = mutableMapOf<String, Any>("name" to newName)
-        if (imageUrl != null) {
-            userMap["profileImage"] = imageUrl
-        }
-
-        firestore.collection("users")
-            .document(userId)
-            .update(userMap)
-            .addOnSuccessListener {
-                if (isAdded) {
-                    turnOnSaveButton()
-
-                    Toast.makeText(requireContext(), "Firestore updated", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .addOnFailureListener {
-                if (isAdded) {
-                    turnOnSaveButton()
-
-                    Toast.makeText(requireContext(), "Failed to update Firestore", Toast.LENGTH_SHORT).show()
-                }
-            }
     }
 
     private fun turnOnSaveButton() {

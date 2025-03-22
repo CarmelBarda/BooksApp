@@ -131,17 +131,19 @@ class EditPostFragment : Fragment() {
         updatedRating: Int,
         updatedImageUrl: String?
     ) {
-        val updatedFields = mutableMapOf<String, Any>(
-            "bookName" to selectedBookName,
-            "recommendation" to updatedRecommendation,
-            "rating" to updatedRating,
-            "lastUpdated" to com.google.firebase.Timestamp.now()
+        val updatedPost = BookPost(
+            id = postId!!,
+            userId = "",
+            bookName = selectedBookName,
+            recommendation = updatedRecommendation,
+            bookImage = updatedImageUrl,
+            rating = updatedRating
         )
 
-        updatedImageUrl?.let { updatedFields["bookImage"] = it }
+        val updatedFields = updatedPost.updateJson
 
         if (updatedFields.isNotEmpty()) {
-            BookPostModel.instance.updatePost(postId!!, updatedFields) {
+            BookPostModel.instance.updatePost(updatedPost.id, updatedFields) {
                 binding.submitPostButton.isEnabled = true
                 binding.submitPostButton.text = "Save changes"
                 binding.postProgressSpinner.visibility = View.GONE
