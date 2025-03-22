@@ -12,16 +12,11 @@ class UserModel private constructor() {
     private val database = AppLocalDatabase.db
     private var usersExecutor = Executors.newSingleThreadExecutor()
     private val firebaseModel = UserFirebaseModel()
-    private val users: LiveData<MutableList<User>>? = null
-
 
     companion object {
         val instance: UserModel = UserModel()
     }
 
-    fun getCurrentUser(): LiveData<User> {
-        return database.userDao().getUserById(Firebase.auth.currentUser?.uid!!)
-    }
 
     fun refreshAllUsers() {
         val lastUpdated: Long = User.lastUpdated
@@ -45,23 +40,18 @@ class UserModel private constructor() {
         }
     }
 
-
-    fun updateUser(user: User?, callback: () -> Unit) {
-        firebaseModel.updateUser(user) {
-            refreshAllUsers()
-            callback()
+    fun updateUser(user: User, selectedImageUri: Uri, success: () -> Unit, failure: () -> Unit) {
+        firebaseModel.updateUser(user) { isSuccess ->
+            if (isSuccess) {
+                firebaseModel.addUserImage(user.id, selectedImageUri) { downloadUrl ->
+                    user.profileImage = downloadUrl
+                    refreshAllUsers()
+                    success()
+                }
+            } else {
+                failure()
+            }
         }
-    }
-
-    fun updateUserImage(userId: String, selectedImageUri: Uri, callback: () -> Unit) {
-        firebaseModel.addUserImage(userId, selectedImageUri) {
-            refreshAllUsers()
-            callback()
-        }
-    }
-
-    fun getUserImage(imageId: String, callback: (Uri) -> Unit) {
-        firebaseModel.getImage(imageId, callback);
     }
 
     fun addUser(user: User, selectedImageUri: Uri, callback: () -> Unit) {

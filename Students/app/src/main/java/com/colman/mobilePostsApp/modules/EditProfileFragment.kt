@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.colman.mobilePostsApp.R
+import com.colman.mobilePostsApp.data.user.User
+import com.colman.mobilePostsApp.data.user.UserModel
 import com.colman.mobilePostsApp.databinding.FragmentEditProfileBinding
 import com.colman.mobilePostsApp.utils.ImageService
 import com.google.firebase.auth.FirebaseAuth
@@ -99,20 +101,25 @@ class EditProfileFragment : Fragment() {
 
         if (user != null) {
             if (selectedImageUri != null) {
-                val imageRef = storageRef.child("${user.uid}.jpg")
-                imageRef.putFile(selectedImageUri!!)
-                    .addOnSuccessListener {
-                        imageRef.downloadUrl.addOnSuccessListener { uri ->
-                            updateUserProfile(user, newName, uri.toString())
-                        }
-                    }
-                    .addOnFailureListener {
+                UserModel.instance.updateUser(
+                    User(user.uid, newName),
+                    selectedImageUri!!,
+                    success = {
+                        updateUserProfile(user, newName, user.photoUrl.toString())
                         turnOnSaveButton()
-
-                        Toast.makeText(requireContext(), "Image upload failed", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.action_editProfile_to_userPageFragment)
+                    },
+                    failure = {
+                        turnOnSaveButton()
+                        Toast.makeText(requireContext(), "update Failed :(", Toast.LENGTH_SHORT).show()
                     }
+                )
             } else {
                 updateUserProfile(user, newName, user.photoUrl?.toString())
+                turnOnSaveButton()
+                Toast.makeText(requireContext(), "Saved changes!", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_editProfile_to_userPageFragment)
             }
         }
     }
@@ -124,21 +131,6 @@ class EditProfileFragment : Fragment() {
             .build()
 
         user.updateProfile(profileUpdates)
-            .addOnSuccessListener {
-                updateUserInFirestore(user.uid, newName, imageUrl)
-
-                if (isAdded) {
-                    Toast.makeText(requireContext(), "Profile updated", Toast.LENGTH_SHORT).show()
-                    findNavController().navigateUp()
-                }
-            }
-            .addOnFailureListener {
-                turnOnSaveButton()
-
-                if (isAdded) {
-                    Toast.makeText(requireContext(), "Profile update failed", Toast.LENGTH_SHORT).show()
-                }
-            }
     }
 
     private fun updateUserInFirestore(userId: String, newName: String, imageUrl: String?) {

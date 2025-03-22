@@ -37,7 +37,7 @@ class BookPostAdapter(
             ImageService.loadImage(
                 imageUrl = book.userProfile,
                 imageView = binding.profileImage,
-                placeholderResId = R.drawable.ic_profile_placeholder
+                placeholderResId = R.drawable.ic_profile
             )
 
             ImageService.loadImage(
