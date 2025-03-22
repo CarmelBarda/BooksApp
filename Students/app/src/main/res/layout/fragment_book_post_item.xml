@@ -61,11 +61,13 @@
         android:layout_marginTop="4dp" />
 
     <ScrollView
+        android:id="@+id/recommendationScroll"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@drawable/rounded_edit_text"
         android:padding="12dp"
-        android:layout_marginTop="8dp" >
+        android:layout_marginTop="8dp"
+        android:descendantFocusability="afterDescendants">
 
         <TextView
             android:id="@+id/recommendationText"
