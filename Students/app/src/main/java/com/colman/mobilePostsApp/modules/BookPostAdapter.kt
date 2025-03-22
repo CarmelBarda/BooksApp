@@ -26,6 +26,11 @@ class BookPostAdapter(
             binding.imageLoadingSpinner.visibility = View.VISIBLE
             binding.bookImage.visibility = View.GONE
 
+            binding.recommendationScroll.setOnTouchListener { v, event ->
+                v.parent.requestDisallowInterceptTouchEvent(true)
+                false
+            }
+
             if (book.userId == currentUserId) {
                 binding.editButton.visibility = View.VISIBLE
                 binding.deleteButton.visibility = View.VISIBLE
