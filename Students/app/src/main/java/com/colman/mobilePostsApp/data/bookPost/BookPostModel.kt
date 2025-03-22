@@ -8,8 +8,6 @@ import com.colman.mobilePostsApp.data.AppLocalDatabase
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.Executors
-import com.google.firebase.Timestamp
-
 
 class BookPostModel private constructor() {
 
